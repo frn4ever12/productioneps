@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import PublicRoute from "./RouteLayout/PublicRoute";
 
@@ -23,7 +18,7 @@ import AddQuiz from "./AdminDashboard/AddQuiz";
 import AddAnswer from "./AdminDashboard/AddAnswer";
 import Login from "./App/Login/Login";
 import Register from "./App/Register/Register";
-import Test from "./StudentDashboard/Components/Test";
+import InstantResult from "./StudentDashboard/Components/instantResult";
 
 const App = () => {
   return (
@@ -49,11 +44,13 @@ const App = () => {
             <Route path="/studentexamlist" element={<StudentExam />} />
             <Route path="/studentprofile" element={<StudentProfile />} />
             <Route path="/studentresult" element={<StudentResult />} />
+
             {/* <Route path="/test" element={<Test />} /> */}
           </Route>
         </Route>
         <Route element={<StudentProtected />}>
           <Route path="/examtable/:id" element={<ExamTable />} />
+          <Route path="/instantresult" element={<InstantResult />} />
         </Route>
       </Routes>
     </AuthContextProvider>

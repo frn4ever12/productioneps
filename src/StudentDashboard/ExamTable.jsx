@@ -4,10 +4,13 @@ import { useGET } from "../Hooks/useApi";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../Hooks/UseAuth";
 import ExamPopup from "./Components/ExamPopup";
+import { useNavigate } from "react-router-dom";
+import InstantResult from "./Components/instantResult";
 
 const ExamTable = () => {
   const { user } = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
   const [score, setScore] = useState(null);
   const { data, isLoading } = useGET(`question/list/${id}/`);
   const [modalOpen, setModalOpen] = useState(false);
@@ -55,15 +58,11 @@ const ExamTable = () => {
     }
   };
 
-  // const SubmitModel = () => {
-  //   sendAnswerRequest("submit");
-  // };
   const closeModal = () => {
     setModalOpen(false);
   };
   const SubmitModel = async () => {
     try {
-      setModalOpen(!modalOpen);
       const endpoint = `https://aasu.pythonanywhere.com/answer/check/`;
 
       // Prepare payload to send to the API
@@ -76,7 +75,6 @@ const ExamTable = () => {
           })
         ),
       };
-      console.log("==", payload);
 
       // Send answer to the API
       const response = await axios.post(endpoint, payload, {
@@ -84,8 +82,10 @@ const ExamTable = () => {
           Authorization: `Bearer ${user.token.access}`, // Include user token
         },
       });
-      setScore(response.data.score);
-      console.log("Answer submitted successfully:", response.data);
+      const scoreresult = response.data;
+      setScore(scoreresult);
+
+      // console.log("Answer submitted successfully:", response.data);
     } catch (error) {
       console.error("Error submitting answer:", error);
       // Handle the error here, e.g., display an error message to the user
@@ -117,12 +117,6 @@ const ExamTable = () => {
   const minutes = Math.floor(remainingTime / 60);
   const seconds = remainingTime % 60;
 
-  // const handleAnswerSelection = (key) => {
-  //   setSelectedAnswers((prevState) => ({
-  //     ...prevState,
-  //     [data[selectedQuestionIndex].id]: key,
-  //   }));
-  // };
   const handleAnswerSelection = (key) => {
     const questionId = data[selectedQuestionIndex].id;
 
@@ -167,7 +161,7 @@ const ExamTable = () => {
         },
       });
 
-      console.log("Answer submitted successfully:", response.data);
+      // console.log("Answer submitted successfully:", response.data);
       // Extract score from response data
       // Store the score in a state variable, e.g., setScore(score);
     } catch (error) {
@@ -264,7 +258,7 @@ const ExamTable = () => {
                 </tbody>
                 <div className="flex justify-end items-center flex-1/2 w-full">
                   <button
-                    onClick={() => SubmitModel()}
+                    onClick={() => setModalOpen(!modalOpen)}
                     className="flex flex-1/2 bg-blue-400 p-2 rounded-xl hover:bg-blue-600"
                   >
                     Submit Answer
@@ -429,7 +423,13 @@ const ExamTable = () => {
           </div>
         </div>
       </div>
-      <ExamPopup isOpen={modalOpen} score={score} setIsOpen={setModalOpen} />
+      <ExamPopup
+        isOpen={modalOpen}
+        // score={score}
+        onclick={SubmitModel}
+        setIsOpen={setModalOpen}
+      />
+      {score && <InstantResult scoreresult={score} />}
     </>
   );
 };
