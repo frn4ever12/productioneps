@@ -16,7 +16,7 @@ const FreeExam = () => {
   }
   //   console.log(questionlist);
   return (
-    <div className="flex gap-[2rem] flex-wrap items-center ">
+    <div className="flex gap-[2rem] flex-wrap mb-[2rem] items-center justify-center ">
       {questionlist?.map((currElem, index) => {
         return <SingleCard key={currElem.id} {...currElem} />;
       })}

@@ -183,9 +183,9 @@ const ExamTable = () => {
 
   return (
     <>
-      <div className="flex w-full rotate h-full flex-col justify-center items-center">
-        <div className="mx-[10%] w-[60rem] pb-full mt-[3rem] items-center p-6 border-2 border-solid border-black">
-          <div className="p-2 text-[19px] flex w-full justify-center items-center gap-[10%] bg-blue-400">
+      <div className="flex w-full rotate h-[full] flex-col justify-center items-center ">
+        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[43rem] h-[full] rotate-90 lg:rotate-0 pb-full lg:mt-[3rem] mt-[40%] items-center p-6 border-2 border-solid border-black">
+          <div className="p-2 lg:text-[19px] h-full flex w-full justify-center items-center gap-[10%] bg-blue-400">
             <p>Total number of questions: {totalQuestions}</p>
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
@@ -199,16 +199,16 @@ const ExamTable = () => {
               <table>
                 <thead>
                   <tr className="mt-3">
-                    <th className="text-[29px]">Questions</th>
+                    <th className="lg:text-[29px] md:text-[26px]">Questions</th>
                   </tr>
                 </thead>
                 <tbody className="flex">
                   <div className="m-4 flex-1 w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
                     <div>
-                      <div className="flex text-[22px] flex-col justify-center items-center">
+                      <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Listning Question
                       </div>
-                      <div className="m-1 flex-1 w-auto flex flex-wrap gap-[0.5rem] ">
+                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {firstHalf.map((question, index) => (
                           <tr
                             className="m-1"
@@ -220,7 +220,7 @@ const ExamTable = () => {
                                 : "transparent",
                             }}
                           >
-                            <td className="flex p-1 items-center justify-center w-[5rem] cursor-pointer border-2 border-solid border-black">
+                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem] cursor-pointer border-2 border-solid border-black">
                               <div className="flex">{question.id}</div>
                             </td>
                           </tr>
@@ -232,10 +232,10 @@ const ExamTable = () => {
                   {/* Second half of the data */}
                   <div className="m-4 flex-1 overflow-hidden w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
                     <div>
-                      <div className="flex text-[22px]  flex-col justify-center items-center">
+                      <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Reading Question
                       </div>
-                      <div className="m-2 flex-1 w-auto flex flex-wrap gap-[0.5rem] ">
+                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {secondHalf.map((question, index) => (
                           <tr
                             className="m-1 overflow-hidden "
@@ -247,7 +247,7 @@ const ExamTable = () => {
                                 : "transparent ",
                             }}
                           >
-                            <td className="flex p-1 items-center justify-center h-auto w-[5rem] cursor-pointer border-2 border-solid border-black">
+                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem]  cursor-pointer border-2 border-solid border-black">
                               <div className="flex h-auto">{question.id}</div>
                             </td>
                           </tr>

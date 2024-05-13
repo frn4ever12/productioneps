@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const InstantResult = ({ scoreresult }) => {
   console.log(scoreresult);
@@ -39,29 +40,31 @@ const InstantResult = ({ scoreresult }) => {
               </p>
             </div>
             <div className="gap-[2rem] flex flex-col">
-              <p className="text-[18px] border-b-2 font-semibold">
+              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.total_questions}
               </p>
-              <p className="text-[18px] border-b-2 font-semibold">
+              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.correct_answers}
               </p>
-              <p className="text-[18px] border-b-2 font-semibold">
+              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.sloved}
               </p>
-              <p className="text-[18px] border-b-2 font-semibold">
+              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.unsolved}
               </p>
-              <p className="text-[18px] border-b-2 font-semibold">
+              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.user_result}
               </p>
-              <p className="text-[18px] border-b-2 font-semibold">
-                {scoreresult.percentage}%
+              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
+                {scoreresult.score}%
               </p>
             </div>
           </div>
         </div>
         <div className="flex justify-center space-x-4">
-          <button className="btn-blue">Back to Main Page</button>
+          <NavLink to="/studentexamlist">
+            <p className="bg-blue-200 p-3 rounded-xl">Back to Main Page</p>
+          </NavLink>
           <button className="btn-blue">View Table</button>
           <button className="btn-blue">Result List</button>
         </div>

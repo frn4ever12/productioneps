@@ -12,18 +12,23 @@ import React from "react";
 import { BiMenu } from "react-icons/bi";
 import { GrClose } from "react-icons/gr";
 import { useAuth } from "../../Hooks/UseAuth";
+import photo1 from "../../Image/file.png";
 
 function StudentDashboardNavbar({ sidebarOpen, toggleSidebar }) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
 
   return (
     <>
       <div className="bg-white h-14 text-black grid grid-cols-2 w-full items-center">
         {/* for logo */}
-        <div className="w-32 h-full object-cover">
-          {/* <img src={Logo} className="scale-75" /> */}
+        <div className=" object-cover">
+          <img src={photo1} className="scale-75 w-12 h-12 ml-7" />
         </div>
         <div className="flex items-center justify-end px-2 space-x-4 md:space-x-6">
+          <div className="flex items-center justify-center flex-col">
+            <p className="text-[22px]">{user.user_name}</p>
+            <p>Student</p>
+          </div>
           {/* for login button */}
           <span
             onClick={logout}

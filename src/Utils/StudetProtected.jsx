@@ -4,7 +4,6 @@ import { useAuth } from "../Hooks/UseAuth";
 
 const StudetProtected = () => {
   const { user } = useAuth();
-  console.log(user);
 
   if (user && user.student) {
     return <Outlet />;
