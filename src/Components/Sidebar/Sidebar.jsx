@@ -29,8 +29,9 @@ const LinkMenuItem = ({ menu, index, open }) => {
         style={{
           transitionDelay: `${index + 3}00ms`,
         }}
-        className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"
-          }`}
+        className={`whitespace-pre duration-500 ${
+          !open && "opacity-0 translate-x-28 overflow-hidden"
+        }`}
       >
         {menu?.name}
       </h2>
@@ -47,7 +48,7 @@ const ToggleMenuItem = ({ menu, index, open }) => {
 
   useEffect(() => {
     !open && setSubmenuOpen(false);
-    return () => { };
+    return () => {};
   }, [open]);
 
   return (
@@ -64,8 +65,9 @@ const ToggleMenuItem = ({ menu, index, open }) => {
           style={{
             transitionDelay: `${index + 3}00ms`,
           }}
-          className={`whitespace-pre duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"
-            }`}
+          className={`whitespace-pre duration-500 ${
+            !open && "opacity-0 translate-x-28 overflow-hidden"
+          }`}
         >
           {menu?.name}
         </h2>
@@ -73,8 +75,9 @@ const ToggleMenuItem = ({ menu, index, open }) => {
           style={{
             transitionDelay: `${index + 3}00ms`,
           }}
-          className={`inline-flex justify-end w-full items-center duration-500 ${!open && "opacity-0 translate-x-28 overflow-hidden"
-            }`}
+          className={`inline-flex justify-end w-full items-center duration-500 ${
+            !open && "opacity-0 translate-x-28 overflow-hidden"
+          }`}
         >
           {submenuOpen ? <FaSortUp /> : <FaSortDown />}
         </span>
@@ -152,7 +155,7 @@ const Sidebar = ({ open, toggleSidebar }) => {
         },
         {
           name: "Question Lists",
-          link: "/addquestion",
+          link: "/questionlist",
           icon: ImAddressBook,
           has_submenus: false,
         },
@@ -189,10 +192,11 @@ const Sidebar = ({ open, toggleSidebar }) => {
   return (
     <>
       <div
-        className={`bg-gray-700 h-screen md:h-full ${open
+        className={`bg-gray-700 h-screen md:h-full ${
+          open
             ? "w-64 z-10 absolute top-0 left-0 md:relative md:z-0"
             : " fixed top-0 left-0 md:w-16 md:relative w-0"
-          } duration-500 text-gray-100`}
+        } duration-500 text-gray-100`}
       >
         {open ? (
           <h2 className="font-semibold text-white text-2xl p-3 ml-5 overflow-x-hidden">

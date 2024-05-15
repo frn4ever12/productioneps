@@ -7,7 +7,6 @@ const FreeExam = () => {
   const {
     data: questionlist,
     isLoading,
-    refetch,
     setData: setquestionlist,
   } = useGET("quize/list/");
 

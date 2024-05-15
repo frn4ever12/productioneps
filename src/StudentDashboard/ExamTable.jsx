@@ -232,7 +232,7 @@ const ExamTable = () => {
                   <div className="m-4 flex-1 overflow-hidden w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
                     <div>
                       <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
-                        Listning Question
+                        Listening Question
                       </div>
                       <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {secondHalf.map((question, index) => (
@@ -247,7 +247,7 @@ const ExamTable = () => {
                             }}
                           >
                             <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem]  cursor-pointer border-2 border-solid border-black">
-                              <div className="flex h-auto">{index + 20}</div>
+                              <div className="flex h-auto">{index + 21}</div>
                             </td>
                           </tr>
                         ))}

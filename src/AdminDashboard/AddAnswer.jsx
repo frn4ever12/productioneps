@@ -4,7 +4,7 @@ import { useAuth } from "../Hooks/UseAuth";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddAnswer = () => {
+const AddAnswer = ({ questionid, onsubmit }) => {
   const { user } = useAuth();
   const [questionHeadings, setQuestionHeadings] = useState([]);
 
@@ -41,9 +41,9 @@ const AddAnswer = () => {
     fetchQuestionHeadings();
   }, []);
 
-  const handleQuestionChange = (e) => {
-    setFormData({ ...formData, question: e.target.value });
-  };
+  // const handleQuestionChange = (e) => {
+  //   setFormData({ ...formData, question: e.target.value });
+  // };
 
   const handleInputChange = (e) => {
     setInputType(e.target.value);
@@ -65,7 +65,7 @@ const AddAnswer = () => {
     e.preventDefault();
 
     const { question, ...data } = formData;
-    const url = `https://aasu.pythonanywhere.com/answer/create/${question}/`;
+    const url = `https://aasu.pythonanywhere.com/answer/create/${questionid}/`;
 
     try {
       const formData = new FormData();
@@ -117,20 +117,20 @@ const AddAnswer = () => {
     }
   };
 
-  const renderQuestionDropdown = () => (
-    <select
-      className="p-2 border rounded-md"
-      value={formData.question}
-      onChange={handleQuestionChange}
-    >
-      <option value="">Select Question</option>
-      {questionHeadings.map((question) => (
-        <option key={question.id} value={question.id}>
-          {question.questions}
-        </option>
-      ))}
-    </select>
-  );
+  // const renderQuestionDropdown = () => (
+  //   <select
+  //     className="p-2 border rounded-md"
+  //     value={formData.question}
+  //     onChange={handleQuestionChange}
+  //   >
+  //     <option value="">Select Question</option>
+  //     {questionHeadings.map((question) => (
+  //       <option key={question.id} value={question.id}>
+  //         {question.questions}
+  //       </option>
+  //     ))}
+  //   </select>
+  // );
 
   const renderInputFields = () => {
     switch (inputType) {
@@ -210,8 +210,8 @@ const AddAnswer = () => {
       className="flex flex-col space-y-4 p-2 border rounded-md"
       onSubmit={handleFormSubmit}
     >
-      <label>Question:</label>
-      {renderQuestionDropdown()}
+      {/* <label>Question:</label>
+      {renderQuestionDropdown()} */}
       <div>
         <label>Select Input Type:</label>
         <select
@@ -243,9 +243,11 @@ const AddAnswer = () => {
           ))}
         </select>
       </div>
-      <button type="submit" className="p-2 bg-blue-500 text-white rounded-md">
-        Submit
-      </button>
+      <p onClick={onsubmit}>
+        <button type="submit" className="p-2 bg-blue-500 text-white rounded-md">
+          Submit
+        </button>
+      </p>
     </form>
   );
 };
