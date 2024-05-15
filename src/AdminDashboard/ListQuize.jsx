@@ -36,6 +36,7 @@ const ListQuize = () => {
         localStorage.setItem("time_duration", time_duration);
         localStorage.setItem("created_by", created_by);
         localStorage.setItem("tags", tags);
+        // localStorage.setItem("tags", tags.join(','));
     };
 
     const handleDeleteQuiz = async (quizId) => {

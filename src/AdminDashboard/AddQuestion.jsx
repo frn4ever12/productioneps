@@ -370,6 +370,24 @@ const AddQuestion = ({ headers = {} }) => {
       addQuestion();
       setQuestions([]);
 
+      // Reset the formData state to initial values
+      setFormData({
+        question: "",
+        option1: "",
+        option2: "",
+        option3: "",
+        option4: "",
+        option_image1: null,
+        option_image2: null,
+        option_image3: null,
+        option_image4: null,
+        option_audio1: null,
+        option_audio2: null,
+        option_audio3: null,
+        option_audio4: null,
+        correct_answer: "",
+      });
+
     } catch (error) {
       console.error("Failed to add question or answer:", error.response.data);
       toast.error("Failed to add question or answer");
