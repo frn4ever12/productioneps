@@ -15,6 +15,8 @@ import StudentResult from "./StudentDashboard/StudentResult";
 import ExamTable from "./StudentDashboard/ExamTable";
 import AddQuestion from "./AdminDashboard/AddQuestion";
 import AddQuiz from "./AdminDashboard/AddQuiz";
+import ListQuize from "./AdminDashboard/ListQuize";
+import UpdateQuiz from "./AdminDashboard/UpdateQuize";
 import AddAnswer from "./AdminDashboard/AddAnswer";
 import Login from "./App/Login/Login";
 import Register from "./App/Register/Register";
@@ -37,6 +39,8 @@ const App = () => {
             <Route path="/addquiz" element={<AddQuiz />} />
             <Route path="/addanswer" element={<AddAnswer />} />
             <Route path="/addquestion" element={<AddQuestion />} />
+            <Route path="/listquize" element={<ListQuize />} />
+            <Route path="/updatequize" element={<UpdateQuiz />} />
           </Route>
         </Route>
 
