@@ -19,6 +19,7 @@ import AddAnswer from "./AdminDashboard/AddAnswer";
 import Login from "./App/Login/Login";
 import Register from "./App/Register/Register";
 import InstantResult from "./StudentDashboard/Components/instantResult";
+import ResultTable from "./StudentDashboard/Components/resultTable";
 
 const App = () => {
   return (
@@ -50,6 +51,7 @@ const App = () => {
         </Route>
         <Route element={<StudentProtected />}>
           <Route path="/examtable/:id" element={<ExamTable />} />
+          <Route path="/resulttablestudent/:id" element={<ResultTable />} />
           <Route path="/instantresult" element={<InstantResult />} />
         </Route>
       </Routes>

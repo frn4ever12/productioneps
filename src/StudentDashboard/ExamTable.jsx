@@ -4,13 +4,12 @@ import { useGET } from "../Hooks/useApi";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../Hooks/UseAuth";
 import ExamPopup from "./Components/ExamPopup";
-import { useNavigate } from "react-router-dom";
+
 import InstantResult from "./Components/instantResult";
 
 const ExamTable = () => {
   const { user } = useAuth();
   const { id } = useParams();
-  const navigate = useNavigate();
   const [score, setScore] = useState(null);
   const { data, isLoading } = useGET(`question/list/${id}/`);
   const [modalOpen, setModalOpen] = useState(false);
@@ -184,8 +183,8 @@ const ExamTable = () => {
   return (
     <>
       <div className="flex w-full rotate h-[full] flex-col justify-center items-center ">
-        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[43rem] h-[full] rotate-90 lg:rotate-0 pb-full lg:mt-[3rem] mt-[40%] items-center p-6 border-2 border-solid border-black">
-          <div className="p-2 lg:text-[19px] h-full flex w-full justify-center items-center gap-[10%] bg-blue-400">
+        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] h-[full] rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 border-2 border-solid border-black">
+          <div className="p-2 lg:text-[19px]  flex w-full justify-center items-center gap-[10%] bg-blue-400">
             <p>Total number of questions: {totalQuestions}</p>
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
@@ -206,7 +205,7 @@ const ExamTable = () => {
                   <div className="m-4 flex-1 w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
                     <div>
                       <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
-                        Listning Question
+                        Reading Question
                       </div>
                       <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {firstHalf.map((question, index) => (
@@ -221,7 +220,7 @@ const ExamTable = () => {
                             }}
                           >
                             <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem] cursor-pointer border-2 border-solid border-black">
-                              <div className="flex">{question.id}</div>
+                              <div className="flex">{index + 1}</div>
                             </td>
                           </tr>
                         ))}
@@ -233,7 +232,7 @@ const ExamTable = () => {
                   <div className="m-4 flex-1 overflow-hidden w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
                     <div>
                       <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
-                        Reading Question
+                        Listning Question
                       </div>
                       <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {secondHalf.map((question, index) => (
@@ -248,7 +247,7 @@ const ExamTable = () => {
                             }}
                           >
                             <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem]  cursor-pointer border-2 border-solid border-black">
-                              <div className="flex h-auto">{question.id}</div>
+                              <div className="flex h-auto">{index + 20}</div>
                             </td>
                           </tr>
                         ))}

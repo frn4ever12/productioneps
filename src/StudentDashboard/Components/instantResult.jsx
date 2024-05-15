@@ -61,12 +61,14 @@ const InstantResult = ({ scoreresult }) => {
             </div>
           </div>
         </div>
-        <div className="flex justify-center space-x-4">
+        <div className="flex gap-3 justify-center space-x-4">
           <NavLink to="/studentexamlist">
             <p className="bg-blue-200 p-3 rounded-xl">Back to Main Page</p>
           </NavLink>
-          <button className="btn-blue">View Table</button>
-          <button className="btn-blue">Result List</button>
+          {/* <button className="btn-blue">View Table</button> */}
+          <NavLink to="/studentresult">
+            <p className="bg-green-200 p-3 rounded-xl">Result List</p>
+          </NavLink>
         </div>
       </div>
     </div>

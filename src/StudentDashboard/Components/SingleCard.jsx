@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import img1 from "../../Image/qs.jpeg";
 import Modal from "react-modal";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../Hooks/UseAuth";
 
 const SingleCard = (currElem) => {
+  const { user } = useAuth();
+
   const {
     id,
     date_created,
@@ -45,7 +48,7 @@ const SingleCard = (currElem) => {
               tags.map((tag, index) => (
                 <p
                   key={index}
-                  className="border border-solid border-2 p-1 flex justify-center items-center rounded-[1rem]"
+                  className="border-2 border-solid p-1 flex justify-center items-center rounded-[1rem]"
                 >
                   {tag.tage_name}
                 </p>
@@ -79,13 +82,20 @@ const SingleCard = (currElem) => {
         <div className="flex flex-col justify-center items-center">
           <h2 className="text-lg font-bold mb-4">Exam Korean</h2>
           <p>
-            <span>Your Exam ID :</span>012414IS
+            <span>Your Exam ID :</span>
+            {user.user_exam_id}
           </p>
           <p>
-            <span>Name of Student :</span>Rajesh Bakhrel
+            <span>Name of Student :</span>
+            {user.user_name}
           </p>
           <p>
-            <span>Exam Title : </span>Set - 01 [무료]
+            <span>Exam Title : </span>
+            {heading}
+          </p>
+          <p>
+            <span>Exam Time : </span>
+            {time_duration}
           </p>
           <NavLink to={`/examtable/${id}`}>
             <p className="bg-green-700 p-2 text-white mt-3 ">Get Started</p>

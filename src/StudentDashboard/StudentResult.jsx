@@ -1,16 +1,9 @@
-// import React from "react";
-
-// const StudentResult = () => {
-//   return <div>StudentResult</div>;
-// };
-
-// export default StudentResult;
-
 import React from "react";
 import { useGET } from "../Hooks/useApi";
 import Loading from "../Components/Loading/Loading";
+import { NavLink, Navigate } from "react-router-dom";
 
-const ResultTable = () => {
+const StudentResult = () => {
   const { data, isLoading } = useGET("user/result/");
   console.log(data);
   if (isLoading) {
@@ -32,7 +25,7 @@ const ResultTable = () => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
-              Score
+              Percentage
             </th>
             <th
               scope="col"
@@ -46,30 +39,33 @@ const ResultTable = () => {
             >
               Date
             </th>
-            <th
+            {/* <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Action
-            </th>
+            </th> */}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {data.map((result) => (
             <tr key={result.id}>
               <td className="px-6 py-4 whitespace-nowrap">
-                {result.quize.heading}
+                {result.quize.map((currElem) => (
+                  <p>{currElem.heading}</p>
+                ))}
               </td>
+
               <td className="px-6 py-4 whitespace-nowrap">{result.score}</td>
               <td className="px-6 py-4 whitespace-nowrap">{result.result}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 {result.created_at}
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <button className="text-indigo-600 hover:text-indigo-900">
-                  View
-                </button>
-              </td>
+              {/* <td className="px-6 py-4 whitespace-nowrap">
+                <NavLink to={`/resulttablestudent/${result.id}`}>
+                  <p className="text-indigo-600 hover:text-indigo-900">View</p>
+                </NavLink>
+              </td> */}
             </tr>
           ))}
         </tbody>
@@ -78,4 +74,4 @@ const ResultTable = () => {
   );
 };
 
-export default ResultTable;
+export default StudentResult;
