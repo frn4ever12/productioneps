@@ -25,6 +25,16 @@ const QuestionList = () => {
     return <Loading />;
   }
 
+  const handleEdit = (questionId) => {
+    // Implement edit functionality here
+    console.log("Edit question with ID:", questionId);
+  };
+
+  const handleDelete = (questionId) => {
+    // Implement delete functionality here
+    console.log("Delete question with ID:", questionId);
+  };
+
   return (
     <div className="question-list-container">
       <div className="max-w-md mx-auto mt-8">
@@ -48,35 +58,153 @@ const QuestionList = () => {
         </select>
       </div>
       <div className="mt-8">
-        {questionData &&
-          questionData.map((question) => (
-            <div
-              key={question.id}
-              className="mb-8 p-4 bg-white shadow rounded-lg"
-            >
-              <h3 className="text-lg font-semibold mb-2">
-                Question ID: {question.id}
-              </h3>
-              <p className="mb-2">
-                <span className="font-semibold">Question:</span>{" "}
-                {question.questions}
-              </p>
-              <p className="mb-2 font-semibold">Answers:</p>
-              <ul className="list-disc pl-6">
-                {question.answer.map((answer) => (
-                  <li key={answer.id}>
-                    <b>Option 1:</b>
-                    {answer.option1}
-                    <br /> <b>Option 2:</b> {answer.option2},<br />
-                    <b> Option 3:</b> {answer.option3}
-                    <br /> <b>Option 4:</b>
-                    {answer.option4}
-                    <br />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <table className="min-w-full">
+          <thead>
+            <tr>
+              <th className="px-4 py-2">Question ID</th>
+              <th className="px-4 py-2">Question</th>
+              <th className="px-4 py-2">Options</th>
+              <th className="px-4 py-2">Correct Answer</th>
+              <th className="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questionData &&
+              questionData.map((question) => (
+                <tr key={question.id}>
+                  <td className="border px-4 py-2">{question.id}</td>
+                  <td className="border px-4 py-2">{question.questions}</td>
+                  <td className="border px-4 py-2">
+                    <ul className="list-disc pl-4">
+                      {question.answer.map((answer) => (
+                        <li key={answer.id}>
+                          {answer.option1}
+                          <br />
+                          {answer.option2}
+                          <br />
+                          {answer.option3}
+                          <br />
+                          {answer.option4}
+                          <br />
+                          {answer.option_image1 && (
+                            <>
+                              <img
+                                src={
+                                  "https://aasu.pythonanywhere.com" +
+                                  answer.option_image1
+                                }
+                                alt="option_image1"
+                              />
+                            </>
+                          )}
+
+                          {answer.option_image2 && (
+                            <>
+                              <img
+                                src={
+                                  "https://aasu.pythonanywhere.com" +
+                                  answer.option_image2
+                                }
+                                alt="option_image2"
+                              />
+                            </>
+                          )}
+
+                          {answer.option_image3 && (
+                            <>
+                              <img
+                                src={
+                                  "https://aasu.pythonanywhere.com" +
+                                  answer.option_image3
+                                }
+                                alt="option_image3"
+                              />
+                            </>
+                          )}
+
+                          {answer.option_audio1 && (
+                            <>
+                              <audio controls className="ml-4">
+                                <source
+                                  src={
+                                    "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio1
+                                  }
+                                  type="audio/mp3"
+                                />
+                                Your browser does not support the audio element.
+                              </audio>
+                            </>
+                          )}
+                          {answer.option_audio2 && (
+                            <>
+                              <audio controls className="ml-4">
+                                <source
+                                  src={
+                                    "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio2
+                                  }
+                                  type="audio/mp3"
+                                />
+                                Your browser does not support the audio element.
+                              </audio>
+                            </>
+                          )}
+                          {answer.option_audio3 && (
+                            <>
+                              <audio controls className="ml-4">
+                                <source
+                                  src={
+                                    "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio3
+                                  }
+                                  type="audio/mp3"
+                                />
+                                Your browser does not support the audio element.
+                              </audio>
+                            </>
+                          )}
+                          {answer.option_audio4 && (
+                            <>
+                              <audio controls className="ml-4">
+                                <source
+                                  src={
+                                    "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio4
+                                  }
+                                  type="audio/mp3"
+                                />
+                                Your browser does not support the audio element.
+                              </audio>
+                            </>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </td>
+                  <td className="border px-4 py-2">
+                    {question.answer.map((answer) => (
+                      <li key={answer.id}>{answer.correct_answer}</li>
+                    ))}
+                  </td>
+                  <td className="border px-4 py-2">
+                    <button
+                      onClick={() => handleEdit(question.id)}
+                      className="mr-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(question.id)}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );

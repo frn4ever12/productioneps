@@ -23,6 +23,7 @@ import Register from "./App/Register/Register";
 import InstantResult from "./StudentDashboard/Components/instantResult";
 import ResultTable from "./StudentDashboard/Components/resultTable";
 import QuestionList from "./AdminDashboard/QuestionList";
+import UserList from "./AdminDashboard/UserList";
 
 const App = () => {
   return (
@@ -43,6 +44,7 @@ const App = () => {
             <Route path="/listquize" element={<ListQuize />} />
             <Route path="/updatequize" element={<UpdateQuiz />} />
             <Route path="/questionlist" element={<QuestionList />} />
+            <Route path="/userlist" element={<UserList />} />
           </Route>
         </Route>
 

@@ -159,6 +159,12 @@ const Sidebar = ({ open, toggleSidebar }) => {
           icon: ImAddressBook,
           has_submenus: false,
         },
+        {
+          name: "User Lists",
+          link: "/userlist",
+          icon: ImAddressBook,
+          has_submenus: false,
+        },
       ],
     },
 

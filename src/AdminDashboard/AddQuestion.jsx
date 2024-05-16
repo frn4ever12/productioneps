@@ -6,7 +6,17 @@ import AddAnswer from "./AddAnswer";
 function AddQuestion(headers = {}) {
   const { user } = useAuth();
   const [questionCount, setQuestionCount] = useState(1);
-  const [questions, setQuestions] = useState([]);
+  const [questions, setQuestions] = useState([
+    {
+      quize: "",
+      questions: "",
+      question_table: "",
+      question_img: null,
+      imgPreview: null,
+      question_audio: null,
+      audioPreview: null,
+    },
+  ]);
   const [quizHeadings, setQuizHeadings] = useState([]);
   const [selectedQuizId, setSelectedQuizId] = useState(null);
   const [questionId, setQuestionId] = useState(null);
