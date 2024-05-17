@@ -10,7 +10,7 @@ const ListQuize = () => {
     const { user } = useAuth();
 
     useEffect(() => {
-        axios.get('https://aasu.pythonanywhere.com/quize/list/')
+        axios.get('https://exam.advicekoreanlearningcenter.com/quize/list/')
             .then(response => {
                 setQuizList(response.data);
             })
@@ -43,7 +43,7 @@ const ListQuize = () => {
         try {
 
             console.log(quizId)
-            await axios.delete(`https://aasu.pythonanywhere.com/quize/delete/${quizId}/`, config);
+            await axios.delete(`https://exam.advicekoreanlearningcenter.com/quize/delete/${quizId}/`, config);
             // Remove the deleted quiz from the quizList state
             setQuizList(quizList.filter(quiz => quiz.id !== quizId));
             // console.log(`Quiz with ID ${quizId} deleted successfully.`);

@@ -20,7 +20,7 @@ const UserList = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `https://aasu.pythonanywhere.com/users/${status}/`,
+        `https://exam.advicekoreanlearningcenter.com/users/${status}/`,
         config
       );
       setUserData(response.data);
@@ -39,7 +39,7 @@ const UserList = () => {
     try {
       console.log(userId);
       await axios.delete(
-        `https://aasu.pythonanywhere.com/user/delete/${userId}/`,
+        `https://exam.advicekoreanlearningcenter.com/user/delete/${userId}/`,
         config
       );
       // Remove the deleted quiz from the quizList state
@@ -108,7 +108,7 @@ const UserList = () => {
                   </td>
                   <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                     <img
-                      src={`https://aasu.pythonanywhere.com/${user.photo}`}
+                      src={`https://exam.advicekoreanlearningcenter.com/${user.photo}`}
                       alt={`User ${user.id}`}
                       className="h-10 w-12 rounded-lg"
                     />

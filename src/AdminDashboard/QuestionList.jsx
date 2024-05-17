@@ -78,7 +78,7 @@ const QuestionList = () => {
                   <div className="mt-6 flex items-center">
                     {question.question_img && (
                       <img
-                        src={"https://aasu.pythonanywhere.com" + question.question_img}
+                        src={"https://exam.advicekoreanlearningcenter.com" + question.question_img}
                         alt="Option Image 1"
                         className="mt-2 h-40 w-auto"
                       />
@@ -87,7 +87,7 @@ const QuestionList = () => {
                       <audio
                         controls
                         className="ml-36"
-                        src={"https://aasu.pythonanywhere.com" + question.question_audio}
+                        src={"https://exam.advicekoreanlearningcenter.com" + question.question_audio}
                       >
                         Your browser does not support the audio element.
                       </audio>
@@ -134,7 +134,7 @@ const QuestionList = () => {
                           <strong>Option Image1:</strong>
                           <img
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_image1
                             }
                             alt="Option Image 1"
@@ -147,7 +147,7 @@ const QuestionList = () => {
                           <strong>Option Image2:</strong>
                           <img
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_image2
                             }
                             alt="Option Image 2"
@@ -160,7 +160,7 @@ const QuestionList = () => {
                           <strong>Option Image3:</strong>
                           <img
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_image3
                             }
                             alt="Option Image 3"
@@ -173,7 +173,7 @@ const QuestionList = () => {
                           <strong>Option Image4:</strong>
                           <img
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_image4
                             }
                             alt="Option Image 4"
@@ -192,7 +192,7 @@ const QuestionList = () => {
                             controls
                             className="mt-2"
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_audio1
                             }
                           >
@@ -207,7 +207,7 @@ const QuestionList = () => {
                             controls
                             className="mt-2"
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_audio2
                             }
                           >
@@ -222,7 +222,7 @@ const QuestionList = () => {
                             controls
                             className="mt-2"
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_audio3
                             }
                           >
@@ -237,7 +237,7 @@ const QuestionList = () => {
                             controls
                             className="mt-2"
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               answer.option_audio4
                             }
                           >

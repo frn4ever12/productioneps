@@ -26,7 +26,7 @@ function AddQuestion(headers = {}) {
     const fetchQuizeHeadings = async () => {
       try {
         const response = await axios.get(
-          "https://aasu.pythonanywhere.com/quize/"
+          "https://exam.advicekoreanlearningcenter.com/quize/"
         );
         setQuizHeadings(response.data);
 
@@ -106,7 +106,7 @@ function AddQuestion(headers = {}) {
           }
 
           const response = await axios.post(
-            "https://aasu.pythonanywhere.com/question/create/",
+            "https://exam.advicekoreanlearningcenter.com/question/create/",
             formData,
             {
               headers: {
