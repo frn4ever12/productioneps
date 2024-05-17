@@ -62,7 +62,7 @@ const ExamTable = () => {
   };
   const SubmitModel = async () => {
     try {
-      const endpoint = `https://aasu.pythonanywhere.com/answer/check/`;
+      const endpoint = `https://exam.advicekoreanlearningcenter.com/answer/check/`;
 
       // Prepare payload to send to the API
       const payload = {
@@ -142,7 +142,7 @@ const ExamTable = () => {
 
   const sendAnswerRequest = async (action) => {
     try {
-      const endpoint = `https://aasu.pythonanywhere.com/answer/check1/${action}/`;
+      const endpoint = `https://exam.advicekoreanlearningcenter.com/answer/check1/${action}/`;
 
       const payload = {
         quiz_id: id,
@@ -277,7 +277,7 @@ const ExamTable = () => {
                         <audio controls>
                           <source
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               selectedQuestion.question_audio
                             }
                             type="audio/mpeg"
@@ -291,7 +291,7 @@ const ExamTable = () => {
                           <img
                             className="h-45"
                             src={
-                              "https://aasu.pythonanywhere.com" +
+                              "https://exam.advicekoreanlearningcenter.com" +
                               selectedQuestion.question_img
                             }
                             alt="hello"
@@ -329,7 +329,7 @@ const ExamTable = () => {
                                     <audio controls>
                                       <source
                                         src={
-                                          "https://aasu.pythonanywhere.com" +
+                                          "https://exam.advicekoreanlearningcenter.com" +
                                           answer[key]
                                         }
                                         type="audio/mpeg"
@@ -358,7 +358,7 @@ const ExamTable = () => {
                                     <img
                                       className="h-40"
                                       src={
-                                        "https://aasu.pythonanywhere.com" +
+                                        "https://exam.advicekoreanlearningcenter.com" +
                                         answer[key]
                                       }
                                       alt="hello"

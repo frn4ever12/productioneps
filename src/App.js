@@ -17,7 +17,6 @@ import AddQuestion from "./AdminDashboard/AddQuestion";
 import AddQuiz from "./AdminDashboard/AddQuiz";
 import ListQuize from "./AdminDashboard/ListQuize";
 import UpdateQuiz from "./AdminDashboard/UpdateQuize";
-import AddAnswer from "./AdminDashboard/AddAnswer";
 import Login from "./App/Login/Login";
 import Register from "./App/Register/Register";
 import InstantResult from "./StudentDashboard/Components/instantResult";
@@ -39,7 +38,7 @@ const App = () => {
           <Route element={<AdminPrivateRoute />}>
             <Route path="/adminprofile" element={<AdminProfile />} />
             <Route path="/addquiz" element={<AddQuiz />} />
-            <Route path="/addanswer" element={<AddAnswer />} />
+            {/* <Route path="/addanswer" element={<AddAnswer />} /> */}
             <Route path="/addquestion" element={<AddQuestion />} />
             <Route path="/listquize" element={<ListQuize />} />
             <Route path="/updatequize" element={<UpdateQuiz />} />
@@ -53,8 +52,6 @@ const App = () => {
             <Route path="/studentexamlist" element={<StudentExam />} />
             <Route path="/studentprofile" element={<StudentProfile />} />
             <Route path="/studentresult" element={<StudentResult />} />
-
-            {/* <Route path="/test" element={<Test />} /> */}
           </Route>
         </Route>
         <Route element={<StudentProtected />}>

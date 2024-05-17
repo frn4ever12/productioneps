@@ -4,17 +4,6 @@ import Loading from "../Components/Loading/Loading";
 
 const StudentProfile = () => {
   const { data, isLoading } = useGET("login/user/profile/");
-  console.log(data)
-
-  // // Determine role based on data
-  // let role = "Unknown";
-  // if (data.is_admin) {
-  //   role = "Admin";
-  // } else if (data.is_student) {
-  //   role = "Student";
-  // } else if (data.is_teacher) {
-  //   role = "Teacher";
-  // }
 
   if (isLoading) {
     return <Loading />;
@@ -23,7 +12,9 @@ const StudentProfile = () => {
   return (
     <div>
       <div className="flex justify-center mt-4">
-        <div className="text-gray-700 sans-serif-text text-3xl ml-1">{data.first_name}'s Profile</div>
+        <div className="text-gray-700 sans-serif-text text-3xl ml-1">
+          {data.first_name}'s Profile
+        </div>
       </div>
       <div className="max-w-xl mx-auto bg-white shadow-lg rounded-lg px-8 py-6 mb-8 mt-8">
         <div className="flex items-center justify-center mb-2">

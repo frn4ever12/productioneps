@@ -107,17 +107,9 @@ const Sidebar = ({ open, toggleSidebar }) => {
       icon: CgProfile,
       has_submenus: false,
     },
-    // { name: "XYZ", link: "/XYZ", icon: GiOpenBook, has_submenus: false },
-    // {
-    //   name: "XYZ",
-    //   link: "/XYZ",
-    //   icon: BsPencilSquare,
-    //   margin: true,
-    //   has_submenus: false,
-    // },
 
     {
-      name: "Create Set Content",
+      name: "Create ",
       icon: BsDatabaseGear,
       has_submenus: true,
       submenus: [
@@ -128,39 +120,33 @@ const Sidebar = ({ open, toggleSidebar }) => {
           has_submenus: false,
         },
         {
-          name: "Add Question",
+          name: "Question answer",
           link: "/addquestion",
           icon: ImAddressBook,
-          has_submenus: false,
-        },
-        {
-          name: "Answer",
-          link: "/addanswer",
-          icon: AiOutlineFileAdd,
           has_submenus: false,
         },
       ],
     },
 
     {
-      name: "List Set Content",
+      name: "List update",
       icon: BsDatabaseGear,
       has_submenus: true,
       submenus: [
         {
-          name: "Quiz Lists",
+          name: "Quiz ",
           link: "/listquize",
           icon: MdOutlineAddCard,
           has_submenus: false,
         },
         {
-          name: "Question Lists",
+          name: "Question ",
           link: "/questionlist",
           icon: ImAddressBook,
           has_submenus: false,
         },
         {
-          name: "User Lists",
+          name: "User ",
           link: "/userlist",
           icon: ImAddressBook,
           has_submenus: false,
