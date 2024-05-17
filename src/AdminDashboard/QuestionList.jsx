@@ -10,6 +10,7 @@ const QuestionList = () => {
     isLoading: isQuestionLoading,
     refetch: refetchQuestionData,
   } = useGET(`question/list/${selectedId}/`);
+  console.log(questionData);
 
   const handleDropdownChange = (event) => {
     setSelectedId(event.target.value);
@@ -34,7 +35,6 @@ const QuestionList = () => {
     // Implement delete functionality here
     console.log("Delete question with ID:", questionId);
   };
-
   return (
     <div className="question-list-container">
       <div className="max-w-md mx-auto mt-8">
@@ -90,7 +90,7 @@ const QuestionList = () => {
                             <>
                               <img
                                 src={
-                                  "https://exam.advicekoreanlearningcenter.com" +
+                                  "https://aasu.pythonanywhere.com" +
                                   answer.option_image1
                                 }
                                 alt="option_image1"
@@ -102,7 +102,7 @@ const QuestionList = () => {
                             <>
                               <img
                                 src={
-                                  "https://exam.advicekoreanlearningcenter.com" +
+                                  "https://aasu.pythonanywhere.com" +
                                   answer.option_image2
                                 }
                                 alt="option_image2"
@@ -114,7 +114,7 @@ const QuestionList = () => {
                             <>
                               <img
                                 src={
-                                  "https://exam.advicekoreanlearningcenter.com" +
+                                  "https://aasu.pythonanywhere.com" +
                                   answer.option_image3
                                 }
                                 alt="option_image3"
@@ -127,7 +127,7 @@ const QuestionList = () => {
                               <audio controls className="ml-4">
                                 <source
                                   src={
-                                    "https://exam.advicekoreanlearningcenter.com" +
+                                    "https://aasu.pythonanywhere.com" +
                                     answer.option_audio1
                                   }
                                   type="audio/mp3"
@@ -141,7 +141,7 @@ const QuestionList = () => {
                               <audio controls className="ml-4">
                                 <source
                                   src={
-                                    "https://exam.advicekoreanlearningcenter.com" +
+                                    "https://aasu.pythonanywhere.com" +
                                     answer.option_audio2
                                   }
                                   type="audio/mp3"
@@ -155,7 +155,7 @@ const QuestionList = () => {
                               <audio controls className="ml-4">
                                 <source
                                   src={
-                                    "https://exam.advicekoreanlearningcenter.com" +
+                                    "https://aasu.pythonanywhere.com" +
                                     answer.option_audio3
                                   }
                                   type="audio/mp3"
@@ -169,7 +169,7 @@ const QuestionList = () => {
                               <audio controls className="ml-4">
                                 <source
                                   src={
-                                    "https://exam.advicekoreanlearningcenter.com" +
+                                    "https://aasu.pythonanywhere.com" +
                                     answer.option_audio4
                                   }
                                   type="audio/mp3"

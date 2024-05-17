@@ -107,7 +107,6 @@ const Sidebar = ({ open, toggleSidebar }) => {
       icon: CgProfile,
       has_submenus: false,
     },
-
     {
       name: "Create ",
       icon: BsDatabaseGear,
@@ -142,12 +141,6 @@ const Sidebar = ({ open, toggleSidebar }) => {
         {
           name: "Question ",
           link: "/questionlist",
-          icon: ImAddressBook,
-          has_submenus: false,
-        },
-        {
-          name: "User ",
-          link: "/userlist",
           icon: ImAddressBook,
           has_submenus: false,
         },
