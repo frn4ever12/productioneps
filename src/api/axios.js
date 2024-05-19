@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export default axios.create({
-  baseURL: "https://exam.advicekoreanlearningcenter.com/",
+  baseURL: "https://aasu.pythonanywhere.com/",
 });

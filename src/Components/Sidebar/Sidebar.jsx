@@ -150,6 +150,12 @@ const Sidebar = ({ open, toggleSidebar }) => {
           icon: ImAddressBook,
           has_submenus: false,
         },
+        {
+          name: "tag ",
+          link: "/taglist",
+          icon: ImAddressBook,
+          has_submenus: false,
+        },
       ],
     },
 

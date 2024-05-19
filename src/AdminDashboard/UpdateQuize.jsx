@@ -24,7 +24,7 @@ function UpdateQuiz() {
     const fetchTags = async () => {
       try {
         const response = await axios.get(
-          "https://exam.advicekoreanlearningcenter.com/tags/"
+          "https://aasu.pythonanywhere.com/tags/"
         );
         setTags(response.data);
       } catch (error) {
@@ -107,7 +107,7 @@ function UpdateQuiz() {
 
     try {
       const response = await axios.put(
-        `https://exam.advicekoreanlearningcenter.com/quize/update/${id}/`,
+        `https://aasu.pythonanywhere.com/quize/update/${id}/`,
         formData,
         {
           headers: {

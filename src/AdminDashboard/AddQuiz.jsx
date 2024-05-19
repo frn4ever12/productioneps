@@ -245,7 +245,7 @@ const AddQuiz = (headers = {}) => {
 
     try {
       const response = await axios.post(
-        "https://exam.advicekoreanlearningcenter.com/quize/create/",
+        "https://aasu.pythonanywhere.com/quize/create/",
         formDataWithFile,
         {
           headers: {

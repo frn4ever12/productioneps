@@ -23,6 +23,7 @@ import InstantResult from "./StudentDashboard/Components/instantResult";
 import ResultTable from "./StudentDashboard/Components/resultTable";
 import QuestionList from "./AdminDashboard/QuestionList";
 import UserList from "./AdminDashboard/UserList";
+import TagList from "./AdminDashboard/TagList";
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="/updatequize" element={<UpdateQuiz />} />
             <Route path="/questionlist" element={<QuestionList />} />
             <Route path="/userlist" element={<UserList />} />
+            <Route path="/taglist" element={<TagList />} />
           </Route>
         </Route>
 

@@ -197,7 +197,7 @@ function AddQuestion() {
 
     try {
       const response = await fetch(
-        "https://exam.advicekoreanlearningcenter.com/question/answer/create/",
+        "https://aasu.pythonanywhere.com/question/answer/create/",
         {
           method: "POST",
           body: formData,

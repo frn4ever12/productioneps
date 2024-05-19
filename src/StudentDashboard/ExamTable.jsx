@@ -20,7 +20,7 @@ const ExamTable = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State to store selected answers for each question
   const [solved, setSolved] = useState(0); // State to store the number of solved questions
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
-  const [remainingTime, setRemainingTime] = useState();
+  const [remainingTime, setRemainingTime] = useState(20 * 30);
   const [timeExpired, setTimeExpired] = useState(false);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const ExamTable = () => {
   };
   const SubmitModel = async () => {
     try {
-      const endpoint = `https://exam.advicekoreanlearningcenter.com/answer/check/`;
+      const endpoint = `https://aasu.pythonanywhere.com/answer/check/`;
 
       // Prepare payload to send to the API
       const payload = {
@@ -183,7 +183,7 @@ const ExamTable = () => {
 
   const sendAnswerRequest = async (action) => {
     try {
-      const endpoint = `https://exam.advicekoreanlearningcenter.com/answer/check1/${action}/`;
+      const endpoint = `https://aasu.pythonanywhere.com/answer/check1/${action}/`;
 
       const payload = {
         quiz_id: id,
@@ -318,7 +318,7 @@ const ExamTable = () => {
                         <audio controls>
                           <source
                             src={
-                              "https://exam.advicekoreanlearningcenter.com" +
+                              "https://aasu.pythonanywhere.com" +
                               selectedQuestion.question_audio
                             }
                             type="audio/mpeg"
@@ -332,7 +332,7 @@ const ExamTable = () => {
                           <img
                             className="h-45"
                             src={
-                              "https://exam.advicekoreanlearningcenter.com" +
+                              "https://aasu.pythonanywhere.com" +
                               selectedQuestion.question_img
                             }
                             alt="hello"
@@ -370,7 +370,7 @@ const ExamTable = () => {
                                     <audio controls>
                                       <source
                                         src={
-                                          "https://exam.advicekoreanlearningcenter.com" +
+                                          "https://aasu.pythonanywhere.com" +
                                           answer[key]
                                         }
                                         type="audio/mpeg"
@@ -399,7 +399,7 @@ const ExamTable = () => {
                                     <img
                                       className="h-40"
                                       src={
-                                        "https://exam.advicekoreanlearningcenter.com" +
+                                        "https://aasu.pythonanywhere.com" +
                                         answer[key]
                                       }
                                       alt="hello"
@@ -463,19 +463,19 @@ const ExamTable = () => {
           </div>
         </div>
       </div>
-      {timeExpired && (
+      {/* {timeExpired && (
         <ExamPopup
           isOpen={modalOpen}
           onclick={SubmitModel}
           setIsOpen={setModalOpen}
         />
-      )}
-      {/* <ExamPopup
+      )} */}
+      <ExamPopup
         isOpen={modalOpen}
         // score={score}
         onclick={SubmitModel}
         setIsOpen={setModalOpen}
-      /> */}
+      />
       {score && <InstantResult scoreresult={score} />}
     </>
   );
