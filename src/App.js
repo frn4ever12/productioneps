@@ -24,6 +24,7 @@ import ResultTable from "./StudentDashboard/Components/resultTable";
 import QuestionList from "./AdminDashboard/QuestionList";
 import UserList from "./AdminDashboard/UserList";
 import TagList from "./AdminDashboard/TagList";
+import AddTag from "./AdminDashboard/AddTag";
 
 const App = () => {
   return (
@@ -46,6 +47,7 @@ const App = () => {
             <Route path="/questionlist" element={<QuestionList />} />
             <Route path="/userlist" element={<UserList />} />
             <Route path="/taglist" element={<TagList />} />
+            <Route path="/addtag" element={<AddTag />} />
           </Route>
         </Route>
 

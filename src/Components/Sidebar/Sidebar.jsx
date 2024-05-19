@@ -124,6 +124,12 @@ const Sidebar = ({ open, toggleSidebar }) => {
           icon: ImAddressBook,
           has_submenus: false,
         },
+        {
+          name: "Tag",
+          link: "/addtag",
+          icon: ImAddressBook,
+          has_submenus: false,
+        },
       ],
     },
 
