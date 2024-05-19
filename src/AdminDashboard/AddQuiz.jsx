@@ -203,7 +203,7 @@ const AddQuiz = (headers = {}) => {
           "https://aasu.pythonanywhere.com/tags/"
         );
         setTagHeadings(response.data);
-        console.log("============================", tagHeadings);
+        console.log("======", tagHeadings);
       } catch (error) {
         console.error("Failed to fetch tag headings:", error);
       }

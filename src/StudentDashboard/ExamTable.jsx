@@ -12,6 +12,7 @@ const ExamTable = () => {
   const { id } = useParams();
   const [score, setScore] = useState(null);
   const { data, isLoading } = useGET(`question/list/${id}/`);
+  const { data: time } = useGET(`quize/${id}/`);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -19,7 +20,47 @@ const ExamTable = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State to store selected answers for each question
   const [solved, setSolved] = useState(0); // State to store the number of solved questions
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
-  const [remainingTime, setRemainingTime] = useState(30 * 60);
+  const [remainingTime, setRemainingTime] = useState();
+  const [timeExpired, setTimeExpired] = useState(false);
+
+  useEffect(() => {
+    if (remainingTime === 0) {
+      // If remainingTime reaches 0, set timeExpired to true
+      setTimeExpired(true);
+      // Open the modal
+      setModalOpen(true);
+    }
+  }, [remainingTime]);
+
+  useEffect(() => {
+    if (data) {
+      setTotalQuestions(data.length);
+      // Initialize selectedAnswers state with null for each question
+      const initialSelectedAnswers = {};
+      data.forEach((question) => {
+        initialSelectedAnswers[question.id] = null;
+      });
+      setSelectedAnswers(initialSelectedAnswers);
+    }
+  }, [data]);
+
+  // Other functions...
+
+  // Update remaining time every second
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => {
+        if (prevTime > 0) {
+          return prevTime - 1;
+        } else {
+          clearInterval(timer);
+          return 0;
+        }
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -422,12 +463,19 @@ const ExamTable = () => {
           </div>
         </div>
       </div>
-      <ExamPopup
+      {timeExpired && (
+        <ExamPopup
+          isOpen={modalOpen}
+          onclick={SubmitModel}
+          setIsOpen={setModalOpen}
+        />
+      )}
+      {/* <ExamPopup
         isOpen={modalOpen}
         // score={score}
         onclick={SubmitModel}
         setIsOpen={setModalOpen}
-      />
+      /> */}
       {score && <InstantResult scoreresult={score} />}
     </>
   );

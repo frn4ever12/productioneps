@@ -21,13 +21,14 @@ function AddQuestion() {
     option_audio2: null,
     option_audio3: null,
     option_audio4: null,
-    correct_answer: null,
+    correct_answer: "",
   });
   const [question, setQuestion] = useState({
     questions: "",
     question_table: "",
     question_img: null,
     question_audio: null,
+    quize: "", // Add quize field
   });
 
   const { data, isLoading } = useGET("quize/");
@@ -106,6 +107,8 @@ function AddQuestion() {
           <div key={index} style={{ display: "flex", alignItems: "center" }}>
             <input
               type="file"
+              accept="image/*"
+              name={`option_image${index + 1}`}
               onChange={(e) =>
                 handleFileChange(`option_image${index + 1}`, e.target.files[0])
               }
@@ -140,81 +143,65 @@ function AddQuestion() {
       return;
     }
 
+    // Check if required fields are filled
+    if (!question.questions || !quizid || !answers.correct_answer) {
+      toast.error("Please fill all required fields.");
+      console.log("Missing fields:", {
+        questions: question.questions,
+        quizid,
+        correct_answer: answers.correct_answer,
+      });
+      return;
+    }
+
     const formData = new FormData();
-    formData.append("question[questions]", question.questions);
-    formData.append("question[question_table]", question.question_table);
+    formData.append("questions", question.questions);
+    formData.append("question_table", question.question_table);
     if (question.question_img) {
-      formData.append("question[question_img]", question.question_img);
+      formData.append("question_img", question.question_img);
     }
     if (question.question_audio) {
-      formData.append("question[question_audio]", question.question_audio);
+      formData.append("question_audio", question.question_audio);
     }
-    formData.append("question[quize]", quizid);
+    formData.append("quize", quizid);
 
-    formData.append("answer[option1]", answers.option1);
-    formData.append("answer[option2]", answers.option2);
-    formData.append("answer[option3]", answers.option3);
-    formData.append("answer[option4]", answers.option4);
+    formData.append("option1", answers.option1);
+    formData.append("option2", answers.option2);
+    formData.append("option3", answers.option3);
+    formData.append("option4", answers.option4);
     if (answers.option_image1) {
-      formData.append("answer[option_image1]", answers.option_image1);
+      formData.append("aoption_image1", answers.option_image1);
     }
     if (answers.option_image2) {
-      formData.append("answer[option_image2]", answers.option_image2);
+      formData.append("option_image2", answers.option_image2);
     }
     if (answers.option_image3) {
-      formData.append("answer[option_image3]", answers.option_image3);
+      formData.append("option_image3", answers.option_image3);
     }
     if (answers.option_image4) {
-      formData.append("answer[option_image4]", answers.option_image4);
+      formData.append("option_image4", answers.option_image4);
     }
     if (answers.option_audio1) {
-      formData.append("answer[option_audio1]", answers.option_audio1);
+      formData.append("option_audio1", answers.option_audio1);
     }
     if (answers.option_audio2) {
-      formData.append("answer[option_audio2]", answers.option_audio2);
+      formData.append("option_audio2", answers.option_audio2);
     }
     if (answers.option_audio3) {
-      formData.append("answer[option_audio3]", answers.option_audio3);
+      formData.append("option_audio3", answers.option_audio3);
     }
     if (answers.option_audio4) {
-      formData.append("answer[option_audio4]", answers.option_audio4);
+      formData.append("option_audio4", answers.option_audio4);
     }
-    formData.append("answer[correct_answer]", answers.correct_answer);
-
-    const payload = {
-      question: {
-        id: quizid,
-        questions: question.questions,
-        question_table: question.question_table,
-        question_img: question.question_img,
-        question_audio: question.question_audio,
-        quize: quizid,
-      },
-      answer: {
-        option1: answers.option1,
-        option2: answers.option2,
-        option3: answers.option3,
-        option4: answers.option4,
-        option_image1: answers.option_image1,
-        option_image2: answers.option_image2,
-        option_image3: answers.option_image3,
-        option_image4: answers.option_image4,
-        option_audio1: answers.option_audio1,
-        option_audio2: answers.option_audio2,
-        option_audio3: answers.option_audio3,
-        option_audio4: answers.option_audio4,
-        correct_answer: answers.correct_answer,
-      },
-    };
+    formData.append("correct_answer", answers.correct_answer);
 
     try {
       const response = await fetch(
-        "https://exam.advicekoreanlearningcenter.com/question/answer/create/",
+        "https://aasu.pythonanywhere.com/question/answer/create/",
         {
           method: "POST",
-          body: JSON.stringify(payload),
+          body: formData,
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${user.token.access}`,
           },
         }
