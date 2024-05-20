@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGET } from "../Hooks/useApi";
 import Loading from "../Components/Loading/Loading";
+import { NavLink } from "react-router-dom";
 
 const QuestionList = () => {
   const { data: quizData, isLoading: isQuizLoading } = useGET("quize/");
@@ -25,11 +26,6 @@ const QuestionList = () => {
   if (isQuizLoading) {
     return <Loading />;
   }
-
-  const handleEdit = (questionId) => {
-    // Implement edit functionality here
-    console.log("Edit question with ID:", questionId);
-  };
 
   const handleDelete = (questionId) => {
     // Implement delete functionality here
@@ -273,13 +269,12 @@ const QuestionList = () => {
               </div>
 
               <div className="flex justify-end mt-4">
-                <button
-                  onClick={() => handleEdit(question.id)}
-                  className="mr-2 bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  {/* Edit */}
-                  <i className="fas fa-pencil-alt"></i>
-                </button>
+                <NavLink to={`/updatequestionanswer`}>
+                  <button className="mr-2 bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    {/* Edit */}
+                    <i className="fas fa-pencil-alt"></i>
+                  </button>
+                </NavLink>
                 <button
                   onClick={() => handleDelete(question.id)}
                   className="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"

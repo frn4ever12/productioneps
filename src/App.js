@@ -25,6 +25,7 @@ import QuestionList from "./AdminDashboard/QuestionList";
 import UserList from "./AdminDashboard/UserList";
 import TagList from "./AdminDashboard/TagList";
 import AddTag from "./AdminDashboard/AddTag";
+import UpdateQuestionAnswer from "./AdminDashboard/UpdateQuestionAnswer";
 
 const App = () => {
   return (
@@ -40,7 +41,11 @@ const App = () => {
           <Route element={<AdminPrivateRoute />}>
             <Route path="/adminprofile" element={<AdminProfile />} />
             <Route path="/addquiz" element={<AddQuiz />} />
-            {/* <Route path="/addanswer" element={<AddAnswer />} /> */}
+            <Route
+              // path="/updatequestionanswer/:id"
+              path="/updatequestionanswer"
+              element={<UpdateQuestionAnswer />}
+            />
             <Route path="/addquestion" element={<AddQuestion />} />
             <Route path="/listquize" element={<ListQuize />} />
             <Route path="/updatequize" element={<UpdateQuiz />} />
