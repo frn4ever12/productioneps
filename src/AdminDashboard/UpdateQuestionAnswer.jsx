@@ -1,18 +1,28 @@
-import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
 import { useGET } from "../Hooks/useApi";
+import { useAuth } from "../Hooks/UseAuth";
 
 const UpdateQuestionAnswer = () => {
-  //   const { id } = useParams();
-  //     const {data , isLoading}=useGET("/")
+  const { user } = useAuth();
+  const { id } = useParams();
+
+  const { data, isLoading } = useGET(`question/indivisual/list/${id}/`);
+  console.log(data);
   const [inputType, setInputType] = useState("");
-  const [answers, setAnswers] = useState({
-    option1: "",
-    option2: "",
-    option3: "",
-    option4: "",
+  const [formData, setFormData] = useState({
+    questions: "",
+    question_table: null,
+    question_img: null,
+    question_audio: null,
+    quize: id,
+    option1: null,
+    option2: null,
+    option3: null,
+    option4: null,
     option_image1: null,
     option_image2: null,
     option_image3: null,
@@ -23,123 +33,178 @@ const UpdateQuestionAnswer = () => {
     option_audio4: null,
     correct_answer: "",
   });
-  const [question, setQuestion] = useState({
-    questions: "",
-    question_table: "",
-    question_img: null,
-    question_audio: null,
-  });
 
-  const handleInputTypeChange = (event) => {
-    setInputType(event.target.value);
-  };
+  useEffect(() => {
+    // Set formData based on fetched data
+    if (data && data.length > 0) {
+      const questionData = data[0];
+      setFormData((prevData) => ({
+        ...prevData,
+        questions: questionData.questions || "",
+        question_table: questionData.question_table || null,
+        question_img: questionData.question_img || null,
+        question_audio: questionData.question_audio || null,
+      }));
+      if (questionData.answer && questionData.answer.length > 0) {
+        const answerData = questionData.answer[0];
+        setFormData((prevData) => ({
+          ...prevData,
+          option1: answerData.option1 || null,
+          option2: answerData.option2 || null,
+          option3: answerData.option3 || null,
+          option4: answerData.option4 || null,
+          option_image1: answerData.option_image1 || null,
+          option_image2: answerData.option_image2 || null,
+          option_image3: answerData.option_image3 || null,
+          option_image4: answerData.option_image4 || null,
+          option_audio1: answerData.option_audio1 || null,
+          option_audio2: answerData.option_audio2 || null,
+          option_audio3: answerData.option_audio3 || null,
+          option_audio4: answerData.option_audio4 || null,
+          correct_answer: answerData.correct_answer || "",
+        }));
+      }
+    }
+  }, [data]);
 
-  const handleFileChange = (name, file) => {
-    const updatedAnswers = {
-      ...answers,
-      [name]: file,
-    };
-    setAnswers(updatedAnswers);
-  };
+  // const handleQuestionChange = (e) => {
+  //   const { name, value, files } = e.target;
+  //   setFormData(prevData => ({
+  //     ...prevData,
+  //     [name]: files ? files[0] : value,
+  //   }));
+  // };
 
+  // const handleInputTypeChange = (event) => {
+  //   setInputType(event.target.value);
+  // };
   const handleQuestionChange = (e) => {
     const { name, value, files } = e.target;
-    if (files) {
-      setQuestion({
-        ...question,
-        [name]: files[0],
-      });
-    } else {
-      setQuestion({
-        ...question,
-        [name]: value,
-      });
-    }
+    const newValue = files ? files[0] : value;
+
+    console.log(`Change in ${name}:`, newValue);
+
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: newValue,
+    }));
+  };
+
+  const handleInputTypeChange = (event) => {
+    const newValue = event.target.value;
+
+    console.log("Input Type Changed:", newValue);
+
+    setInputType(newValue);
   };
 
   const renderInputFields = () => {
-    switch (inputType) {
-      case "text":
-        return Array.from({ length: 4 }).map((_, index) => (
-          <input
-            key={index}
-            type="text"
-            placeholder={`Option ${index + 1}`}
-            value={answers[`option${index + 1}`]}
-            onChange={(e) =>
-              setAnswers({
-                ...answers,
-                [`option${index + 1}`]: e.target.value,
-              })
-            }
-            className="p-2 border rounded-md w-full mb-2"
-          />
-        ));
-      case "audio":
-        return Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="flex items-center mb-2">
-            <input
-              type="file"
-              onChange={(e) =>
-                handleFileChange(`option_audio${index + 1}`, e.target.files[0])
-              }
-              className="p-2 border rounded-md w-full"
-            />
-            {answers[`option_audio${index + 1}`] && (
-              <audio controls className="ml-2">
-                <source
-                  src={URL.createObjectURL(answers[`option_audio${index + 1}`])}
-                  type="audio/mpeg"
-                />
-              </audio>
-            )}
-          </div>
-        ));
-      case "image":
-        return Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="flex items-center mb-2">
-            <input
-              type="file"
-              accept="image/*"
-              name={`option_image${index + 1}`}
-              onChange={(e) =>
-                handleFileChange(`option_image${index + 1}`, e.target.files[0])
-              }
-              className="p-2 border rounded-md w-full"
-            />
-            {answers[`option_image${index + 1}`] && (
-              <img
-                src={URL.createObjectURL(answers[`option_image${index + 1}`])}
-                alt={`Option ${index + 1}`}
-                className="ml-2 max-w-24 max-h-24"
+    return Object.entries(formData).map(([key, value], index) => {
+      if (key.startsWith("option") && value !== null && value !== "") {
+        if (key.startsWith("option_image")) {
+          return (
+            <div key={index} className="flex items-center mb-2">
+              <input
+                type="file"
+                accept="image/*"
+                name={key}
+                onChange={(e) => handleFileChange(key, e.target.files[0])}
+                className="p-2 border rounded-md w-full"
               />
-            )}
-          </div>
-        ));
-      default:
-        return null;
-    }
+              {value instanceof File ? (
+                <img
+                  src={URL.createObjectURL(value)}
+                  alt={`Option ${index + 1}`}
+                  className="ml-2 max-w-24 max-h-24"
+                />
+              ) : (
+                <img
+                  src={value}
+                  alt={`Option ${index + 1}`}
+                  className="ml-2 max-w-24 max-h-24"
+                />
+              )}
+            </div>
+          );
+        } else if (key.startsWith("option_audio")) {
+          return (
+            <div key={index} className="flex items-center mb-2">
+              <input
+                type="file"
+                accept="audio/*"
+                name={key}
+                onChange={(e) => handleFileChange(key, e.target.files[0])}
+                className="p-2 border rounded-md w-full"
+              />
+              {value instanceof File ? (
+                <audio controls className="ml-2">
+                  <source src={URL.createObjectURL(value)} type="audio/mpeg" />
+                </audio>
+              ) : (
+                <audio controls className="ml-2">
+                  <source src={value} type="audio/mpeg" />
+                </audio>
+              )}
+            </div>
+          );
+        } else {
+          return (
+            <input
+              key={index}
+              type="text"
+              placeholder={`Option ${index + 1}`}
+              value={value}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  [key]: e.target.value,
+                })
+              }
+              className="p-2 border rounded-md w-full mb-2"
+            />
+          );
+        }
+      }
+      return null;
+    });
   };
 
-  const filteredDropdownOptions = Object.entries(answers)
-    .filter(
-      ([key, value]) =>
-        key.startsWith("option") && value !== null && value !== ""
-    )
-    .map(([key]) => key);
+  const handleFileChange = (name, file) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: file,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const formDataToSend = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== null && value !== "") {
+        formDataToSend.append(key, value);
+      }
+    });
 
-    // Check if required fields are filled
-    if (!question.questions || !answers.correct_answer) {
-      toast.error("Please fill all required fields.");
-      return;
+    console.log(formDataToSend);
+
+    try {
+      const response = await axios.put(
+        `https://aasu.pythonanywhere.com/question/answer/update/${id}/`,
+        formDataToSend,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token.access}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      toast.success("Question and answers updated successfully!");
+    } catch (error) {
+      toast.error("Failed to update question and answers.");
     }
-
-    toast.success("Form submitted successfully!");
   };
 
+  if (isLoading) return <div>Loading...</div>;
   return (
     <div className="container mx-auto p-8">
       <h1 className="text-3xl font-bold mb-8">Update Question and Answer</h1>
@@ -149,21 +214,23 @@ const UpdateQuestionAnswer = () => {
             <h2 className="text-xl font-semibold mb-4">Question</h2>
             <div className="space-y-4">
               <div className="flex items-center">
-                <label className="mr-4 w-32">Questions:</label>
-                <input
-                  type="text"
-                  name="questions"
-                  value={question.questions}
-                  onChange={handleQuestionChange}
-                  className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
-                />
+                <label className="flex items-center">
+                  <label className="mr-4 w-32">Questions:</label>
+                  <input
+                    type="text"
+                    name="questions"
+                    value={formData.questions}
+                    onChange={handleQuestionChange}
+                    className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
+                  />
+                </label>
               </div>
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions Table:</label>
                 <input
                   type="text"
                   name="question_table"
-                  value={question.question_table}
+                  value={formData.question_table}
                   onChange={handleQuestionChange}
                   className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
                 />
@@ -212,17 +279,24 @@ const UpdateQuestionAnswer = () => {
                 <label>Select Correct Option:</label>
                 <select
                   className="p-2 border rounded-md w-full"
-                  value={answers.correct_answer}
+                  value={formData.correct_answer}
                   onChange={(e) =>
-                    setAnswers({ ...answers, correct_answer: e.target.value })
+                    setFormData({ ...formData, correct_answer: e.target.value })
                   }
                 >
                   <option value="">Select Correct Option</option>
-                  {filteredDropdownOptions.map((option, index) => (
-                    <option key={index} value={option}>
-                      {option}
-                    </option>
-                  ))}
+                  {Object.entries(formData)
+                    .filter(
+                      ([key, value]) =>
+                        key.startsWith("option") &&
+                        value !== null &&
+                        value !== ""
+                    )
+                    .map(([option, _], index) => (
+                      <option key={index} value={option}>
+                        {option.replace("option", "Option ")}
+                      </option>
+                    ))}
                 </select>
               </div>
               <button

@@ -2,8 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useGET } from "../Hooks/useApi";
 import Loading from "../Components/Loading/Loading";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { useAuth } from "../Hooks/UseAuth";
 
 const QuestionList = () => {
+  const { user } = useAuth();
   const { data: quizData, isLoading: isQuizLoading } = useGET("quize/");
   const [selectedId, setSelectedId] = useState(null);
   const {
@@ -11,7 +15,6 @@ const QuestionList = () => {
     isLoading: isQuestionLoading,
     refetch: refetchQuestionData,
   } = useGET(`question/list/${selectedId}/`);
-  console.log(questionData);
 
   const handleDropdownChange = (event) => {
     setSelectedId(event.target.value);
@@ -27,10 +30,28 @@ const QuestionList = () => {
     return <Loading />;
   }
 
-  const handleDelete = (questionId) => {
-    // Implement delete functionality here
-    console.log("Delete question with ID:", questionId);
+  const handleDelete = async (questionId) => {
+    try {
+      await axios.delete(
+        `https://aasu.pythonanywhere.com/question/delete/${questionId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token.access}`,
+          },
+        }
+      );
+
+      toast.success("Question deleted successfully!");
+      refetchQuestionData(); // Assuming you have a refetch function defined
+    } catch (error) {
+      toast.error("Failed to delete question.");
+    }
   };
+
+  const handleEdit = (question) => {
+    localStorage.setItem("selectedQuestion", JSON.stringify(question));
+  };
+
   return (
     <div className="question-list-container px-4 py-8">
       <div className="flex justify-between items-center mb-4">
@@ -269,18 +290,19 @@ const QuestionList = () => {
               </div>
 
               <div className="flex justify-end mt-4">
-                <NavLink to={`/updatequestionanswer`}>
-                  <button className="mr-2 bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                    {/* Edit */}
-                    <i className="fas fa-pencil-alt"></i>
+                <NavLink
+                  to={`/updatequestionanswer/${question.id}`}
+                  onClick={() => handleEdit(question)}
+                >
+                  <button className="mr-2 bg-blue-900 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded">
+                    Edit
                   </button>
                 </NavLink>
                 <button
                   onClick={() => handleDelete(question.id)}
-                  className="bg-red-800 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                 >
-                  {/* Delete */}
-                  <i className="fas fa-trash-alt"></i>
+                  Delete
                 </button>
               </div>
             </div>

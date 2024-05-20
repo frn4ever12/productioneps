@@ -42,8 +42,7 @@ const App = () => {
             <Route path="/adminprofile" element={<AdminProfile />} />
             <Route path="/addquiz" element={<AddQuiz />} />
             <Route
-              // path="/updatequestionanswer/:id"
-              path="/updatequestionanswer"
+              path="/updatequestionanswer/:id"
               element={<UpdateQuestionAnswer />}
             />
             <Route path="/addquestion" element={<AddQuestion />} />
