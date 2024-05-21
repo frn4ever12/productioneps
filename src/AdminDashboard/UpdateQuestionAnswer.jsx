@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -12,13 +12,14 @@ const UpdateQuestionAnswer = () => {
 
   const { data, isLoading } = useGET(`question/indivisual/list/${id}/`);
   console.log(data);
+
   const [inputType, setInputType] = useState("");
   const [formData, setFormData] = useState({
     questions: "",
     question_table: null,
     question_img: null,
     question_audio: null,
-    quize: id,
+    quize: null,
     option1: null,
     option2: null,
     option3: null,
@@ -35,11 +36,11 @@ const UpdateQuestionAnswer = () => {
   });
 
   useEffect(() => {
-    // Set formData based on fetched data
     if (data && data.length > 0) {
       const questionData = data[0];
       setFormData((prevData) => ({
         ...prevData,
+        quize: questionData.quize || "",
         questions: questionData.questions || "",
         question_table: questionData.question_table || null,
         question_img: questionData.question_img || null,
@@ -67,17 +68,6 @@ const UpdateQuestionAnswer = () => {
     }
   }, [data]);
 
-  // const handleQuestionChange = (e) => {
-  //   const { name, value, files } = e.target;
-  //   setFormData(prevData => ({
-  //     ...prevData,
-  //     [name]: files ? files[0] : value,
-  //   }));
-  // };
-
-  // const handleInputTypeChange = (event) => {
-  //   setInputType(event.target.value);
-  // };
   const handleQuestionChange = (e) => {
     const { name, value, files } = e.target;
     const newValue = files ? files[0] : value;
@@ -96,6 +86,13 @@ const UpdateQuestionAnswer = () => {
     console.log("Input Type Changed:", newValue);
 
     setInputType(newValue);
+  };
+
+  const handleFileChange = (name, file) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: file,
+    }));
   };
 
   const renderInputFields = () => {
@@ -119,7 +116,7 @@ const UpdateQuestionAnswer = () => {
                 />
               ) : (
                 <img
-                  src={value}
+                  src={`https://aasu.pythonanywhere.com${value}`}
                   alt={`Option ${index + 1}`}
                   className="ml-2 max-w-24 max-h-24"
                 />
@@ -142,7 +139,10 @@ const UpdateQuestionAnswer = () => {
                 </audio>
               ) : (
                 <audio controls className="ml-2">
-                  <source src={value} type="audio/mpeg" />
+                  <source
+                    src={`https://aasu.pythonanywhere.com${value}`}
+                    type="audio/mpeg"
+                  />
                 </audio>
               )}
             </div>
@@ -167,13 +167,6 @@ const UpdateQuestionAnswer = () => {
       }
       return null;
     });
-  };
-
-  const handleFileChange = (name, file) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: file,
-    }));
   };
 
   const handleSubmit = async (e) => {
@@ -215,7 +208,7 @@ const UpdateQuestionAnswer = () => {
             <div className="space-y-4">
               <div className="flex items-center">
                 <label className="flex items-center">
-                  <label className="mr-4 w-32">Questions:</label>
+                  <span className="mr-4 w-32">Questions:</span>
                   <input
                     type="text"
                     name="questions"
@@ -245,6 +238,23 @@ const UpdateQuestionAnswer = () => {
                   className="flex-1"
                 />
               </div>
+              {formData.question_img && (
+                <div className="flex items-center">
+                  {formData.question_img instanceof File ? (
+                    <img
+                      src={URL.createObjectURL(formData.question_img)}
+                      alt="Question"
+                      className="ml-2 max-w-24 max-h-24"
+                    />
+                  ) : (
+                    <img
+                      src={`https://aasu.pythonanywhere.com${formData.question_img}`}
+                      alt="Question"
+                      className="ml-2 max-w-24 max-h-24"
+                    />
+                  )}
+                </div>
+              )}
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions Sound:</label>
                 <input
@@ -255,6 +265,25 @@ const UpdateQuestionAnswer = () => {
                   className="flex-1"
                 />
               </div>
+              {formData.question_audio && (
+                <div className="flex items-center">
+                  {formData.question_audio instanceof File ? (
+                    <audio controls className="ml-2">
+                      <source
+                        src={URL.createObjectURL(formData.question_audio)}
+                        type="audio/mpeg"
+                      />
+                    </audio>
+                  ) : (
+                    <audio controls className="ml-2">
+                      <source
+                        src={`https://aasu.pythonanywhere.com${formData.question_audio}`}
+                        type="audio/mpeg"
+                      />
+                    </audio>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
