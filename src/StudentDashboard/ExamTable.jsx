@@ -12,7 +12,7 @@ const ExamTable = () => {
   const { id } = useParams();
   const [score, setScore] = useState(null);
   const { data, isLoading } = useGET(`question/list/${id}/`);
-  const { data: time } = useGET(`quize/${id}/`);
+  const { time } = useGET(`quize/${id}/`);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -20,17 +20,6 @@ const ExamTable = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State to store selected answers for each question
   const [solved, setSolved] = useState(0); // State to store the number of solved questions
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
-  const [remainingTime, setRemainingTime] = useState(20 * 30);
-  const [timeExpired, setTimeExpired] = useState(false);
-
-  useEffect(() => {
-    if (remainingTime === 0) {
-      // If remainingTime reaches 0, set timeExpired to true
-      setTimeExpired(true);
-      // Open the modal
-      setModalOpen(true);
-    }
-  }, [remainingTime]);
 
   useEffect(() => {
     if (data) {
@@ -43,24 +32,6 @@ const ExamTable = () => {
       setSelectedAnswers(initialSelectedAnswers);
     }
   }, [data]);
-
-  // Other functions...
-
-  // Update remaining time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime > 0) {
-          return prevTime - 1;
-        } else {
-          clearInterval(timer);
-          return 0;
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     if (data) {
@@ -137,50 +108,25 @@ const ExamTable = () => {
     setUnsolved(totalQuestions - solved);
   }, [totalQuestions, solved]);
 
-  // Update remaining time every second
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setRemainingTime((prevTime) => {
-        if (prevTime > 0) {
-          return prevTime - 1;
-        } else {
-          clearInterval(timer);
-          return 0;
-        }
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
   // Calculate minutes and seconds from remaining time
-  const minutes = Math.floor(remainingTime / 60);
-  const seconds = remainingTime % 60;
 
   const handleAnswerSelection = (key) => {
     const questionId = data[selectedQuestionIndex].id;
 
-    if (selectedAnswers.hasOwnProperty(questionId)) {
-      if (selectedAnswers[questionId] !== key) {
-        setSelectedAnswers((prevState) => ({
-          ...prevState,
-          [questionId]: key,
-        }));
-        if (key !== null) {
-          setSolved((prevState) => prevState + 1);
-        }
-      }
-    } else {
-      setSelectedAnswers((prevState) => ({
-        ...prevState,
-        [questionId]: key,
-      }));
-      if (key !== null) {
-        setSolved((prevState) => prevState + 1);
-      }
+    // Check if the question was previously unanswered
+    const wasUnanswered = selectedAnswers[questionId] === null;
+
+    // Update selected answer
+    setSelectedAnswers((prevState) => ({
+      ...prevState,
+      [questionId]: key,
+    }));
+
+    // Update solved count only if the question was previously unanswered
+    if (wasUnanswered) {
+      setSolved((prevSolved) => prevSolved + 1);
     }
   };
-
   const sendAnswerRequest = async (action) => {
     try {
       const endpoint = `https://aasu.pythonanywhere.com/answer/check1/${action}/`;
@@ -230,9 +176,7 @@ const ExamTable = () => {
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
             {/* <p>Remaining time: {remainingTime}</p> */}
-            <p className="ml-10">
-              Remaining time: {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-            </p>
+            <p className="ml-10">Remaining time:</p>
           </div>
           <div className="m-4 min-h-[10rem]">
             {questionModel ? (

@@ -1,29 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useGET } from "../Hooks/useApi";
 import { useAuth } from "../Hooks/UseAuth";
+import { Link } from "react-router-dom";
 
 const UpdateQuestionAnswer = () => {
   const { user } = useAuth();
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { data, isLoading } = useGET(`question/indivisual/list/${id}/`);
-  console.log(data);
-
-  const [inputType, setInputType] = useState("");
   const [formData, setFormData] = useState({
     questions: "",
     question_table: null,
     question_img: null,
     question_audio: null,
     quize: null,
-    option1: null,
-    option2: null,
-    option3: null,
-    option4: null,
+    option1: "",
+    option2: "",
+    option3: "",
+    option4: "",
     option_image1: null,
     option_image2: null,
     option_image3: null,
@@ -50,10 +49,10 @@ const UpdateQuestionAnswer = () => {
         const answerData = questionData.answer[0];
         setFormData((prevData) => ({
           ...prevData,
-          option1: answerData.option1 || null,
-          option2: answerData.option2 || null,
-          option3: answerData.option3 || null,
-          option4: answerData.option4 || null,
+          option1: answerData.option1 || "",
+          option2: answerData.option2 || "",
+          option3: answerData.option3 || "",
+          option4: answerData.option4 || "",
           option_image1: answerData.option_image1 || null,
           option_image2: answerData.option_image2 || null,
           option_image3: answerData.option_image3 || null,
@@ -68,120 +67,63 @@ const UpdateQuestionAnswer = () => {
     }
   }, [data]);
 
-  const handleQuestionChange = (e) => {
+  const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    const newValue = files ? files[0] : value;
-
-    console.log(`Change in ${name}:`, newValue);
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: newValue,
-    }));
+    if (files && files.length > 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: files[0],
+      }));
+    } else {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleInputTypeChange = (event) => {
-    const newValue = event.target.value;
-
-    console.log("Input Type Changed:", newValue);
-
-    setInputType(newValue);
+  const urlToFile = async (url, filename, mimeType) => {
+    const response = await fetch(url);
+    const buffer = await response.arrayBuffer();
+    return new File([buffer], filename, { type: mimeType });
   };
 
-  const handleFileChange = (name, file) => {
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: file,
-    }));
-  };
-
-  const renderInputFields = () => {
-    return Object.entries(formData).map(([key, value], index) => {
-      if (key.startsWith("option") && value !== null && value !== "") {
-        if (key.startsWith("option_image")) {
-          return (
-            <div key={index} className="flex items-center mb-2">
-              <input
-                type="file"
-                accept="image/*"
-                name={key}
-                onChange={(e) => handleFileChange(key, e.target.files[0])}
-                className="p-2 border rounded-md w-full"
-              />
-              {value instanceof File ? (
-                <img
-                  src={URL.createObjectURL(value)}
-                  alt={`Option ${index + 1}`}
-                  className="ml-2 max-w-24 max-h-24"
-                />
-              ) : (
-                <img
-                  src={`https://aasu.pythonanywhere.com${value}`}
-                  alt={`Option ${index + 1}`}
-                  className="ml-2 max-w-24 max-h-24"
-                />
-              )}
-            </div>
-          );
-        } else if (key.startsWith("option_audio")) {
-          return (
-            <div key={index} className="flex items-center mb-2">
-              <input
-                type="file"
-                accept="audio/*"
-                name={key}
-                onChange={(e) => handleFileChange(key, e.target.files[0])}
-                className="p-2 border rounded-md w-full"
-              />
-              {value instanceof File ? (
-                <audio controls className="ml-2">
-                  <source src={URL.createObjectURL(value)} type="audio/mpeg" />
-                </audio>
-              ) : (
-                <audio controls className="ml-2">
-                  <source
-                    src={`https://aasu.pythonanywhere.com${value}`}
-                    type="audio/mpeg"
-                  />
-                </audio>
-              )}
-            </div>
-          );
-        } else {
-          return (
-            <input
-              key={index}
-              type="text"
-              placeholder={`Option ${index + 1}`}
-              value={value}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  [key]: e.target.value,
-                })
-              }
-              className="p-2 border rounded-md w-full mb-2"
-            />
-          );
-        }
+  const appendFormData = async (formDataToSend, key, value) => {
+    if (value && typeof value === "string" && value.startsWith("/")) {
+      const filename = value.split("/").pop();
+      let mimeType = "application/octet-stream";
+      if (key.includes("img") || key.includes("image")) {
+        mimeType = "image/jpeg";
+      } else if (key.includes("audio")) {
+        mimeType = "audio/mpeg";
       }
-      return null;
-    });
+      const file = await urlToFile(
+        `https://aasu.pythonanywhere.com${value}`,
+        filename,
+        mimeType
+      );
+      formDataToSend.append(key, file);
+    } else {
+      formDataToSend.append(key, value);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value !== null && value !== "") {
-        formDataToSend.append(key, value);
-      }
-    });
 
-    console.log(formDataToSend);
+    for (const key in formData) {
+      if (
+        formData.hasOwnProperty(key) &&
+        formData[key] !== null &&
+        formData[key] !== ""
+      ) {
+        await appendFormData(formDataToSend, key, formData[key]);
+      }
+    }
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `https://aasu.pythonanywhere.com/question/answer/update/${id}/`,
         formDataToSend,
         {
@@ -192,16 +134,36 @@ const UpdateQuestionAnswer = () => {
         }
       );
       toast.success("Question and answers updated successfully!");
+      navigate("/questionlist");
     } catch (error) {
       toast.error("Failed to update question and answers.");
+      console.error("Error:", error.response.data);
     }
   };
 
   if (isLoading) return <div>Loading...</div>;
+
   return (
     <div className="container mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-8">Update Question and Answer</h1>
-      <form onSubmit={handleSubmit}>
+      {/* <h1 className="text-3xl font-bold mb-8">Update Question and Answer</h1> */}
+      <div className="flex justify-between items-center mb-6 mt-6">
+        <div className="text-gray-700 sans-serif-text text-3xl ml-0">
+          Update Question and Answer
+        </div>
+        <div>
+          <Link to="/addquestion">
+            <button className="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow-md focus:outline-none transition duration-300">
+              Add Question
+            </button>
+          </Link>
+          <Link to="/questionlist" className="ml-4">
+            <button className="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow-md focus:outline-none transition duration-300">
+              Question List
+            </button>
+          </Link>
+        </div>
+      </div>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="space-y-8">
           <div className="border border-gray-300 p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Question</h2>
@@ -213,7 +175,7 @@ const UpdateQuestionAnswer = () => {
                     type="text"
                     name="questions"
                     value={formData.questions}
-                    onChange={handleQuestionChange}
+                    onChange={handleInputChange}
                     className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
                   />
                 </label>
@@ -224,7 +186,7 @@ const UpdateQuestionAnswer = () => {
                   type="text"
                   name="question_table"
                   value={formData.question_table}
-                  onChange={handleQuestionChange}
+                  onChange={handleInputChange}
                   className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
                 />
               </div>
@@ -234,7 +196,7 @@ const UpdateQuestionAnswer = () => {
                   type="file"
                   accept="image/*"
                   name="question_img"
-                  onChange={handleQuestionChange}
+                  onChange={handleInputChange}
                   className="flex-1"
                 />
               </div>
@@ -261,7 +223,7 @@ const UpdateQuestionAnswer = () => {
                   type="file"
                   accept="audio/*"
                   name="question_audio"
-                  onChange={handleQuestionChange}
+                  onChange={handleInputChange}
                   className="flex-1"
                 />
               </div>
@@ -290,42 +252,106 @@ const UpdateQuestionAnswer = () => {
           <div className="border border-gray-300 p-6 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Add Answer</h2>
             <div className="space-y-4">
-              <div>
-                <label>Select Input Type:</label>
-                <select
-                  className="p-2 border rounded-md w-full"
-                  value={inputType}
-                  onChange={handleInputTypeChange}
-                >
-                  <option value="">Select Input Type</option>
-                  <option value="text">Text</option>
-                  <option value="audio">Audio</option>
-                  <option value="image">Image</option>
-                </select>
-              </div>
-              {renderInputFields()}
+              {["option1", "option2", "option3", "option4"].map(
+                (option, idx) => (
+                  <div key={option} className="flex items-center">
+                    <label className="mr-4 w-32">{`Option ${idx + 1}:`}</label>
+                    <input
+                      type="text"
+                      name={option}
+                      value={formData[option]}
+                      onChange={handleInputChange}
+                      className="flex-1"
+                    />
+                  </div>
+                )
+              )}
+              {[
+                "option_image1",
+                "option_image2",
+                "option_image3",
+                "option_image4",
+              ].map((option, idx) => (
+                <div key={option} className="flex items-center mb-2">
+                  <label className="mr-4 w-32">{`Image ${idx + 1}:`}</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name={option}
+                    onChange={handleInputChange}
+                    className="flex-1"
+                  />
+                  {formData[option] && (
+                    <div className="flex items-center">
+                      {formData[option] instanceof File ? (
+                        <img
+                          src={URL.createObjectURL(formData[option])}
+                          alt={`Option Image ${idx + 1}`}
+                          className="ml-2 max-w-24 max-h-24"
+                        />
+                      ) : (
+                        <img
+                          src={`https://aasu.pythonanywhere.com${formData[option]}`}
+                          alt={`Option Image ${idx + 1}`}
+                          className="ml-2 max-w-24 max-h-24"
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
+              {[
+                "option_audio1",
+                "option_audio2",
+                "option_audio3",
+                "option_audio4",
+              ].map((option, idx) => (
+                <div key={option} className="flex items-center mb-2">
+                  <label className="mr-4 w-32">{`Audio ${idx + 1}:`}</label>
+                  <input
+                    type="file"
+                    accept="audio/*"
+                    name={option}
+                    onChange={handleInputChange}
+                    className="flex-1"
+                  />
+                  {formData[option] && (
+                    <div className="flex items-center">
+                      {formData[option] instanceof File ? (
+                        <audio controls className="ml-2">
+                          <source
+                            src={URL.createObjectURL(formData[option])}
+                            type="audio/mpeg"
+                          />
+                        </audio>
+                      ) : (
+                        <audio controls className="ml-2">
+                          <source
+                            src={`https://aasu.pythonanywhere.com${formData[option]}`}
+                            type="audio/mpeg"
+                          />
+                        </audio>
+                      )}
+                    </div>
+                  )}
+                </div>
+              ))}
               <div>
                 <label>Select Correct Option:</label>
                 <select
                   className="p-2 border rounded-md w-full"
                   value={formData.correct_answer}
-                  onChange={(e) =>
-                    setFormData({ ...formData, correct_answer: e.target.value })
-                  }
+                  onChange={handleInputChange}
+                  name="correct_answer"
                 >
                   <option value="">Select Correct Option</option>
-                  {Object.entries(formData)
-                    .filter(
-                      ([key, value]) =>
-                        key.startsWith("option") &&
-                        value !== null &&
-                        value !== ""
-                    )
-                    .map(([option, _], index) => (
-                      <option key={index} value={option}>
-                        {option.replace("option", "Option ")}
+                  {["option1", "option2", "option3", "option4"].map(
+                    (option, idx) => (
+                      <option key={option} value={option}>
+                        {`Option ${idx + 1}`}
                       </option>
-                    ))}
+                    )
+                  )}
                 </select>
               </div>
               <button
