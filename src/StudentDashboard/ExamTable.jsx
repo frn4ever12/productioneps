@@ -12,7 +12,7 @@ const ExamTable = () => {
   const { id } = useParams();
   const [score, setScore] = useState(null);
   const { data, isLoading } = useGET(`question/list/${id}/`);
-  const { time } = useGET(`quize/${id}/`);
+  const { data: time } = useGET(`quize/${id}/`);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [totalQuestions, setTotalQuestions] = useState(0);
@@ -21,6 +21,15 @@ const ExamTable = () => {
   const [solved, setSolved] = useState(0); // State to store the number of solved questions
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
 
+  console.log(time);
+
+  const [timeRemaining, setTimeRemaining] = useState(null);
+  useEffect(() => {
+    if (timeRemaining === 0) {
+      SubmitModel();
+    }
+  }, [timeRemaining]);
+
   useEffect(() => {
     if (data) {
       setTotalQuestions(data.length);
@@ -34,16 +43,43 @@ const ExamTable = () => {
   }, [data]);
 
   useEffect(() => {
-    if (data) {
-      setTotalQuestions(data.length);
-      // Initialize selectedAnswers state with null for each question
-      const initialSelectedAnswers = {};
-      data.forEach((question) => {
-        initialSelectedAnswers[question.id] = null;
-      });
-      setSelectedAnswers(initialSelectedAnswers);
+    if (time && time.time_duration) {
+      const initialTime = parseTime(time.time_duration);
+      setTimeRemaining(initialTime);
     }
-  }, [data]);
+  }, [time]);
+
+  useEffect(() => {
+    if (timeRemaining !== null) {
+      const timer = setInterval(() => {
+        setTimeRemaining((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(timer);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [timeRemaining]);
+
+  const parseTime = (timeString) => {
+    const [hours, minutes, seconds] = timeString.split(":").map(Number);
+    return hours * 3600 + minutes * 60 + seconds;
+  };
+
+  const formatTime = (seconds) => {
+    const h = Math.floor(seconds / 3600)
+      .toString()
+      .padStart(2, "0");
+    const m = Math.floor((seconds % 3600) / 60)
+      .toString()
+      .padStart(2, "0");
+    const s = (seconds % 60).toString().padStart(2, "0");
+    return `${h}:${m}:${s}`;
+  };
 
   const handleClick = (index) => {
     setSelectedQuestionIndex(index);
@@ -175,10 +211,10 @@ const ExamTable = () => {
             <p>Total number of questions: {totalQuestions}</p>
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
-            {/* <p>Remaining time: {remainingTime}</p> */}
-            <p className="ml-10">Remaining time:</p>
+
+            <p className="">Remaining time: {formatTime(timeRemaining)}</p>
           </div>
-          <div className="m-4 min-h-[10rem]">
+          <div className=" h-full w-full">
             {questionModel ? (
               <table>
                 <thead>
@@ -240,7 +276,7 @@ const ExamTable = () => {
                     </div>
                   </div>
                 </tbody>
-                <div className="flex justify-end items-center flex-1/2 w-full">
+                <div className="flex justify-end items-center p-4 flex-1/2 w-full">
                   <button
                     onClick={() => setModalOpen(!modalOpen)}
                     className="flex flex-1/2 bg-blue-400 p-2 rounded-xl hover:bg-blue-600"
@@ -252,7 +288,7 @@ const ExamTable = () => {
             ) : (
               <div>
                 <div className="flex">
-                  <div className="flex h-[30vh] overflow-y-auto flex-1 flex-col gap-[1rem]">
+                  <div className="flex h-full w-full overflow-y-auto flex-1 flex-col gap-[1rem]">
                     <p className="flex text-[22px]">
                       {selectedQuestion.questions}
                     </p>
@@ -284,7 +320,7 @@ const ExamTable = () => {
                         </p>
                       )}
                   </div>
-                  <div className="w-full h-[30vh] overflow-y-auto flex-1 ">
+                  <div className="w-full h-full overflow-y-auto flex-1 ">
                     <div className="flex w-full  flex-col items-center justify-center gap-[1rem]">
                       {selectedQuestion.answer.map((answer) => (
                         <div
@@ -380,7 +416,7 @@ const ExamTable = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-center items-center gap-[2%]">
+                <div className="flex justify-center items-center p-3 gap-[2%]">
                   <button
                     className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-gray-400 p-1 rounded-xl"
                     onClick={goToPreviousQuestion}
