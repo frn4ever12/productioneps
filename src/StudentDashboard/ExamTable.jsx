@@ -21,7 +21,7 @@ const ExamTable = () => {
   const [solved, setSolved] = useState(0); // State to store the number of solved questions
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
 
-  console.log(time);
+  console.log(data);
 
   const [timeRemaining, setTimeRemaining] = useState(null);
   useEffect(() => {
@@ -200,13 +200,14 @@ const ExamTable = () => {
   }
 
   const selectedQuestion = data[selectedQuestionIndex];
+
   const firstHalf = data.slice(0, 20);
   const secondHalf = data.slice(20, 40);
 
   return (
-    <>
-      <div className="flex w-full rotate h-[full] flex-col justify-center items-center ">
-        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] h-[full] rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 border-2 border-solid border-black">
+    <div className="w-full h-full">
+      <div className="flex w-full rotate h-full flex-col justify-center items-center ">
+        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 border-2 border-solid border-black">
           <div className="p-2 lg:text-[19px]  flex w-full justify-center items-center gap-[10%] bg-blue-400">
             <p>Total number of questions: {totalQuestions}</p>
             <p>Solved: {solved}</p>
@@ -292,6 +293,10 @@ const ExamTable = () => {
                     <p className="flex text-[22px]">
                       {selectedQuestion.questions}
                     </p>
+                    <p className="flex text-[22px]">
+                      {selectedQuestion.question_table}
+                    </p>
+
                     {selectedQuestion.question_audio !== null &&
                       selectedQuestion.question_audio !== undefined &&
                       selectedQuestion.question_audio !== 0 && (
@@ -457,7 +462,7 @@ const ExamTable = () => {
         setIsOpen={setModalOpen}
       />
       {score && <InstantResult scoreresult={score} />}
-    </>
+    </div>
   );
 };
 

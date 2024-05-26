@@ -25,6 +25,7 @@ function AddQuestion() {
   });
   const [question, setQuestion] = useState({
     questions: "",
+    sub_question: "",
     question_table: "",
     question_img: null,
     question_audio: null,
@@ -156,6 +157,7 @@ function AddQuestion() {
 
     const formData = new FormData();
     formData.append("questions", question.questions);
+    formData.append("sub_question", question.sub_question);
     formData.append("question_table", question.question_table);
     if (question.question_img) {
       formData.append("question_img", question.question_img);
@@ -244,10 +246,20 @@ function AddQuestion() {
 
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions:</label>
-                <textarea
+                <input
                   type="text"
                   name="questions"
                   value={question.questions}
+                  onChange={handleQuestionChange}
+                  className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
+                />
+              </div>
+              <div className="flex items-center">
+                <label className="mr-4 w-32">SUb Questions:</label>
+                <input
+                  type="text"
+                  name="sub_question"
+                  value={question.sub_question}
                   onChange={handleQuestionChange}
                   className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
                 />

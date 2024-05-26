@@ -119,6 +119,8 @@ const QuestionList = () => {
                 <div className="ml-4">
                   <h2 className="text-lg font-semibold mb-4 text-gray-800 ">
                     {question.questions}
+                    <br />
+                    {question.sub_question}
                     <div className="mt-6 flex items-center">
                       {question.question_img && (
                         <img

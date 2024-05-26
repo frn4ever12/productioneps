@@ -15,6 +15,7 @@ const UpdateQuestionAnswer = () => {
   const { data, isLoading } = useGET(`question/indivisual/list/${id}/`);
   const [formData, setFormData] = useState({
     questions: "",
+    sub_question: "",
     question_table: null,
     question_img: null,
     question_audio: null,
@@ -41,6 +42,7 @@ const UpdateQuestionAnswer = () => {
         ...prevData,
         quize: questionData.quize || "",
         questions: questionData.questions || "",
+        sub_question: questionData.sub_question || "",
         question_table: questionData.question_table || null,
         question_img: questionData.question_img || null,
         question_audio: questionData.question_audio || null,
@@ -175,6 +177,18 @@ const UpdateQuestionAnswer = () => {
                     type="text"
                     name="questions"
                     value={formData.questions}
+                    onChange={handleInputChange}
+                    className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
+                  />
+                </label>
+              </div>
+              <div className="flex items-center">
+                <label className="flex items-center">
+                  <span className="mr-4 w-32">sub Questions:</span>
+                  <input
+                    type="text"
+                    name="sub_question"
+                    value={formData.sub_question}
                     onChange={handleInputChange}
                     className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
                   />
