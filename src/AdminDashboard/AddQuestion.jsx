@@ -244,7 +244,7 @@ function AddQuestion() {
 
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions:</label>
-                <input
+                <textarea
                   type="text"
                   name="questions"
                   value={question.questions}
