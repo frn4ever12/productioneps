@@ -294,6 +294,9 @@ const ExamTable = () => {
                       {selectedQuestion.questions}
                     </p>
                     <p className="flex text-[22px]">
+                      {selectedQuestion.sub_question}
+                    </p>
+                    <p className="flex text-[22px]">
                       {selectedQuestion.question_table}
                     </p>
 
