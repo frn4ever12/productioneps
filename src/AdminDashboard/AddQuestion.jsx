@@ -65,6 +65,32 @@ function AddQuestion() {
     }
   };
 
+  const resetFields = () => {
+    setAnswers({
+      option1: "",
+      option2: "",
+      option3: "",
+      option4: "",
+      option_image1: null,
+      option_image2: null,
+      option_image3: null,
+      option_image4: null,
+      option_audio1: null,
+      option_audio2: null,
+      option_audio3: null,
+      option_audio4: null,
+      correct_answer: "",
+    });
+    setQuestion({
+      questions: "",
+      sub_question: "",
+      question_table: "",
+      question_img: null,
+      question_audio: null,
+      quize: quizid,
+    });
+  };
+
   const renderInputFields = () => {
     switch (inputType) {
       case "text":
@@ -172,7 +198,7 @@ function AddQuestion() {
     formData.append("option3", answers.option3);
     formData.append("option4", answers.option4);
     if (answers.option_image1) {
-      formData.append("aoption_image1", answers.option_image1);
+      formData.append("option_image1", answers.option_image1);
     }
     if (answers.option_image2) {
       formData.append("option_image2", answers.option_image2);
@@ -210,11 +236,13 @@ function AddQuestion() {
       );
       if (response.ok) {
         toast.success("Question and answer added successfully!");
+        resetFields();
       } else {
         toast.error("Failed to add question and answer.");
       }
     } catch (error) {
-      toast.error("An error occurred while submitting the form.");
+      toast.error(error.type);
+      console.log(error);
     }
   };
 
@@ -255,7 +283,7 @@ function AddQuestion() {
                 />
               </div>
               <div className="flex items-center">
-                <label className="mr-4 w-32">SUb Questions:</label>
+                <label className="mr-4 w-32">Sub Questions:</label>
                 <input
                   type="text"
                   name="sub_question"
