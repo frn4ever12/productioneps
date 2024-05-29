@@ -6,6 +6,7 @@ import { useAuth } from "../Hooks/UseAuth";
 import ExamPopup from "./Components/ExamPopup";
 
 import InstantResult from "./Components/instantResult";
+import DOMPurify from "dompurify";
 
 const ExamTable = () => {
   const { user } = useAuth();
@@ -297,7 +298,13 @@ const ExamTable = () => {
                       {selectedQuestion.sub_question}
                     </p>
                     <p className="flex text-[22px]">
-                      {selectedQuestion.question_table}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: DOMPurify.sanitize(
+                            selectedQuestion.question_table
+                          ),
+                        }}
+                      ></div>
                     </p>
 
                     {selectedQuestion.question_audio !== null &&

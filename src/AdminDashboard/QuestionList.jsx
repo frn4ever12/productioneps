@@ -121,12 +121,7 @@ const QuestionList = () => {
                   <h2 className="text-lg font-semibold mb-4 text-gray-800 ">
                     {question.questions}
                     <br />
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(question.sub_question),
-                      }}
-                    ></div>
-
+                    {question.sub_question}
                     <div className="mt-6 flex items-center">
                       {question.question_img && (
                         <img
@@ -151,7 +146,11 @@ const QuestionList = () => {
                         </audio>
                       )}
                     </div>
-                    {question.question_table}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(question.question_table),
+                      }}
+                    ></div>
                   </h2>
                 </div>
 
