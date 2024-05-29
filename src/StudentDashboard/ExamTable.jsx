@@ -290,7 +290,7 @@ const ExamTable = () => {
             ) : (
               <div>
                 <div className="flex">
-                  <div className="flex h-full w-full overflow-y-auto flex-1 flex-col gap-[1rem]">
+                  <div className="flex  h-full w-full overflow-y-auto flex-1 flex-col gap-[1rem]">
                     <p className="flex text-[22px]">
                       {selectedQuestion.questions}
                     </p>
@@ -325,7 +325,7 @@ const ExamTable = () => {
                       selectedQuestion.question_img !== 0 && (
                         <p className="  w-full  p-1 ">
                           <img
-                            className="h-45"
+                            className="h-40"
                             src={
                               "https://aasu.pythonanywhere.com" +
                               selectedQuestion.question_img
@@ -415,7 +415,7 @@ const ExamTable = () => {
                                       {optionIndex}
                                     </span>
                                     <img
-                                      className="h-40"
+                                      className="h-[8rem]"
                                       src={
                                         "https://aasu.pythonanywhere.com" +
                                         answer[key]
