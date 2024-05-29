@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../Hooks/UseAuth";
+import DOMPurify from "dompurify";
 
 const QuestionList = () => {
   const { user } = useAuth();
@@ -120,7 +121,12 @@ const QuestionList = () => {
                   <h2 className="text-lg font-semibold mb-4 text-gray-800 ">
                     {question.questions}
                     <br />
-                    {question.sub_question}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(question.sub_question),
+                      }}
+                    ></div>
+
                     <div className="mt-6 flex items-center">
                       {question.question_img && (
                         <img

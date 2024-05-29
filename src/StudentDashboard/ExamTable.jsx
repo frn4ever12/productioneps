@@ -22,7 +22,7 @@ const ExamTable = () => {
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
 
   console.log(data);
-
+  let optionIndex = 0;
   const [timeRemaining, setTimeRemaining] = useState(null);
   useEffect(() => {
     if (timeRemaining === 0) {
@@ -337,12 +337,12 @@ const ExamTable = () => {
                         >
                           {Object.keys(answer).map((key) => {
                             if (key.startsWith("option") && answer[key]) {
+                              optionIndex++;
                               if (key.startsWith("option_audio")) {
-                                // Audio option
                                 return (
                                   <label
                                     key={key}
-                                    className="border-b flex gap-[20px] hover:bg-gray-200 w-full border-gray-400 p-1 pl-8"
+                                    className="flex items-center gap-[20px] border-b border-gray-400 p-1 pl-8 hover:bg-gray-200 cursor-pointer"
                                   >
                                     <input
                                       type="radio"
@@ -354,7 +354,19 @@ const ExamTable = () => {
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
                                       }
+                                      className="hidden"
                                     />
+                                    <span
+                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#1e7aa2] text-center leading-8 text-black ${
+                                        selectedAnswers[selectedQuestion.id] ===
+                                        key
+                                          ? "bg-[#2596be] text-white"
+                                          : ""
+                                      }`}
+                                    >
+                                      {/* {index + 1} */}
+                                      {optionIndex}
+                                    </span>
                                     <audio controls>
                                       <source
                                         src={
@@ -367,11 +379,10 @@ const ExamTable = () => {
                                   </label>
                                 );
                               } else if (key.startsWith("option_imag")) {
-                                // Image option
                                 return (
                                   <label
                                     key={key}
-                                    className="border-b  gap-[20px] flex hover:bg-gray-200 w-full border-gray-400 p-1 pl-8"
+                                    className="flex items-center gap-[20px] border-b border-gray-400 p-1 pl-8 hover:bg-gray-200 cursor-pointer"
                                   >
                                     <input
                                       type="radio"
@@ -383,7 +394,19 @@ const ExamTable = () => {
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
                                       }
+                                      className="hidden"
                                     />
+                                    <span
+                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#1e7aa2] text-center leading-8 text-black ${
+                                        selectedAnswers[selectedQuestion.id] ===
+                                        key
+                                          ? "bg-[#2596be] text-white"
+                                          : ""
+                                      }`}
+                                    >
+                                      {/* {index + 1} */}
+                                      {optionIndex}
+                                    </span>
                                     <img
                                       className="h-40"
                                       src={
@@ -395,11 +418,10 @@ const ExamTable = () => {
                                   </label>
                                 );
                               } else {
-                                // Text option
                                 return (
                                   <label
                                     key={key}
-                                    className="border-b  gap-[20px] flex  hover:bg-gray-200 w-full border-gray-400 p-1 pl-8"
+                                    className="flex items-center gap-[20px] border-b border-gray-400 p-1 pl-8 hover:bg-gray-200 cursor-pointer"
                                   >
                                     <input
                                       type="radio"
@@ -411,7 +433,18 @@ const ExamTable = () => {
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
                                       }
+                                      className="hidden"
                                     />
+                                    <span
+                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#1e7aa2] text-center leading-8 text-black ${
+                                        selectedAnswers[selectedQuestion.id] ===
+                                        key
+                                          ? "bg-[#2596be] text-white"
+                                          : ""
+                                      }`}
+                                    >
+                                      {optionIndex}
+                                    </span>
                                     {answer[key]}
                                   </label>
                                 );
