@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useGET } from "../Hooks/useApi";
 import { useAuth } from "../Hooks/UseAuth";
-import { Link } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const UpdateQuestionAnswer = () => {
   const { user } = useAuth();
@@ -16,7 +17,7 @@ const UpdateQuestionAnswer = () => {
   const [formData, setFormData] = useState({
     questions: "",
     sub_question: "",
-    question_table: null,
+    question_table: "",
     question_img: null,
     question_audio: null,
     quize: null,
@@ -43,7 +44,7 @@ const UpdateQuestionAnswer = () => {
         quize: questionData.quize || "",
         questions: questionData.questions || "",
         sub_question: questionData.sub_question || "",
-        question_table: questionData.question_table || null,
+        question_table: questionData.question_table || "",
         question_img: questionData.question_img || null,
         question_audio: questionData.question_audio || null,
       }));
@@ -82,6 +83,13 @@ const UpdateQuestionAnswer = () => {
         [name]: value,
       }));
     }
+  };
+
+  const handleQuillChange = (value) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      question_table: value,
+    }));
   };
 
   const urlToFile = async (url, filename, mimeType) => {
@@ -147,7 +155,6 @@ const UpdateQuestionAnswer = () => {
 
   return (
     <div className="container mx-auto p-8">
-      {/* <h1 className="text-3xl font-bold mb-8">Update Question and Answer</h1> */}
       <div className="flex justify-between items-center mb-6 mt-6">
         <div className="text-gray-700 sans-serif-text text-3xl ml-0">
           Update Question and Answer
@@ -196,12 +203,10 @@ const UpdateQuestionAnswer = () => {
               </div>
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions Table:</label>
-                <input
-                  type="text"
-                  name="question_table"
+                <ReactQuill
                   value={formData.question_table}
-                  onChange={handleInputChange}
-                  className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
+                  onChange={handleQuillChange}
+                  className="flex-1"
                 />
               </div>
               <div className="flex items-center">

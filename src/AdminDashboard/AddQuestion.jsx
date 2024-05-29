@@ -1,14 +1,22 @@
 import React, { useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useGET } from "../Hooks/useApi";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../Hooks/UseAuth";
 
 function AddQuestion() {
-  const [quizid, setQuizId] = useState(null);
-  const { user } = useAuth();
-  const [inputType, setInputType] = useState("");
-  const [answers, setAnswers] = useState({
+  const initialQuestionState = {
+    questions: "",
+    sub_question: "",
+    question_table: "",
+    question_img: null,
+    question_audio: null,
+    quize: "",
+  };
+
+  const initialAnswersState = {
     option1: "",
     option2: "",
     option3: "",
@@ -22,15 +30,13 @@ function AddQuestion() {
     option_audio3: null,
     option_audio4: null,
     correct_answer: "",
-  });
-  const [question, setQuestion] = useState({
-    questions: "",
-    sub_question: "",
-    question_table: "",
-    question_img: null,
-    question_audio: null,
-    quize: "", // Add quize field
-  });
+  };
+
+  const [quizid, setQuizId] = useState(null);
+  const { user } = useAuth();
+  const [inputType, setInputType] = useState("");
+  const [answers, setAnswers] = useState(initialAnswersState);
+  const [question, setQuestion] = useState(initialQuestionState);
 
   const { data, isLoading } = useGET("quize/");
 
@@ -65,29 +71,10 @@ function AddQuestion() {
     }
   };
 
-  const resetFields = () => {
-    setAnswers({
-      option1: "",
-      option2: "",
-      option3: "",
-      option4: "",
-      option_image1: null,
-      option_image2: null,
-      option_image3: null,
-      option_image4: null,
-      option_audio1: null,
-      option_audio2: null,
-      option_audio3: null,
-      option_audio4: null,
-      correct_answer: "",
-    });
+  const handleQuillChange = (value) => {
     setQuestion({
-      questions: "",
-      sub_question: "",
-      question_table: "",
-      question_img: null,
-      question_audio: null,
-      quize: quizid,
+      ...question,
+      question_table: value,
     });
   };
 
@@ -170,14 +157,8 @@ function AddQuestion() {
       return;
     }
 
-    // Check if required fields are filled
-    if (!question.questions || !quizid || !answers.correct_answer) {
+    if (!question.questions || !answers.correct_answer) {
       toast.error("Please fill all required fields.");
-      console.log("Missing fields:", {
-        questions: question.questions,
-        quizid,
-        correct_answer: answers.correct_answer,
-      });
       return;
     }
 
@@ -236,13 +217,14 @@ function AddQuestion() {
       );
       if (response.ok) {
         toast.success("Question and answer added successfully!");
-        resetFields();
+        // Reset the question and answers state to initial states
+        setQuestion(initialQuestionState);
+        setAnswers(initialAnswersState);
       } else {
         toast.error("Failed to add question and answer.");
       }
     } catch (error) {
-      toast.error(error.type);
-      console.log(error);
+      toast.error("An error occurred while submitting the form.");
     }
   };
 
@@ -294,12 +276,10 @@ function AddQuestion() {
               </div>
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions Table:</label>
-                <input
-                  type="text"
-                  name="question_table"
+                <ReactQuill
                   value={question.question_table}
-                  onChange={handleQuestionChange}
-                  className="border border-gray-300 rounded-lg px-4 py-2 flex-1"
+                  onChange={handleQuillChange}
+                  className="flex-1"
                 />
               </div>
               <div className="flex items-center">
