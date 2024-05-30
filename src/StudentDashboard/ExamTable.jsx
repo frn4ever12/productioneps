@@ -304,15 +304,18 @@ const ExamTable = () => {
                     {selectedQuestion.question_table !== null &&
                       selectedQuestion.question_table !== undefined &&
                       selectedQuestion.question_table !== 0 && (
-                        <p className="flex text-[22px] border bottom-2 border-black p-2">
-                          <p
-                            dangerouslySetInnerHTML={{
-                              __html: DOMPurify.sanitize(
-                                selectedQuestion.question_table
-                              ),
-                            }}
-                          ></p>
-                        </p>
+                        <p
+                          className={`flex text-[22px] p-2 ${
+                            selectedQuestion.question_table
+                              ? "border-2 border-black"
+                              : ""
+                          }`}
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(
+                              selectedQuestion.question_table
+                            ),
+                          }}
+                        ></p>
                       )}
                     {selectedQuestion.question_audio !== null &&
                       selectedQuestion.question_audio !== undefined &&
