@@ -297,20 +297,23 @@ const ExamTable = () => {
                     {selectedQuestion.sub_question !== null &&
                       selectedQuestion.sub_question !== undefined &&
                       selectedQuestion.sub_question !== 0 && (
-                        <p className="flex border bottom-2 border-black p-2 text-[22px]">
+                        <p className="flex  text-[22px]">
                           {selectedQuestion.sub_question}
                         </p>
                       )}
-                    <p className="flex text-[22px]">
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(
-                            selectedQuestion.question_table
-                          ),
-                        }}
-                      ></div>
-                    </p>
-
+                    {selectedQuestion.question_table !== null &&
+                      selectedQuestion.question_table !== undefined &&
+                      selectedQuestion.question_table !== 0 && (
+                        <p className="flex text-[22px] border bottom-2 border-black p-2">
+                          <p
+                            dangerouslySetInnerHTML={{
+                              __html: DOMPurify.sanitize(
+                                selectedQuestion.question_table
+                              ),
+                            }}
+                          ></p>
+                        </p>
+                      )}
                     {selectedQuestion.question_audio !== null &&
                       selectedQuestion.question_audio !== undefined &&
                       selectedQuestion.question_audio !== 0 && (
