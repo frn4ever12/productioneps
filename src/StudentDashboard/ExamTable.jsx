@@ -294,9 +294,13 @@ const ExamTable = () => {
                     <p className="flex text-[22px]">
                       {selectedQuestion.questions}
                     </p>
-                    <p className="flex text-[22px]">
-                      {selectedQuestion.sub_question}
-                    </p>
+                    {selectedQuestion.sub_question !== null &&
+                      selectedQuestion.sub_question !== undefined &&
+                      selectedQuestion.sub_question !== 0 && (
+                        <p className="flex border bottom-2 border-black p-2 text-[22px]">
+                          {selectedQuestion.sub_question}
+                        </p>
+                      )}
                     <p className="flex text-[22px]">
                       <div
                         dangerouslySetInnerHTML={{

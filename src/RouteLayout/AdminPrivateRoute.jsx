@@ -15,7 +15,7 @@ function AdminPrivateRoute() {
 
   return (
     <>
-      <div className=" h-screen max-h-screen  flex flex-col font-montserrat">
+      <div className=" h-screen  flex flex-col font-montserrat">
         <div className="flex w-full">
           <AdminDashboardNavbar
             sidebarOpen={sideOpen}

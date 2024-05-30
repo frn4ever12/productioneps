@@ -23,15 +23,14 @@ function StudentPrivateRoute() {
   return (
     <>
       <div className=" h-screen max-h-screen overflow-auto flex flex-col font-montserrat">
-        <div className="flex w-full">
-          <StudentDashboardNavbar
-            sidebarOpen={sideOpen}
-            toggleSidebar={toggleSide}
-          />
-        </div>
+        <div className="flex w-full"></div>
         <div className="flex flex-1 bg-gray-200">
           <StudentSidebar open={sideOpen} toggleSidebar={toggleSide} />
           <div className="w-full h-screen overflow-auto flex flex-col px-6 py-2 bg-gray-200">
+            <StudentDashboardNavbar
+              sidebarOpen={sideOpen}
+              toggleSidebar={toggleSide}
+            />
             <Outlet />
           </div>
         </div>
