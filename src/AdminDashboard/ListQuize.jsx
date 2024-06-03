@@ -14,6 +14,7 @@ const ListQuize = () => {
       .get("https://aasu.pythonanywhere.com/quize/list/")
       .then((response) => {
         setQuizList(response.data);
+        console.log(response);
       })
       .catch((error) => {
         console.error("Error fetching quiz list:", error);
@@ -35,7 +36,8 @@ const ListQuize = () => {
     price,
     time_duration,
     created_by,
-    tags
+    tags,
+    active
   ) => {
     localStorage.setItem("id", id);
     localStorage.setItem("photo", photo);
@@ -45,6 +47,8 @@ const ListQuize = () => {
     localStorage.setItem("time_duration", time_duration);
     localStorage.setItem("created_by", created_by);
     localStorage.setItem("tags", tags);
+    localStorage.setItem("active", active);
+
     // localStorage.setItem("tags", tags.join(','));
   };
 
@@ -57,7 +61,6 @@ const ListQuize = () => {
       );
       // Remove the deleted quiz from the quizList state
       setQuizList(quizList.filter((quiz) => quiz.id !== quizId));
-      // console.log(`Quiz with ID ${quizId} deleted successfully.`);
       toast.success(`Quiz with ID ${quizId} deleted successfully.`);
     } catch (error) {
       console.error(`Error deleting quiz with ID ${quizId}:`, error);
@@ -90,6 +93,10 @@ const ListQuize = () => {
               <th className="w-20 p-3 text-sm font-semibold">Price</th>
               <th className="w-32 p-3 text-sm font-semibold">Time Duration</th>
               <th className="w-32 p-3 text-sm font-semibold">Created By</th>
+              <th className="w-32 p-3 text-sm font-semibold">Active</th>
+              <th className="w-32 p-3 text-sm font-semibold">
+                Number Of Questions
+              </th>
               <th className="w-64 p-3 text-sm font-semibold">Tags</th>
               <th className="w-44 p-3 text-sm font-semibold">Action</th>
             </tr>
@@ -126,6 +133,18 @@ const ListQuize = () => {
                   {quiz.created_by}
                 </td>
                 <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                  <button
+                    className={`w-20 px-4 py-2 rounded-lg ${
+                      quiz.active ? "bg-green-500" : "bg-red-500"
+                    } text-white text-center`}
+                  >
+                    {quiz.active ? "Active" : "Inactive"}
+                  </button>
+                </td>
+                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
+                  {quiz.total_question}
+                </td>
+                <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                   {quiz.tags.map((tag) => (
                     <span
                       key={tag.id}
@@ -136,21 +155,8 @@ const ListQuize = () => {
                   ))}
                 </td>
                 <td>
-                  <Link to={"/updatequize"}>
-                    <button
-                      onClick={(e) =>
-                        setToLocalStorage(
-                          quiz.id,
-                          quiz.photo,
-                          quiz.heading,
-                          quiz.sub_heading,
-                          quiz.price,
-                          quiz.time_duration,
-                          quiz.created_by
-                        )
-                      }
-                      className="bg-blue-900 text-white px-3 py-2 mr-4 rounded-lg hover:bg-purple-800 hover:text-green"
-                    >
+                  <Link to={`/updatequize/${quiz.id}`}>
+                    <button className="bg-blue-900 text-white px-3 py-2 mr-4 rounded-lg hover:bg-purple-800 hover:text-green">
                       <i className="fas fa-pencil-alt"></i>
                     </button>
                   </Link>

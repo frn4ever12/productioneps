@@ -11,6 +11,7 @@ const AddQuiz = (headers = {}) => {
     price: "",
     tags: [],
     timeDuration: "",
+    active: true,
   });
   const [file, setFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -55,6 +56,13 @@ const AddQuiz = (headers = {}) => {
     setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
+  const handleRadioChange = (e) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      active: e.target.value === "true",
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formDataWithFile = new FormData();
@@ -87,6 +95,7 @@ const AddQuiz = (headers = {}) => {
         price: "",
         tags: [],
         timeDuration: "",
+        active: true,
       });
       setFile(null);
       setImagePreview(null);
@@ -130,7 +139,7 @@ const AddQuiz = (headers = {}) => {
         <div>
           <Link to="/listquize">
             <button className="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow-md focus:outline-none transition duration-300">
-              Quiz List
+              Quiz ListT
             </button>
           </Link>
         </div>
@@ -237,6 +246,37 @@ const AddQuiz = (headers = {}) => {
               onChange={handleChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
+          </div>
+          <div>
+            <label className="block mb-2">Active:</label>
+            <div className="flex items-center space-x-6">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="active"
+                  value="true"
+                  checked={formData.active === true}
+                  onChange={handleRadioChange}
+                  className="mr-2"
+                />
+                <span className="border border-gray-300 w-20 rounded-lg px-4 py-2">
+                  Yes
+                </span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="active"
+                  value="false"
+                  checked={formData.active === false}
+                  onChange={handleRadioChange}
+                  className="mr-2"
+                />
+                <span className="border border-gray-300 w-20 rounded-lg px-4 py-2">
+                  No
+                </span>
+              </label>
+            </div>
           </div>
         </div>
         <div className="mt-8">

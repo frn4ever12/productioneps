@@ -1,96 +1,68 @@
 import React, { useState, useEffect } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../Hooks/UseAuth";
+import { useGET } from "../Hooks/useApi";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../Hooks/UseAuth";
-import { Link } from "react-router-dom";
 
 function UpdateQuiz() {
-  const navigate = useNavigate();
   const { user } = useAuth();
-  const [tags, setTags] = useState([]);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [created_by, setCreatedBy] = useState("");
-  const [time_duration, setTimeDuration] = useState("");
-  const [price, setPrice] = useState("");
-  const [sub_heading, setSubHeading] = useState("");
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const { data, isLoading } = useGET(`quize/${id}/`);
+
   const [heading, setHeading] = useState("");
-  const [photo, setPhoto] = useState("");
-  const [id, setID] = useState(0);
-  const [imagePreview, setImagePreview] = useState("");
+  const [subHeading, setSubHeading] = useState("");
+  const [price, setPrice] = useState("");
+  const [timeDuration, setTimeDuration] = useState("");
+  const [photo, setPhoto] = useState(null);
+  const [active, setActive] = useState(true);
+  const [selectedTags, setSelectedTags] = useState([]);
 
   useEffect(() => {
-    // Fetch tag list from the API
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get(
-          "https://aasu.pythonanywhere.com/tags/"
-        );
-        setTags(response.data);
-      } catch (error) {
-        console.error("Error fetching tags:", error);
-      }
-    };
-    fetchTags();
-
-    setID(localStorage.getItem("id"));
-    setHeading(localStorage.getItem("heading"));
-    setSubHeading(localStorage.getItem("sub_heading"));
-    setPrice(localStorage.getItem("price"));
-    setTimeDuration(localStorage.getItem("time_duration"));
-    setCreatedBy(localStorage.getItem("created_by"));
-    const storedTags = localStorage.getItem("tags");
-    setTags(storedTags ? storedTags.split(",") : []);
-    // Log the value of tags from localStorage
-    console.log("Tags stored in localStorage:", storedTags);
-
-    const storedPhoto = localStorage.getItem("photo");
-    if (storedPhoto) {
-      setImagePreview(storedPhoto);
+    if (data) {
+      setHeading(data.heading);
+      setSubHeading(data.sub_heading !== "null" ? data.sub_heading : "");
+      setPrice(data.price);
+      setTimeDuration(data.time_duration);
+      setActive(data.active);
+      setSelectedTags(data.tags.map((tag) => tag.id));
     }
-  }, []);
+  }, [data]);
 
-  const handlephoto = (e) => {
-    const file = e.target.files[0];
-    setPhoto(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setImagePreview(reader.result);
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+  const handlePhotoChange = (e) => {
+    setPhoto(e.target.files[0]);
   };
 
-  const handleheading = (e) => {
+  const handleHeadingChange = (e) => {
     setHeading(e.target.value);
   };
 
-  const handlesubheading = (e) => {
+  const handleSubHeadingChange = (e) => {
     setSubHeading(e.target.value);
   };
 
-  const handleprice = (e) => {
+  const handlePriceChange = (e) => {
     setPrice(e.target.value);
   };
 
-  const handletime = (e) => {
+  const handleTimeChange = (e) => {
     setTimeDuration(e.target.value);
   };
 
-  const handlecreated = (e) => {
-    setCreatedBy(e.target.value);
+  const handleActiveChange = (e) => {
+    setActive(e.target.value === "true");
   };
 
-  const handleTagSelection = (e) => {
-    const selectedTagId = e.target.value;
-    const selectedTag = tags.find((tag) => tag.id === selectedTagId);
-    if (selectedTag) {
-      setSelectedTags([...selectedTags, selectedTag]);
-    }
+  const handleTagChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions).map(
+      (option) => option.value
+    );
+    setSelectedTags(selectedOptions);
   };
 
-  const handleAPi = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
 
@@ -99,14 +71,14 @@ function UpdateQuiz() {
     }
 
     formData.append("heading", heading);
-    formData.append("sub_heading", sub_heading);
+    formData.append("sub_heading", subHeading);
     formData.append("price", price);
-    formData.append("time_duration", time_duration);
-    formData.append("created_by", created_by);
-    formData.append("tags", selectedTags.map((tag) => tag.id).join(","));
+    formData.append("time_duration", timeDuration);
+    formData.append("active", active);
+    formData.append("tags", selectedTags.join(","));
 
     try {
-      const response = await axios.put(
+      await axios.put(
         `https://aasu.pythonanywhere.com/quize/update/${id}/`,
         formData,
         {
@@ -116,13 +88,17 @@ function UpdateQuiz() {
           },
         }
       );
-      toast.success(`Quiz updated successfully.`);
+      toast.success("Quiz updated successfully.");
       navigate("/listquize", { replace: true });
     } catch (error) {
       toast.error("Failed to update quiz. Please try again.");
       console.error("Error updating quiz:", error);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container mx-auto p-8">
@@ -133,24 +109,24 @@ function UpdateQuiz() {
         <div>
           <Link to="/addquiz">
             <button className="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow-md focus:outline-none transition duration-300">
-              Add Quize
+              Add Quiz
             </button>
           </Link>
           <Link to="/listquize" className="ml-4">
             <button className="bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg shadow-md focus:outline-none transition duration-300">
-              Quize List
+              Quiz List
             </button>
           </Link>
         </div>
       </div>
-      <form onSubmit={handleAPi} encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="grid grid-cols-2 gap-6">
           <div>
             <label className="block mb-2">Photo:</label>
-            <input type="file" name="photo" onChange={handlephoto} />
-            {imagePreview && (
+            <input type="file" name="photo" onChange={handlePhotoChange} />
+            {data.photo && (
               <img
-                src={imagePreview}
+                src={`https://aasu.pythonanywhere.com${data.photo}`} // Displaying image from API
                 alt="Preview"
                 className="mt-4 rounded-lg"
                 style={{ maxWidth: "300px" }}
@@ -163,7 +139,7 @@ function UpdateQuiz() {
               type="text"
               name="heading"
               value={heading}
-              onChange={handleheading}
+              onChange={handleHeadingChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
           </div>
@@ -172,8 +148,8 @@ function UpdateQuiz() {
             <input
               type="text"
               name="sub_heading"
-              value={sub_heading}
-              onChange={handlesubheading}
+              value={subHeading}
+              onChange={handleSubHeadingChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
           </div>
@@ -183,18 +159,51 @@ function UpdateQuiz() {
               type="text"
               name="price"
               value={price}
-              onChange={handleprice}
+              onChange={handlePriceChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
+          </div>
+          <div>
+            <label className="block mb-2">Active:</label>
+            <div className="flex items-center space-x-6">
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="active"
+                  value="true"
+                  checked={active === true}
+                  onChange={handleActiveChange}
+                  className="mr-2"
+                />
+                <span className="border border-gray-300 w-20 rounded-lg px-4 py-2">
+                  Yes
+                </span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="active"
+                  value="false"
+                  checked={active === false}
+                  onChange={handleActiveChange}
+                  className="mr-2"
+                />
+                <span className="border border-gray-300 w-20 rounded-lg px-4 py-2">
+                  No
+                </span>
+              </label>
+            </div>
           </div>
           <div>
             <label className="block mb-2">Tags:</label>
             <select
               name="tags"
-              onChange={handleTagSelection}
+              multiple
+              value={selectedTags}
+              onChange={handleTagChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             >
-              {tags.map((tag) => (
+              {data.tags.map((tag) => (
                 <option key={tag.id} value={tag.id}>
                   {tag.tage_name}
                 </option>
@@ -206,8 +215,8 @@ function UpdateQuiz() {
             <input
               type="text"
               name="time_duration"
-              value={time_duration}
-              onChange={handletime}
+              value={timeDuration}
+              onChange={handleTimeChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             />
           </div>

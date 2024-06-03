@@ -39,12 +39,12 @@ const StudentResult = () => {
             >
               Date
             </th>
-            {/* <th
+            <th
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               Action
-            </th> */}
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -61,11 +61,11 @@ const StudentResult = () => {
               <td className="px-6 py-4 whitespace-nowrap">
                 {result.created_at}
               </td>
-              {/* <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap">
                 <NavLink to={`/resulttablestudent/${result.id}`}>
                   <p className="text-indigo-600 hover:text-indigo-900">View</p>
                 </NavLink>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

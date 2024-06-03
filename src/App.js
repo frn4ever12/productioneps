@@ -47,7 +47,7 @@ const App = () => {
             />
             <Route path="/addquestion" element={<AddQuestion />} />
             <Route path="/listquize" element={<ListQuize />} />
-            <Route path="/updatequize" element={<UpdateQuiz />} />
+            <Route path="/updatequize/:id" element={<UpdateQuiz />} />
             <Route path="/questionlist" element={<QuestionList />} />
             <Route path="/userlist" element={<UserList />} />
             <Route path="/taglist" element={<TagList />} />

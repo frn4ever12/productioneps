@@ -1,11 +1,9 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { useAuth } from "../../Hooks/UseAuth";
 
 const Register = () => {
-  //   const { register } = useAuth();
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -17,8 +15,8 @@ const Register = () => {
     password: "",
     password2: "",
     phone: "",
-    is_student: true, // Assuming all users registering are students by default
-    is_teacher: false, // Assuming all users registering are not teachers by default
+    is_student: true,
+    is_teacher: false,
   });
 
   const [loading, setLoading] = useState(false);
@@ -46,41 +44,6 @@ const Register = () => {
       [name]: null,
     }));
   };
-
-  //   const handlemail = (e) => {
-  //     setError({ ...error, email: null });
-  //     setformData((prev) => ({ ...prev, email: e.target.value }));
-  //   };
-
-  //   const handleUsername = (e) => {
-  //     setError({ ...error, username: null });
-  //     setformData((prev) => ({ ...prev, username: e.target.value }));
-  //   };
-
-  //   const handlefirstName = (e) => {
-  //     setError({ ...error, first_name: null });
-  //     setformData((prev) => ({ ...prev, first_name: e.target.value }));
-  //   };
-
-  //   const handlelastName = (e) => {
-  //     setError({ ...error, last_name: null });
-  //     setformData((prev) => ({ ...prev, last_name: e.target.value }));
-  //   };
-
-  //   const handlePassword2 = (e) => {
-  //     setError({ ...error, password2: null });
-  //     setformData((prev) => ({ ...prev, password2: e.target.value }));
-  //   };
-  //   const handlePassword = (e) => {
-  //     setError({ ...error, password: null });
-  //     setformData((prev) => ({ ...prev, password: e.target.value }));
-  //   };
-  //   const handlePhone = (e) => {
-  //     setError({ ...error, phone: null });
-  //     setformData((prev) => ({ ...prev, phone: e.target.value }));
-  //     setformData((prev) => ({ ...prev, is_teacher: false }));
-  //     setformData((prev) => ({ ...prev, is_student: true }));
-  //   };
 
   const handleSuccess = () => {
     setError({});
@@ -117,199 +80,159 @@ const Register = () => {
       handleSuccess();
       navigate("/login");
     } catch (error) {
-      toast.error(error.message);
-      setError(error.response?.data || {});
+      if (error.response && error.response.data && error.response.data.errors) {
+        const backendErrors = error.response.data.errors;
+        setError(backendErrors);
+        // Display error messages
+        Object.values(backendErrors)
+          .flat()
+          .forEach((errMsg) => toast.error(errMsg));
+      } else {
+        // Other errors
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const handleValidation = () => {
-    const errors = {};
-
-    // Validate email
-    if (!formData.email) {
-      errors.email = "Email is required.";
-      // } else if (!/\S+@\S+\.\S+/.test(!formData.email)) {
-      //   errors.email = "Email is invalid.";
-    }
-
-    // Validate password
-    if (!formData.password) {
-      errors.password = "Password is required.";
-    } else if (formData.password.length < 6) {
-      errors.password = "Password should be at least 6 characters long.";
-    }
-
-    // Validate confirm password
-    if (!formData.password2) {
-      errors.password2 = "Confirm password is required.";
-    } else if (formData.password2 !== formData.password) {
-      errors.password2 = "Passwords do not match.";
-    }
-
-    // Validate first name
-    if (!formData.first_name) {
-      errors.first_name = "first name is required.";
-    } else if (formData.first_name.length < 2) {
-      errors.first_name = "first name must be greater than 2.";
-    }
-
-    // Validate last name
-    if (!formData.last_name) {
-      errors.last_name = "last name is required.";
-    } else if (formData.first_name.length < 4) {
-      errors.password2 = "last name must be greater than 4";
-    }
-
-    // Validate username
-    if (!formData.username) {
-      errors.username = "username is required.";
-    }
-
-    if (!formData.phone) {
-      errors.phone = "phone is required.";
-    }
-
-    setError(errors);
-
-    // Return true if there are no errors, otherwise return false
-    return Object.keys(errors).length === 0;
-  };
-
   return (
-    <>
-      <form
-        onSubmit={handleSubmit}
-        className="w-full h-full flex bg-gray-200 h-screen flex-col justify-center items-center p-4 space-y-4"
-      >
-        <div>
-          <h2 className="font-semibold text-blue-500 text-3xl">SignUp</h2>
-        </div>
-        <div className="space-y-4 flex justify-center items-center flex-col">
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="Name">user Name:</label>
-            <input
-              name="username"
-              type="name"
-              placeholder="Enter your username"
-              value={formData.username}
-              onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
-            />
-            {error?.username && (
-              <p className="text-red-300 text-sm">{error?.username}</p>
-            )}
-          </div>
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="Name">First Name</label>
-            <input
-              name="first_name"
-              type="name"
-              placeholder="Enter your first name"
-              value={formData.first_name}
-              onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
-            />
-            {error?.first_name && (
-              <p className="text-red-300 text-sm">{error?.first_name}</p>
-            )}
-          </div>
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="Name">Last Name:</label>
-            <input
-              name="last_name"
-              type="name"
-              placeholder="Enter yourLast name"
-              value={formData.last_name}
-              onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
-            />
-            {error?.last_name && (
-              <p className="text-red-300 text-sm">{error?.last_name}</p>
-            )}
-          </div>
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="Name">Contact</label>
-            <input
-              name="phone"
-              type="number"
-              minLength={10}
-              maxLength={10}
-              placeholder="9845XXXXXX"
-              value={formData.phone}
-              onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
-            />
-            {error?.phone && (
-              <p className="text-red-300 text-sm">{error?.phone}</p>
-            )}
-          </div>
-
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="email">Email</label>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-4 rounded-lg shadow-md w-full max-w-md">
+        <h2 className="text-2xl font-semibold text-blue-600 text-center mb-4">
+          Sign Up
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="email" className="text-gray-700">
+              Email
+            </label>
             <input
               name="email"
               type="email"
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
+              className="p-2 border border-gray-300 rounded"
             />
-            {error?.email && (
-              <p className="text-red-300 text-sm">{error?.email}</p>
+            {error.email && (
+              <p className="text-red-500 text-xs">{error.email}</p>
             )}
           </div>
-
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="password">Password</label>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="username" className="text-gray-700">
+              Username
+            </label>
+            <input
+              name="username"
+              type="text"
+              placeholder="Username"
+              value={formData.username}
+              onChange={handleChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            {error.username && (
+              <p className="text-red-500 text-xs">{error.username}</p>
+            )}
+          </div>
+          <div className="flex flex-col space-y-1">
+            <label htmlFor="first_name" className="text-gray-700">
+              First Name
+            </label>
+            <input
+              name="first_name"
+              type="text"
+              placeholder="First Name"
+              value={formData.first_name}
+              onChange={handleChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            {error.first_name && (
+              <p className="text-red-500 text-xs">{error.first_name}</p>
+            )}
+          </div>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="last_name" className="text-gray-700">
+              Last Name
+            </label>
+            <input
+              name="last_name"
+              type="text"
+              placeholder="Last Name"
+              value={formData.last_name}
+              onChange={handleChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            {error.last_name && (
+              <p className="text-red-500 text-xs">{error.last_name}</p>
+            )}
+          </div>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="phone" className="text-gray-700">
+              Phone
+            </label>
+            <input
+              name="phone"
+              type="tel"
+              placeholder="Phone"
+              value={formData.phone}
+              onChange={handleChange}
+              className="p-2 border border-gray-300 rounded"
+            />
+            {error.phone && (
+              <p className="text-red-500 text-xs">{error.phone}</p>
+            )}
+          </div>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="password" className="text-gray-700">
+              Password
+            </label>
             <input
               name="password"
               type="password"
-              placeholder="**********"
+              placeholder="Password"
               value={formData.password}
               onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
+              className="p-2 border border-gray-300 rounded"
             />
-            {error?.password && (
-              <p className="text-red-300 text-sm">{error?.password}</p>
+            {error.password && (
+              <p className="text-red-500 text-xs">{error.password}</p>
             )}
           </div>
-
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="confirm_password">Confirm Password</label>
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="password2" className="text-gray-700">
+              Confirm Password
+            </label>
             <input
               name="password2"
               type="password"
-              placeholder="**********"
+              placeholder="Confirm Password"
               value={formData.password2}
               onChange={handleChange}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
+              className="p-2 border border-gray-300 rounded"
             />
-            {error?.password2 && (
-              <p className="text-red-300 text-sm">{error?.password2}</p>
+            {error.password2 && (
+              <p className="text-red-500 text-xs">{error.password2}</p>
             )}
           </div>
-
-          <div>
-            <div className="flex items-center justify-center">
-              <button
-                className="p-2 px-4 bg-blue-500 hover:bg-emerald-700 rounded text-gray-100"
-                disabled={loading}
-              >
-                {loading ? "Loading" : "Signup"}
-              </button>
-            </div>
-            <div className="mt-4">
-              <span>I already have an account.</span>
-              <NavLink to="/login">
-                <span className="text-blue-600 cursor-pointer mx-2">Login</span>
-              </NavLink>
-            </div>
+          <div className="flex items-center justify-center mt-3">
+            <button
+              className="w-36 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+              disabled={loading}
+            >
+              {loading ? "Loading..." : "Sign Up"}
+            </button>
           </div>
+        </form>
+        <div className="text-center mt-3">
+          <span className="text-gray-600">Already have an account?</span>
+          <NavLink to="/login" className="text-blue-600 hover:underline ml-2">
+            Login
+          </NavLink>
         </div>
-      </form>
-    </>
+      </div>
+      <ToastContainer />
+    </div>
   );
 };
 
