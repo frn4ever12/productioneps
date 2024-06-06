@@ -19,15 +19,15 @@ function StudentDashboardNavbar({ sidebarOpen, toggleSidebar }) {
 
   return (
     <>
-      <div className="bg-white h-14 text-black grid grid-cols-2 w-full items-center">
+      <div className="bg-white h-14 text-black flex w-full items-center">
         {/* for logo */}
-        <div className=" object-cover">
+        <div className=" object-cover flex-1">
           <img src={photo1} className="scale-75 w-12 h-12 ml-7" />
         </div>
-        <div className="flex items-center justify-end px-2 space-x-4 md:space-x-6">
+        <div className="flex flex-2 items-center justify-end px-2 space-x-4 md:space-x-6">
           <div className="flex items-center justify-center flex-col">
             <p className="text-[22px]">{user.user_name}</p>
-            <p>Student</p>
+            {/* <p>Student</p> */}
           </div>
           {/* for login button */}
           <span

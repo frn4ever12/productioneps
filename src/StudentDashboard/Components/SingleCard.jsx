@@ -35,9 +35,9 @@ const SingleCard = (currElem) => {
   return (
     <>
       <div className="h-[14rem] w-[17rem] bg-white overflow-hidden rounded-[5px] hover:bg-black-200 shadow-md shadow-black-500 hover:shadow-lg">
-        <div className="h-[5rem] bg-green-200 overflow-hidden flex items-center justify-center">
-          {photo && <img src={photo} alt="Photo" />}
-          {!photo && <img src={img1} alt="" />}
+        <div className="h-[6rem] w-auto bg-gray-600 overflow-hidden flex items-center justify-center">
+          {photo && <img src={photo} className="h-full w-auto" alt="Photo" />}
+          {!photo && <img src={img1} className="h-full w-auto" alt="" />}
         </div>
         <div className="flex flex-col gap-[1rem] mt-2 ">
           <div className="ml-6 ">

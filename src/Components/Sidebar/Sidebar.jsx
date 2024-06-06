@@ -180,11 +180,9 @@ const Sidebar = ({ open, toggleSidebar }) => {
     },
 
     {
-      name: "XYZ",
-      link: "/XYZ",
+      name: "Results",
+      link: "/quizresults",
       icon: FcAdvertising,
-      has_submenus: true,
-      submenus: [{ name: "XYZ", link: "/XYZ", icon: MdWorkspaces }],
     },
     {
       name: "Messages",

@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../Hooks/UseAuth";
 import axios from "../../api/axios";
-
+import photo1 from "../../Image/file.png";
 function Login() {
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
@@ -146,69 +146,76 @@ function Login() {
   };
 
   return (
-    <div className="bg-gray-200 h-screen">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full h-full flex flex-col justify-center items-center p-4 space-y-4"
-      >
-        <div>
-          <h2 className="font-semibold text-blue-500 text-3xl">Login</h2>
+    <div className="bg-blue-200 h-screen flex justify-center items-center">
+      <div className="bg-white rounded-2xl p-4">
+        <div className="flex items-center justify-center">
+          <h2 className="font-semibold text-[#2d2e8c] text-[32px]">
+            A<span className="text-[#eb1d22]">K</span>LC
+          </h2>
         </div>
-        <div className="space-y-4 flex justify-center items-center flex-col">
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="email">Email</label>
-            <input
-              name="email"
-              type="text"
-              placeholder="Email"
-              value={email}
-              onChange={handlemail}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
-            />
-            {error?.email && <p className="text-red-300">{error?.email}</p>}
-          </div>
+        <div className="flex items-center justify-center">
+          <img src={photo1} className="scale-75 h-[6rem] " />
+        </div>
+        <form
+          onSubmit={handleSubmit}
+          className=" flex flex-col justify-center items-center p-4 space-y-4"
+        >
+          <div className="space-y-4 flex justify-center items-center flex-col">
+            <div className="space-y-1 flex flex-col text-left">
+              <label htmlFor="email">Email</label>
+              <input
+                name="email"
+                type="text"
+                placeholder="Email"
+                value={email}
+                onChange={handlemail}
+                className="p-1 md:w-72 rounded border border-1 border-gray-500"
+              />
+              {error?.email && <p className="text-red-300">{error?.email}</p>}
+            </div>
 
-          <div className="space-y-1 flex flex-col text-left">
-            <label htmlFor="password">Password</label>
-            <input
-              name="password"
-              type="password"
-              placeholder="**********"
-              value={password}
-              onChange={handlePassword}
-              className="p-1 md:w-72 rounded border border-1 border-gray-500"
-            />
-            {error?.password && (
-              <p className="text-red-300">{error?.password}</p>
-            )}
-          </div>
+            <div className="space-y-1 flex flex-col text-left">
+              <label htmlFor="password">Password</label>
+              <input
+                name="password"
+                type="password"
+                placeholder="**********"
+                value={password}
+                onChange={handlePassword}
+                className="p-1 md:w-72 rounded border border-1 border-gray-500"
+              />
+              {error?.password && (
+                <p className="text-red-300">{error?.password}</p>
+              )}
+            </div>
 
-          <div className="flex justify-center items-center">
-            {error?.selectedOption && (
-              <p className="text-red-300">{error?.selectedOption}</p>
-            )}
+            <div className="flex justify-center items-center">
+              {error?.selectedOption && (
+                <p className="text-red-300">{error?.selectedOption}</p>
+              )}
+            </div>
+            {/* for button */}
+            <div>
+              <button
+                disabled={loading}
+                className="p-2 px-4 bg-[#2d2e8c] hover:bg-emerald-700 rounded text-gray-100"
+              >
+                {loading ? "Logging In..." : "Login"}
+              </button>
+            </div>
           </div>
-          {/* for button */}
-          <div>
-            <button
-              disabled={loading}
-              className="p-2 px-4 bg-blue-500 hover:bg-emerald-700 rounded text-gray-100"
-            >
-              {loading ? "Logging In..." : "Login"}
-            </button>
+          <div id="signInDiv"></div>
+          <Link to="reset-password" className="text-blue-600">
+            Forgot Password?
+          </Link>
+          <div className="">
+            <span>I don't have an account.</span>
+            <NavLink to="/register">
+              <span className="text-blue-600 cursor-pointer">Create One</span>
+            </NavLink>
           </div>
-        </div>
-        <div id="signInDiv"></div>
-        <Link to="reset-password" className="text-blue-600">
-          Forgot Password?
-        </Link>
-        <div className="">
-          <span>I don't have an account.</span>
-          <NavLink to="/register">
-            <span className="text-blue-600 cursor-pointer">Create One</span>
-          </NavLink>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }

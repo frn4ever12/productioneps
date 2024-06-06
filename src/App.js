@@ -26,6 +26,7 @@ import UserList from "./AdminDashboard/UserList";
 import TagList from "./AdminDashboard/TagList";
 import AddTag from "./AdminDashboard/AddTag";
 import UpdateQuestionAnswer from "./AdminDashboard/UpdateQuestionAnswer";
+import QuizResults from "./AdminDashboard/QuizResults";
 
 const App = () => {
   return (
@@ -52,6 +53,7 @@ const App = () => {
             <Route path="/userlist" element={<UserList />} />
             <Route path="/taglist" element={<TagList />} />
             <Route path="/addtag" element={<AddTag />} />
+            <Route path="/quizresults" element={<QuizResults />} />
           </Route>
         </Route>
 
@@ -60,11 +62,12 @@ const App = () => {
             <Route path="/studentexamlist" element={<StudentExam />} />
             <Route path="/studentprofile" element={<StudentProfile />} />
             <Route path="/studentresult" element={<StudentResult />} />
+            <Route path="/resulttablestudent/:id" element={<ResultTable />} />
           </Route>
         </Route>
         <Route element={<StudentProtected />}>
           <Route path="/examtable/:id" element={<ExamTable />} />
-          <Route path="/resulttablestudent/:id" element={<ResultTable />} />
+
           <Route path="/instantresult" element={<InstantResult />} />
         </Route>
       </Routes>

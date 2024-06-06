@@ -208,9 +208,8 @@ const ExamTable = () => {
   return (
     <div className="w-full h-full">
       <div className="flex w-full rotate h-full flex-col justify-center items-center ">
-        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 border-2 border-solid border-black">
-          <div className="p-2 lg:text-[19px]  flex w-full justify-center items-center gap-[10%] bg-blue-400">
-            <p>Total number of questions: {totalQuestions}</p>
+        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 p-3 border-2 border-solid border-black">
+          <div className="p-2 text-[19px] flex w-full justify-center items-center gap-[10%] bg-blue-400">
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
 
@@ -290,7 +289,7 @@ const ExamTable = () => {
             ) : (
               <div>
                 <div className="flex">
-                  <div className="flex  h-full w-full overflow-y-auto flex-1 flex-col gap-[1rem]">
+                  <div className="flex  lg:h-[30rem] md:h-[26rem] h-[14rem] w-full overflow-y-auto flex-1 flex-col gap-[1rem]">
                     <p className="flex text-[22px]">
                       {selectedQuestion.questions}
                     </p>
@@ -345,7 +344,7 @@ const ExamTable = () => {
                         </p>
                       )}
                   </div>
-                  <div className="w-full h-full overflow-y-auto flex-1 ">
+                  <div className="w-full  lg:h-[30rem] md:h-[26rem] h-[14rem] overflow-y-auto flex-1 ">
                     <div className="flex w-full  flex-col items-center justify-center gap-[1rem]">
                       {selectedQuestion.answer.map((answer) => (
                         <div
