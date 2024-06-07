@@ -24,7 +24,7 @@ const UserList = () => {
   const fetchData = async (status, page = 1, search = "") => {
     setIsLoading(true);
     try {
-      let url = `https://aasu.pythonanywhere.com/users/${status}/`;
+      let url = `https://aasu.pythonanywhere.com/users/${status}/?page=${page}`;
       if (search) {
         url = `https://aasu.pythonanywhere.com/user/search/?search=${search}&page=${page}`;
       }
@@ -69,7 +69,7 @@ const UserList = () => {
   }, [status, currentPage, searchTerm]);
 
   const totalPages = Math.ceil(totalCount / 10);
-  const visiblePages = 3;
+  const visiblePages = 5;
   const startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
   const endPage = Math.min(totalPages, startPage + visiblePages - 1);
 

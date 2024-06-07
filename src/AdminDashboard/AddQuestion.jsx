@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useGET } from "../Hooks/useApi";
@@ -7,6 +7,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAuth } from "../Hooks/UseAuth";
 
 function AddQuestion() {
+  const [quizid, setQuizId] = useState(null);
+  const [formSubmitted, setFormSubmitted] = useState(false); // New state variable
+
+  const { user } = useAuth();
+
   const initialQuestionState = {
     questions: "",
     sub_question: "",
@@ -32,13 +37,37 @@ function AddQuestion() {
     correct_answer: "",
   };
 
-  const [quizid, setQuizId] = useState(null);
-  const { user } = useAuth();
   const [inputType, setInputType] = useState("");
   const [answers, setAnswers] = useState(initialAnswersState);
   const [question, setQuestion] = useState(initialQuestionState);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(0);
 
   const { data, isLoading } = useGET("quize/");
+
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      if (quizid) {
+        try {
+          const response = await fetch(
+            `https://aasu.pythonanywhere.com/question/list/${quizid}/`
+          );
+          if (response.ok) {
+            const data = await response.json();
+            setNumberOfQuestions(data.length);
+          } else {
+            setNumberOfQuestions(0);
+          }
+        } catch (error) {
+          console.error("Error fetching questions:", error);
+          setNumberOfQuestions(0);
+        }
+      } else {
+        setNumberOfQuestions(0);
+      }
+    };
+
+    fetchQuestions();
+  }, [quizid, formSubmitted]); // Include formSubmitted as a dependency
 
   const handleDropdownChange = (event) => {
     setQuizId(event.target.value);
@@ -82,19 +111,25 @@ function AddQuestion() {
     switch (inputType) {
       case "text":
         return Array.from({ length: 4 }).map((_, index) => (
-          <input
+          <div
             key={index}
-            type="text"
-            placeholder={`Option ${index + 1}`}
-            value={answers[`option${index + 1}`]}
-            onChange={(e) =>
-              setAnswers({
-                ...answers,
-                [`option${index + 1}`]: e.target.value,
-              })
-            }
-            className="p-2 border rounded-md"
-          />
+            className="w-full"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <input
+              // key={index}
+              type="text"
+              placeholder={`Option ${index + 1}`}
+              value={answers[`option${index + 1}`]}
+              onChange={(e) =>
+                setAnswers({
+                  ...answers,
+                  [`option${index + 1}`]: e.target.value,
+                })
+              }
+              className="p-2 w-full border rounded-md"
+            />
+          </div>
         ));
       case "audio":
         return Array.from({ length: 4 }).map((_, index) => (
@@ -104,7 +139,7 @@ function AddQuestion() {
               onChange={(e) =>
                 handleFileChange(`option_audio${index + 1}`, e.target.files[0])
               }
-              className="p-2 border rounded-md"
+              className="p-2 border w-full rounded-md"
             />
             {answers[`option_audio${index + 1}`] && (
               <audio controls>
@@ -220,6 +255,7 @@ function AddQuestion() {
         // Reset the question and answers state to initial states
         setQuestion(initialQuestionState);
         setAnswers(initialAnswersState);
+        setFormSubmitted(!formSubmitted); // Toggle formSubmitted to trigger useEffect
       } else {
         toast.error("Failed to add question and answer.");
       }
@@ -253,7 +289,12 @@ function AddQuestion() {
                     ))}
                 </select>
               </div>
-
+              <div>
+                <p>
+                  Number of Questions:
+                  {numberOfQuestions}
+                </p>
+              </div>
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions:</label>
                 <input

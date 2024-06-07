@@ -8,7 +8,7 @@ const FreeExam = () => {
     data: questionlist,
     isLoading,
     setData: setquestionlist,
-  } = useGET("quize/list/");
+  } = useGET("quize/list/stu/");
 
   if (isLoading) {
     return <Loading />;

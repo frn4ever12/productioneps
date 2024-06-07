@@ -62,14 +62,14 @@ const SingleCard = (currElem) => {
             >
               Start Exam
             </p>
-            {price !== null && price !== undefined && price !== 0 && (
+            {/* {price !== null && price !== undefined && price !== 0 && (
               <p
                 onClick={openModal}
                 className="h-[2rem] w-[7rem] bg-green-700 text-white rounded-xl  flex justify-center items-center hover:bg-green-900"
               >
                 Esewa Payment
               </p>
-            )}
+            )} */}
           </div>
         </div>
       </div>

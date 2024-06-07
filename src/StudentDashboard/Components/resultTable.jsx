@@ -12,7 +12,7 @@ const ResultTable = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 ">
       <h2 className="text-3xl font-extrabold text-center mb-6 text-blue-600">
         Quiz Results
       </h2>
@@ -28,8 +28,9 @@ const ResultTable = () => {
           }`}
         >
           <h3 className="text-xl font-semibold mb-4">Question {index + 1}</h3>
-          <div className="mb-4">
+          <div className="mb-6 ml-4 font-semibold">
             <p>{result.question.questions}</p>
+            <p>{result.question.sub_question}</p>
             {result.question.question_img && (
               <img
                 src={`https://aasu.pythonanywhere.com${result.question.question_img}`}
@@ -55,113 +56,212 @@ const ResultTable = () => {
               />
             )}
           </div>
-          <div className="mb-4">
-            <h4 className="text-lg font-medium">Options:</h4>
-            <ol className="list-decimal list-inside">
+
+          <hr className="my-4 border-t border-gray-300" />
+
+          <div className="mt-4">
+            <h1 className="text-lg text-gray-700 font-bold mb-2">Answers:</h1>
+          </div>
+          <div className="mb-2 ml-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {result?.question?.answer?.map((answer, index) => (
                 <React.Fragment key={index}>
-                  {answer.option1 && <li className="mt-1">{answer.option1}</li>}
-                  {answer.option2 && <li className="mt-1">{answer.option2}</li>}
-                  {answer.option3 && <li className="mt-1">{answer.option3}</li>}
-                  {answer.option4 && <li className="mt-1">{answer.option4}</li>}
+                  {/* text part */}
+                  {answer.option1 && (
+                    <div className="w-1/2 p-2">
+                      <strong>Option 1:</strong> {answer.option1}
+                    </div>
+                  )}
+                  {answer.option2 && (
+                    <div className="w-1/2 p-2">
+                      <strong>Option 2:</strong> {answer.option2}
+                    </div>
+                  )}
+                  {answer.option3 && (
+                    <div className="w-1/2 p-2">
+                      <strong>Option 3:</strong> {answer.option3}
+                    </div>
+                  )}
+                  {answer.option4 && (
+                    <div className="w-1/2 p-2">
+                      <strong>Option 4:</strong> {answer.option4}
+                    </div>
+                  )}
+
+                  {/* image part */}
                   {answer.option_image1 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Image 1:</strong>
                       <img
-                        src={`https://aasu.pythonanywhere.com${answer.option_image1}`}
-                        alt="Option 1"
+                        src={
+                          answer.option_image1.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_image1
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_image1
+                        }
+                        alt="Option Image 1"
                         className="w-full max-w-xs mx-auto"
                       />
-                    </li>
+                    </div>
                   )}
                   {answer.option_image2 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Image 2:</strong>
                       <img
-                        src={`https://aasu.pythonanywhere.com${answer.option_image2}`}
-                        alt="Option 2"
+                        src={
+                          answer.option_image2.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_image2
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_image2
+                        }
+                        alt="Option Image 2"
                         className="w-full max-w-xs mx-auto"
                       />
-                    </li>
+                    </div>
                   )}
                   {answer.option_image3 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Image 3:</strong>
                       <img
-                        src={`https://aasu.pythonanywhere.com${answer.option_image3}`}
-                        alt="Option 3"
+                        src={
+                          answer.option_image3.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_image3
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_image3
+                        }
+                        alt="Option Image 3"
                         className="w-full max-w-xs mx-auto"
                       />
-                    </li>
+                    </div>
                   )}
                   {answer.option_image4 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Image 4:</strong>
                       <img
-                        src={`https://aasu.pythonanywhere.com${answer.option_image4}`}
-                        alt="Option 4"
+                        src={
+                          answer.option_image4.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_image4
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_image4
+                        }
+                        alt="Option Image 4"
                         className="w-full max-w-xs mx-auto"
                       />
-                    </li>
+                    </div>
                   )}
+
+                  {/* audio part */}
                   {answer.option_audio1 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Audio 1:</strong>
                       <audio
                         controls
-                        className="w-full"
-                        src={`https://aasu.pythonanywhere.com${answer.option_audio1}`}
+                        className="mt-2"
+                        src={
+                          answer.option_audio1.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_audio1
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_audio1
+                        }
                       >
                         Your browser does not support the audio element.
                       </audio>
-                    </li>
+                    </div>
                   )}
                   {answer.option_audio2 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Audio 2:</strong>
                       <audio
                         controls
-                        className="w-full"
-                        src={`https://aasu.pythonanywhere.com${answer.option_audio2}`}
+                        className="mt-2"
+                        src={
+                          answer.option_audio2.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_audio2
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_audio2
+                        }
                       >
                         Your browser does not support the audio element.
                       </audio>
-                    </li>
+                    </div>
                   )}
                   {answer.option_audio3 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Audio 3:</strong>
                       <audio
                         controls
-                        className="w-full"
-                        src={`https://aasu.pythonanywhere.com${answer.option_audio3}`}
+                        className="mt-2"
+                        src={
+                          answer.option_audio3.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_audio3
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_audio3
+                        }
                       >
                         Your browser does not support the audio element.
                       </audio>
-                    </li>
+                    </div>
                   )}
                   {answer.option_audio4 && (
-                    <li className="mt-2">
+                    <div className="w-1/2 p-2">
+                      <strong>Option Audio 4:</strong>
                       <audio
                         controls
-                        className="w-full"
-                        src={`https://aasu.pythonanywhere.com${answer.option_audio4}`}
+                        className="mt-2"
+                        src={
+                          answer.option_audio4.startsWith(
+                            "https://aasu.pythonanywhere.com"
+                          )
+                            ? answer.option_audio4
+                            : "https://aasu.pythonanywhere.com" +
+                              answer.option_audio4
+                        }
                       >
                         Your browser does not support the audio element.
                       </audio>
-                    </li>
+                    </div>
                   )}
                 </React.Fragment>
               ))}
-            </ol>
+            </div>
           </div>
-          <div className="mb-4">
-            <h4 className="text-lg font-medium">Correct Answer:</h4>
-            <p>{result.correct_answer}</p>
+
+          <div className="mt-2">
+            <h1 className="text-lg font-bold font-bold">Correct Answer:</h1>
+            <p className="ml-6 text-lg">{result.correct_answer}</p>
           </div>
-          <div className="mb-4">
-            <h4 className="text-lg font-medium">Your Answer:</h4>
-            <p>{result.selected_option || "Not Answered"}</p>
+
+          <div className="mt-2">
+            <h1 className="text-lg font-bold font-bold">Your Answer:</h1>
+            <p className="ml-6 text-lg">
+              {result.selected_option || "Not Answered"}
+            </p>
           </div>
-          <div>
-            <h4 className="text-lg font-medium">Status:</h4>
+
+          <div className="mt-2">
+            <h1 className="text-lg font-bold font-bold">Status:</h1>
             {result.unsolved ? (
-              <span className="text-red-500 font-bold">Unsolved</span>
+              <span className="text-red-500 font-bold ml-6 text-lg ">
+                Unsolved
+              </span>
             ) : (
-              <span className="text-green-500 font-bold">Solved</span>
+              <span className="text-green-500 font-bold ml-6 text-lg ">
+                Solved
+              </span>
             )}
           </div>
         </div>

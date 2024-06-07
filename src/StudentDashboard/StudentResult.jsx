@@ -1,15 +1,55 @@
-import React from "react";
-import { useGET } from "../Hooks/useApi";
+import React, { useState, useEffect } from "react";
 import Loading from "../Components/Loading/Loading";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../Hooks/UseAuth";
 
 const StudentResult = () => {
-  const { data, isLoading } = useGET("user/result/");
-  console.log(data);
+  const { user } = useAuth();
+  const config = {
+    headers: {
+      Authorization: `Bearer ${user.token.access}`,
+    },
+  };
+  const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          `https://aasu.pythonanywhere.com/user/result/?page=${currentPage}`,
+          config
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [currentPage]);
 
   if (isLoading) {
     return <Loading />;
   }
+
+  const totalPages = Math.ceil(data?.count / 10) || 0;
+
+  const handlePrevPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -36,7 +76,7 @@ const StudentResult = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {data.map((result) => (
+            {data.results.map((result) => (
               <tr key={result.id} className="hover:bg-gray-100">
                 <td className="px-6 py-4 whitespace-nowrap">
                   {result.quize.map((currElem) => (
@@ -53,7 +93,7 @@ const StudentResult = () => {
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`font-semibold ${
-                      result.result === "Pass"
+                      result.result === "pass"
                         ? "text-green-500"
                         : "text-red-500"
                     }`}
@@ -75,6 +115,38 @@ const StudentResult = () => {
             ))}
           </tbody>
         </table>
+      </div>
+      {/* Pagination */}
+      <div className="flex justify-center mt-4">
+        {currentPage > 1 && (
+          <button
+            className="px-4 py-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+            onClick={handlePrevPage}
+          >
+            Previous
+          </button>
+        )}
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            className={`px-4 py-2 mx-1 rounded focus:outline-none ${
+              currentPage === index + 1
+                ? "bg-blue-600 text-white"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
+        ))}
+        {currentPage < totalPages && (
+          <button
+            className="px-4 py-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+            onClick={handleNextPage}
+          >
+            Next
+          </button>
+        )}
       </div>
     </div>
   );

@@ -6,16 +6,49 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useAuth } from "../Hooks/UseAuth";
 import DOMPurify from "dompurify";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { debounce } from "lodash";
 
 const QuestionList = () => {
   const { user } = useAuth();
   const { data: quizData, isLoading: isQuizLoading } = useGET("quize/");
   const [selectedId, setSelectedId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const [questionData, setQuestionData] = useState([]);
   const [isQuestionLoading, setIsQuestionLoading] = useState(false);
 
   const handleDropdownChange = (event) => {
     setSelectedId(event.target.value);
+  };
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+    debouncedSearch(event.target.value);
+  };
+
+  const debouncedSearch = debounce((query) => {
+    handleSearch(query);
+  }, 300);
+
+  const handleSearch = async (query) => {
+    setIsQuestionLoading(true);
+    try {
+      const response = await axios.get(
+        `https://aasu.pythonanywhere.com/question/search/${selectedId}/?search=${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user.token.access}`,
+          },
+        }
+      );
+      // console.log(response.data)
+      setQuestionData(response.data);
+    } catch (error) {
+      toast.error("Failed to fetch questions.");
+    } finally {
+      setIsQuestionLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -31,6 +64,7 @@ const QuestionList = () => {
               },
             }
           );
+          console.log(response.data);
           setQuestionData(response.data);
         } catch (error) {
           toast.error("Failed to fetch questions.");
@@ -100,12 +134,33 @@ const QuestionList = () => {
           </select>
         </div>
       </div>
+      {selectedId && (
+        <div className="flex items-center ml-20 mt-8">
+          <div className="relative">
+            <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">
+              <FontAwesomeIcon icon={faSearch} />
+            </span>
+            <input
+              type="text"
+              placeholder="Search Questions..."
+              value={searchQuery}
+              onChange={handleSearchInputChange}
+              className="p-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 pl-10"
+              style={{ width: "400px" }}
+            />
+          </div>
+        </div>
+      )}
       {isQuestionLoading ? (
         <Loading />
       ) : (
-        <div className="mt-8 grid gap-4 md:grid-cols-1 mx-20">
+        <div className="mt-8 grid gap-4 md:grid-cols-1 mx-20 overflow-y-auto max-h-screen">
           {questionData.length === 0 ? (
-            <div>No questions available for the selected quiz.</div>
+            <div className="text-gray-600 shadow-md p-4 font-bold font-semibold text-lg mt-8">
+              <div className="ml-72">
+                No questions available for the selected quiz...
+              </div>
+            </div>
           ) : (
             questionData.map((question, index) => (
               <div
@@ -126,8 +181,12 @@ const QuestionList = () => {
                       {question.question_img && (
                         <img
                           src={
-                            "https://aasu.pythonanywhere.com" +
-                            question.question_img
+                            question.question_img.startsWith(
+                              "https://aasu.pythonanywhere.com"
+                            )
+                              ? question.question_img
+                              : "https://aasu.pythonanywhere.com" +
+                                question.question_img
                           }
                           alt="Question Image"
                           className="mt-2 h-40 w-auto"
@@ -138,8 +197,12 @@ const QuestionList = () => {
                           controls
                           className="ml-36"
                           src={
-                            "https://aasu.pythonanywhere.com" +
-                            question.question_audio
+                            question.question_audio.startsWith(
+                              "https://aasu.pythonanywhere.com"
+                            )
+                              ? question.question_audio
+                              : "https://aasu.pythonanywhere.com" +
+                                question.question_audio
                           }
                         >
                           Your browser does not support the audio element.
@@ -193,8 +256,12 @@ const QuestionList = () => {
                             <strong>Option Image 1:</strong>
                             <img
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_image1
+                                answer.option_image1.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_image1
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_image1
                               }
                               alt="Option Image 1"
                               className="mt-2 h-40 w-auto"
@@ -206,8 +273,12 @@ const QuestionList = () => {
                             <strong>Option Image 2:</strong>
                             <img
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_image2
+                                answer.option_image2.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_image2
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_image2
                               }
                               alt="Option Image 2"
                               className="mt-2 h-40 w-auto"
@@ -219,8 +290,12 @@ const QuestionList = () => {
                             <strong>Option Image 3:</strong>
                             <img
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_image3
+                                answer.option_image3.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_image3
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_image3
                               }
                               alt="Option Image 3"
                               className="mt-2 h-40 w-auto"
@@ -232,8 +307,12 @@ const QuestionList = () => {
                             <strong>Option Image 4:</strong>
                             <img
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_image4
+                                answer.option_image4.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_image4
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_image4
                               }
                               alt="Option Image 4"
                               className="mt-2 h-40 w-auto"
@@ -251,8 +330,12 @@ const QuestionList = () => {
                               controls
                               className="mt-2"
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_audio1
+                                answer.option_audio1.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_audio1
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio1
                               }
                             >
                               Your browser does not support the audio element.
@@ -266,8 +349,12 @@ const QuestionList = () => {
                               controls
                               className="mt-2"
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_audio2
+                                answer.option_audio2.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_audio2
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio2
                               }
                             >
                               Your browser does not support the audio element.
@@ -281,8 +368,12 @@ const QuestionList = () => {
                               controls
                               className="mt-2"
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_audio3
+                                answer.option_audio3.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_audio3
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio3
                               }
                             >
                               Your browser does not support the audio element.
@@ -296,8 +387,12 @@ const QuestionList = () => {
                               controls
                               className="mt-2"
                               src={
-                                "https://aasu.pythonanywhere.com" +
-                                answer.option_audio4
+                                answer.option_audio4.startsWith(
+                                  "https://aasu.pythonanywhere.com"
+                                )
+                                  ? answer.option_audio4
+                                  : "https://aasu.pythonanywhere.com" +
+                                    answer.option_audio4
                               }
                             >
                               Your browser does not support the audio element.
