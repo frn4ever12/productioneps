@@ -368,6 +368,7 @@ const ExamTable = () => {
                             }
                           />
                           <button
+                            className="p-2 rounded-xl"
                             onClick={playSound}
                             disabled={
                               audioPlayed[selectedQuestion.id] || audioPlaying
@@ -375,7 +376,7 @@ const ExamTable = () => {
                             style={{
                               backgroundColor: audioPlayed[selectedQuestion.id]
                                 ? "lightgrey"
-                                : "blue",
+                                : "#61a4fa",
                               color: audioPlayed[selectedQuestion.id]
                                 ? "darkgrey"
                                 : "white",
@@ -434,10 +435,10 @@ const ExamTable = () => {
                                       className="hidden"
                                     />
                                     <span
-                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#1e7aa2] text-center leading-8 text-black ${
+                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
-                                          ? "bg-[#2596be] text-white"
+                                          ? "bg-[#61a4fa] text-white"
                                           : ""
                                       }`}
                                     >
@@ -457,6 +458,7 @@ const ExamTable = () => {
                                       />
                                     </audio>
                                     <button
+                                      className="p-2 rounded-xl"
                                       onClick={() =>
                                         playAnswerSound(
                                           selectedQuestion.id,
@@ -473,7 +475,7 @@ const ExamTable = () => {
                                           `${selectedQuestion.id}-${key}`
                                         ]
                                           ? "lightgrey"
-                                          : "blue",
+                                          : "#61a4fa",
                                         color: answerAudioPlayed[
                                           `${selectedQuestion.id}-${key}`
                                         ]
@@ -513,10 +515,10 @@ const ExamTable = () => {
                                       className="hidden"
                                     />
                                     <span
-                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#1e7aa2] text-center leading-8 text-black ${
+                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
-                                          ? "bg-[#2596be] text-white"
+                                          ? "bg-[#61a4fa] text-white"
                                           : ""
                                       }`}
                                     >
@@ -552,10 +554,10 @@ const ExamTable = () => {
                                       className="hidden"
                                     />
                                     <span
-                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#1e7aa2] text-center leading-8 text-black ${
+                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
-                                          ? "bg-[#2596be] text-white"
+                                          ? "bg-[#61a4fa] text-white"
                                           : ""
                                       }`}
                                     >
