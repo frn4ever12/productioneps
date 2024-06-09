@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios"; // Import Axios
 import { useGET } from "../Hooks/useApi";
 import { useParams } from "react-router-dom";
@@ -21,8 +21,33 @@ const ExamTable = () => {
   const [selectedAnswers, setSelectedAnswers] = useState({}); // State to store selected answers for each question
   const [solved, setSolved] = useState(0); // State to store the number of solved questions
   const [unsolved, setUnsolved] = useState(0); // State to store the number of unsolved questions
+  const audioRef = useRef(null);
+  const [audioPlayed, setAudioPlayed] = useState({});
+  const [answerAudioPlayed, setAnswerAudioPlayed] = useState({});
+  const [isPlayed, setIsPlayed] = useState(false);
 
-  console.log(data);
+  const playAnswerSound = (questionId, key) => {
+    const audioElement = document.getElementById(`audio-${questionId}-${key}`);
+    if (audioElement) {
+      audioElement.play();
+      setAnswerAudioPlayed((prev) => ({
+        ...prev,
+        [`${questionId}-${key}`]: true,
+      }));
+    }
+  };
+  const playSound = () => {
+    audioRef.current.play();
+    setIsPlayed(true);
+    setAudioPlayed((prev) => ({
+      ...prev,
+      [selectedQuestion.id]: true,
+    }));
+  };
+  // const playSound = () => {
+  //   audioRef.current.play();
+  //   setIsPlayed(true);
+  // };
   let optionIndex = 0;
   const [timeRemaining, setTimeRemaining] = useState(null);
   useEffect(() => {
@@ -319,15 +344,44 @@ const ExamTable = () => {
                     {selectedQuestion.question_audio !== null &&
                       selectedQuestion.question_audio !== undefined &&
                       selectedQuestion.question_audio !== 0 && (
-                        <audio controls>
-                          <source
+                        // <audio controls>
+                        //   <source
+                        //     src={
+                        //       "https://aasu.pythonanywhere.com" +
+                        //       selectedQuestion.question_audio
+                        //     }
+                        //     type="audio/mpeg"
+                        //   />
+                        // </audio>
+
+                        <div>
+                          <audio
+                            ref={audioRef}
                             src={
                               "https://aasu.pythonanywhere.com" +
                               selectedQuestion.question_audio
                             }
-                            type="audio/mpeg"
                           />
-                        </audio>
+                          <button
+                            onClick={playSound}
+                            disabled={audioPlayed[selectedQuestion.id]}
+                            style={{
+                              backgroundColor: audioPlayed[selectedQuestion.id]
+                                ? "lightgrey"
+                                : "blue",
+                              color: audioPlayed[selectedQuestion.id]
+                                ? "darkgrey"
+                                : "white",
+                              cursor: audioPlayed[selectedQuestion.id]
+                                ? "not-allowed"
+                                : "pointer",
+                            }}
+                          >
+                            {audioPlayed[selectedQuestion.id]
+                              ? "Played"
+                              : "Play Sound"}
+                          </button>
+                        </div>
                       )}
                     {selectedQuestion.question_img !== null &&
                       selectedQuestion.question_img !== undefined &&
@@ -380,10 +434,13 @@ const ExamTable = () => {
                                           : ""
                                       }`}
                                     >
-                                      {/* {index + 1} */}
                                       {optionIndex}
                                     </span>
-                                    <audio controls>
+                                    <audio
+                                      id={`audio-${selectedQuestion.id}-${key}`}
+                                      controls
+                                      className="hidden"
+                                    >
                                       <source
                                         src={
                                           "https://aasu.pythonanywhere.com" +
@@ -392,6 +449,42 @@ const ExamTable = () => {
                                         type="audio/mpeg"
                                       />
                                     </audio>
+                                    <button
+                                      onClick={() =>
+                                        playAnswerSound(
+                                          selectedQuestion.id,
+                                          key
+                                        )
+                                      }
+                                      disabled={
+                                        answerAudioPlayed[
+                                          `${selectedQuestion.id}-${key}`
+                                        ]
+                                      }
+                                      style={{
+                                        backgroundColor: answerAudioPlayed[
+                                          `${selectedQuestion.id}-${key}`
+                                        ]
+                                          ? "lightgrey"
+                                          : "blue",
+                                        color: answerAudioPlayed[
+                                          `${selectedQuestion.id}-${key}`
+                                        ]
+                                          ? "darkgrey"
+                                          : "white",
+                                        cursor: answerAudioPlayed[
+                                          `${selectedQuestion.id}-${key}`
+                                        ]
+                                          ? "not-allowed"
+                                          : "pointer",
+                                      }}
+                                    >
+                                      {answerAudioPlayed[
+                                        `${selectedQuestion.id}-${key}`
+                                      ]
+                                        ? "Played"
+                                        : "Play Sound"}
+                                    </button>
                                   </label>
                                 );
                               } else if (key.startsWith("option_imag")) {
