@@ -25,29 +25,34 @@ const ExamTable = () => {
   const [audioPlayed, setAudioPlayed] = useState({});
   const [answerAudioPlayed, setAnswerAudioPlayed] = useState({});
   const [isPlayed, setIsPlayed] = useState(false);
-
+  const [audioPlaying, setAudioPlaying] = useState(false);
   const playAnswerSound = (questionId, key) => {
     const audioElement = document.getElementById(`audio-${questionId}-${key}`);
     if (audioElement) {
+      setAudioPlaying(true);
       audioElement.play();
+      audioElement.onended = () => setAudioPlaying(false); // Reset state when audio ends
       setAnswerAudioPlayed((prev) => ({
         ...prev,
         [`${questionId}-${key}`]: true,
       }));
     }
   };
+
   const playSound = () => {
-    audioRef.current.play();
-    setIsPlayed(true);
-    setAudioPlayed((prev) => ({
-      ...prev,
-      [selectedQuestion.id]: true,
-    }));
+    const audioElement = audioRef.current;
+    if (audioElement) {
+      setAudioPlaying(true);
+      audioElement.play();
+      audioElement.onended = () => setAudioPlaying(false); // Reset state when audio ends
+      setIsPlayed(true);
+      setAudioPlayed((prev) => ({
+        ...prev,
+        [selectedQuestion.id]: true,
+      }));
+    }
   };
-  // const playSound = () => {
-  //   audioRef.current.play();
-  //   setIsPlayed(true);
-  // };
+
   let optionIndex = 0;
   const [timeRemaining, setTimeRemaining] = useState(null);
   useEffect(() => {
@@ -364,7 +369,9 @@ const ExamTable = () => {
                           />
                           <button
                             onClick={playSound}
-                            disabled={audioPlayed[selectedQuestion.id]}
+                            disabled={
+                              audioPlayed[selectedQuestion.id] || audioPlaying
+                            }
                             style={{
                               backgroundColor: audioPlayed[selectedQuestion.id]
                                 ? "lightgrey"
@@ -459,7 +466,7 @@ const ExamTable = () => {
                                       disabled={
                                         answerAudioPlayed[
                                           `${selectedQuestion.id}-${key}`
-                                        ]
+                                        ] || audioPlaying
                                       }
                                       style={{
                                         backgroundColor: answerAudioPlayed[
