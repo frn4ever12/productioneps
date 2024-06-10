@@ -53,10 +53,12 @@ const StudentResult = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-2xl font-bold text-center mb-8">List of Results</h2>
+      <p className="text-2xl flex text-gray-700 font-bold text-center w-full mb-8">
+        List of Results
+      </p>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-          <thead className="bg-blue-500 text-white">
+          <thead className="bg-gray-700 text-white">
             <tr>
               <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                 Title
@@ -120,7 +122,7 @@ const StudentResult = () => {
       <div className="flex justify-center mt-4">
         {currentPage > 1 && (
           <button
-            className="px-4 py-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+            className="px-4 py-2 mx-1 bg-gray-700 text-white rounded hover:bg-gray-800 focus:outline-none"
             onClick={handlePrevPage}
           >
             Previous
@@ -131,8 +133,8 @@ const StudentResult = () => {
             key={index + 1}
             className={`px-4 py-2 mx-1 rounded focus:outline-none ${
               currentPage === index + 1
-                ? "bg-blue-600 text-white"
-                : "bg-blue-500 text-white hover:bg-blue-600"
+                ? "bg-gray-500 text-white"
+                : "bg-gray-500 text-white hover:bg-gray-800"
             }`}
             onClick={() => setCurrentPage(index + 1)}
           >
@@ -141,7 +143,7 @@ const StudentResult = () => {
         ))}
         {currentPage < totalPages && (
           <button
-            className="px-4 py-2 mx-1 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none"
+            className="px-4 py-2 mx-1 bg-gray-700 text-white rounded hover:bg-gray-800 focus:outline-none"
             onClick={handleNextPage}
           >
             Next

@@ -67,7 +67,10 @@ const InstantResult = ({ scoreresult }) => {
           </NavLink>
           {/* <button className="btn-blue">View Table</button> */}
           <NavLink to="/studentresult">
-            <p className="bg-green-200 p-3 rounded-xl">Result List</p>
+            <p className="bg-green-200 p-3 rounded-xl">Results List</p>
+          </NavLink>
+          <NavLink to={`/resulttablestudent/${scoreresult.exam.id}`}>
+            <p className="bg-green-200 p-3 rounded-xl">View Result</p>
           </NavLink>
         </div>
       </div>

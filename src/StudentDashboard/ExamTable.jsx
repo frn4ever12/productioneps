@@ -4,7 +4,7 @@ import { useGET } from "../Hooks/useApi";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../Hooks/UseAuth";
 import ExamPopup from "./Components/ExamPopup";
-
+import img1 from "../Image/file.png";
 import InstantResult from "./Components/instantResult";
 import DOMPurify from "dompurify";
 
@@ -38,7 +38,7 @@ const ExamTable = () => {
       }));
     }
   };
-
+  console.log(data);
   const playSound = () => {
     const audioElement = audioRef.current;
     if (audioElement) {
@@ -238,8 +238,17 @@ const ExamTable = () => {
   return (
     <div className="w-full h-full">
       <div className="flex w-full rotate h-full flex-col justify-center items-center ">
-        <div className="lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 p-3 border-2 border-solid border-black">
+        <div
+          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 p-3 border-2 border-solid border-black"
+          style={{
+            backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${img1})`,
+            backgroundSize: "contain",
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+          }}
+        >
           <div className="p-2 text-[19px] flex w-full justify-center items-center gap-[10%] bg-blue-400">
+            <p>Total Question: {data.length}</p>
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
 
