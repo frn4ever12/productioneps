@@ -7,6 +7,8 @@ import ExamPopup from "./Components/ExamPopup";
 import img1 from "../Image/file.png";
 import InstantResult from "./Components/instantResult";
 import DOMPurify from "dompurify";
+import { FaCirclePlay } from "react-icons/fa6";
+import { FaHeadphones } from "react-icons/fa";
 
 const ExamTable = () => {
   const { user } = useAuth();
@@ -27,29 +29,79 @@ const ExamTable = () => {
   const [isPlayed, setIsPlayed] = useState(false);
   const [audioPlaying, setAudioPlaying] = useState(false);
   const playAnswerSound = (questionId, key) => {
+    if (answerAudioPlayed[`${questionId}-${key}`]) return; // If already played, return
+
     const audioElement = document.getElementById(`audio-${questionId}-${key}`);
-    if (audioElement) {
-      setAudioPlaying(true);
-      audioElement.play();
-      audioElement.onended = () => setAudioPlaying(false); // Reset state when audio ends
+
+    if (!audioElement || audioPlaying) return; // If audio is already playing, return
+
+    setAudioPlaying(true);
+
+    audioElement.play();
+
+    audioElement.onended = () => {
+      setAudioPlaying(false);
       setAnswerAudioPlayed((prev) => ({
         ...prev,
         [`${questionId}-${key}`]: true,
       }));
-    }
+
+      // Disable the audio button after it has been played once
+      const audioButton = document.getElementById(
+        `button-${questionId}-${key}`
+      );
+      audioButton.disabled = true;
+      audioButton.classList.add("played"); // Add the 'played' class to the audio button
+    };
+
+    // Disable all other audio buttons while one is playing
+    const allButtons = document.querySelectorAll(".audio-play-button");
+    allButtons.forEach((button) => {
+      button.disabled = true;
+      button.classList.remove("played"); // Remove the 'played' class from other buttons
+    });
   };
-  console.log(data);
+
   const playSound = () => {
+    if (audioPlayed[selectedQuestion.id]) return; // Prevent playing again
+
     const audioElement = audioRef.current;
     if (audioElement) {
       setAudioPlaying(true);
       audioElement.play();
-      audioElement.onended = () => setAudioPlaying(false); // Reset state when audio ends
-      setIsPlayed(true);
-      setAudioPlayed((prev) => ({
-        ...prev,
-        [selectedQuestion.id]: true,
-      }));
+      audioElement.onended = () => {
+        setAudioPlaying(false);
+        setIsPlayed(true);
+        setAudioPlayed((prev) => ({
+          ...prev,
+          [selectedQuestion.id]: true,
+        }));
+      };
+
+      // Disable other audio buttons
+      const allButtons = document.querySelectorAll(".audio-play-button");
+      allButtons.forEach((button) => {
+        if (button.id !== `button-${selectedQuestion.id}`) {
+          button.disabled = true;
+          button.style.cursor = "not-allowed";
+          button.style.backgroundColor = "lightgrey";
+        }
+      });
+
+      // Enable other audio buttons after audio ends
+      audioElement.onended = () => {
+        setAudioPlaying(false);
+        setIsPlayed(true);
+        setAudioPlayed((prev) => ({
+          ...prev,
+          [selectedQuestion.id]: true,
+        }));
+        allButtons.forEach((button) => {
+          button.disabled = false;
+          button.style.cursor = "pointer";
+          button.style.backgroundColor = "#61a4fa";
+        });
+      };
     }
   };
 
@@ -327,11 +379,13 @@ const ExamTable = () => {
               </table>
             ) : (
               <div>
-                <div className="flex">
-                  <div className="flex  lg:h-[30rem] md:h-[26rem] h-[14rem] w-full overflow-y-auto flex-1 flex-col gap-[1rem]">
-                    <p className="flex text-[22px]">
-                      {selectedQuestion.questions}
-                    </p>
+                <div className="p-3">
+                  <p className="flex text-[22px]">
+                    {selectedQuestion.questions}
+                  </p>
+                </div>
+                <div className="flex  border-2 border-solid border-black ">
+                  <div className="flex p-3 lg:h-[30rem] md:h-[26rem] h-[14rem] w-full overflow-y-auto flex-1 flex-col gap-[1rem] border-r-2 border-solid border-black">
                     {selectedQuestion.sub_question !== null &&
                       selectedQuestion.sub_question !== undefined &&
                       selectedQuestion.sub_question !== 0 && (
@@ -394,9 +448,11 @@ const ExamTable = () => {
                                 : "pointer",
                             }}
                           >
-                            {audioPlayed[selectedQuestion.id]
-                              ? "Played"
-                              : "Play Sound"}
+                            {audioPlayed[selectedQuestion.id] ? (
+                              <FaCirclePlay className="text-[4rem]" />
+                            ) : (
+                              <FaCirclePlay className="text-[4rem]" />
+                            )}
                           </button>
                         </div>
                       )}
@@ -405,7 +461,7 @@ const ExamTable = () => {
                       selectedQuestion.question_img !== 0 && (
                         <p className="  w-full  p-1 ">
                           <img
-                            className="h-40"
+                            className="h-60"
                             src={
                               "https://aasu.pythonanywhere.com" +
                               selectedQuestion.question_img
@@ -420,7 +476,7 @@ const ExamTable = () => {
                       {selectedQuestion.answer.map((answer) => (
                         <div
                           key={answer.id}
-                          className="flex flex-col w-full gap-[1rem] p-6 text-[18px]"
+                          className="flex flex-col w-full  p- text-[18px]"
                         >
                           {Object.keys(answer).map((key) => {
                             if (key.startsWith("option") && answer[key]) {
@@ -429,7 +485,7 @@ const ExamTable = () => {
                                 return (
                                   <label
                                     key={key}
-                                    className="flex items-center gap-[20px] border-b border-gray-400 p-1 pl-8 hover:bg-gray-200 cursor-pointer"
+                                    className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
                                   >
                                     <input
                                       type="radio"
@@ -453,63 +509,55 @@ const ExamTable = () => {
                                     >
                                       {optionIndex}
                                     </span>
-                                    <audio
-                                      id={`audio-${selectedQuestion.id}-${key}`}
-                                      controls
-                                      className="hidden"
-                                    >
-                                      <source
-                                        src={
-                                          "https://aasu.pythonanywhere.com" +
-                                          answer[key]
+                                    <p className="border-l-2 border-black p-3">
+                                      <audio
+                                        id={`audio-${selectedQuestion.id}-${key}`}
+                                        controls
+                                        className="hidden"
+                                      >
+                                        <source
+                                          src={
+                                            "https://aasu.pythonanywhere.com" +
+                                            answer[key]
+                                          }
+                                          type="audio/mpeg"
+                                        />
+                                      </audio>
+                                      <p
+                                        id={`button-${selectedQuestion.id}-${key}`}
+                                        className={`audio-play-button p-2 rounded-xl ${
+                                          answerAudioPlayed[
+                                            `${selectedQuestion.id}-${key}`
+                                          ]
+                                            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                            : "bg-blue-400 hover:bg-blue-600 cursor-pointer text-white"
+                                        }`}
+                                        onClick={() =>
+                                          !answerAudioPlayed[
+                                            `${selectedQuestion.id}-${key}`
+                                          ] &&
+                                          playAnswerSound(
+                                            selectedQuestion.id,
+                                            key
+                                          )
                                         }
-                                        type="audio/mpeg"
-                                      />
-                                    </audio>
-                                    <button
-                                      className="p-2 rounded-xl"
-                                      onClick={() =>
-                                        playAnswerSound(
-                                          selectedQuestion.id,
-                                          key
-                                        )
-                                      }
-                                      disabled={
-                                        answerAudioPlayed[
+                                      >
+                                        {answerAudioPlayed[
                                           `${selectedQuestion.id}-${key}`
-                                        ] || audioPlaying
-                                      }
-                                      style={{
-                                        backgroundColor: answerAudioPlayed[
-                                          `${selectedQuestion.id}-${key}`
-                                        ]
-                                          ? "lightgrey"
-                                          : "#61a4fa",
-                                        color: answerAudioPlayed[
-                                          `${selectedQuestion.id}-${key}`
-                                        ]
-                                          ? "darkgrey"
-                                          : "white",
-                                        cursor: answerAudioPlayed[
-                                          `${selectedQuestion.id}-${key}`
-                                        ]
-                                          ? "not-allowed"
-                                          : "pointer",
-                                      }}
-                                    >
-                                      {answerAudioPlayed[
-                                        `${selectedQuestion.id}-${key}`
-                                      ]
-                                        ? "Played"
-                                        : "Play Sound"}
-                                    </button>
+                                        ] ? (
+                                          <FaCirclePlay className="text-[4rem]" />
+                                        ) : (
+                                          <FaCirclePlay className="text-[4rem]" />
+                                        )}
+                                      </p>
+                                    </p>
                                   </label>
                                 );
                               } else if (key.startsWith("option_imag")) {
                                 return (
                                   <label
                                     key={key}
-                                    className="flex items-center gap-[20px] border-b border-gray-400 p-1 pl-8 hover:bg-gray-200 cursor-pointer"
+                                    className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
                                   >
                                     <input
                                       type="radio"
@@ -534,21 +582,23 @@ const ExamTable = () => {
                                       {/* {index + 1} */}
                                       {optionIndex}
                                     </span>
-                                    <img
-                                      className="h-[8rem]"
-                                      src={
-                                        "https://aasu.pythonanywhere.com" +
-                                        answer[key]
-                                      }
-                                      alt="hello"
-                                    />
+                                    <p className="border-l-2 border-black p-3">
+                                      <img
+                                        className="h-[10rem]"
+                                        src={
+                                          "https://aasu.pythonanywhere.com" +
+                                          answer[key]
+                                        }
+                                        alt="hello"
+                                      />
+                                    </p>
                                   </label>
                                 );
                               } else {
                                 return (
                                   <label
                                     key={key}
-                                    className="flex items-center gap-[20px] border-b border-gray-400 p-1 pl-8 hover:bg-gray-200 cursor-pointer"
+                                    className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
                                   >
                                     <input
                                       type="radio"
@@ -560,10 +610,10 @@ const ExamTable = () => {
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
                                       }
-                                      className="hidden"
+                                      className="hidden "
                                     />
                                     <span
-                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
+                                      className={`inline-block h-9 aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center  leading-8 text-black ${
                                         selectedAnswers[selectedQuestion.id] ===
                                         key
                                           ? "bg-[#61a4fa] text-white"
@@ -572,7 +622,10 @@ const ExamTable = () => {
                                     >
                                       {optionIndex}
                                     </span>
-                                    {answer[key]}
+                                    <p className="border-l-2 border-black p-3">
+                                      {" "}
+                                      {answer[key]}
+                                    </p>
                                   </label>
                                 );
                               }
@@ -586,7 +639,7 @@ const ExamTable = () => {
                 </div>
                 <div className="flex justify-center items-center p-3 gap-[2%]">
                   <button
-                    className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-gray-400 p-1 rounded-xl"
+                    className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-black p-1 rounded-xl"
                     onClick={goToPreviousQuestion}
                   >
                     Previous
@@ -600,7 +653,7 @@ const ExamTable = () => {
                     </p>
                   </div>
                   <button
-                    className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-gray-400 p-1 rounded-xl"
+                    className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-black p-1 rounded-xl"
                     onClick={goToNextQuestion}
                   >
                     Next
