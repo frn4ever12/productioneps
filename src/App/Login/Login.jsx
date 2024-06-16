@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../Hooks/UseAuth";
 import axios from "../../api/axios";
-import photo1 from "../../Image/file.png";
+import photo1 from "../../Image/file1.png";
 function Login() {
   const { login, loginWithGoogle } = useAuth();
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-export default function ExamPopup({ isOpen, setIsOpen, onclick }) {
+export default function ExamPopup({ isOpen, setIsOpen, onclick, loading }) {
   const [isExamOpen, setIsExamOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -61,10 +61,11 @@ export default function ExamPopup({ isOpen, setIsOpen, onclick }) {
                         </p>
                         <div onClick={onclick}>
                           <button
+                            disabled={loading}
                             onClick={closeModal}
                             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
                           >
-                            Agree
+                            {loading ? "Subbmitting..." : " Agree"}
                           </button>
                         </div>
                       </div>

@@ -8,7 +8,7 @@ import { useAuth } from "../Hooks/UseAuth";
 
 function AddQuestion() {
   const [quizid, setQuizId] = useState(null);
-  const [formSubmitted, setFormSubmitted] = useState(false); // New state variable
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const { user } = useAuth();
 
@@ -40,6 +40,7 @@ function AddQuestion() {
   const [inputType, setInputType] = useState("");
   const [answers, setAnswers] = useState(initialAnswersState);
   const [question, setQuestion] = useState(initialQuestionState);
+  const [isLoadingQuestion, setIsLoadingQuestion] = useState(false); // Update state variable name
   const [numberOfQuestions, setNumberOfQuestions] = useState(0);
 
   const { data, isLoading } = useGET("quize/");
@@ -67,7 +68,7 @@ function AddQuestion() {
     };
 
     fetchQuestions();
-  }, [quizid, formSubmitted]); // Include formSubmitted as a dependency
+  }, [quizid, formSubmitted]);
 
   const handleDropdownChange = (event) => {
     setQuizId(event.target.value);
@@ -117,7 +118,6 @@ function AddQuestion() {
             style={{ display: "flex", alignItems: "center" }}
           >
             <input
-              // key={index}
               type="text"
               placeholder={`Option ${index + 1}`}
               value={answers[`option${index + 1}`]}
@@ -185,15 +185,18 @@ function AddQuestion() {
     .map(([key]) => key);
 
   const handleSubmit = async (e) => {
+    setIsLoadingQuestion(true);
     e.preventDefault();
 
     if (!quizid) {
       toast.error("Please select a quiz.");
+      setIsLoadingQuestion(false);
       return;
     }
 
     if (!question.questions || !answers.correct_answer) {
       toast.error("Please fill all required fields.");
+      setIsLoadingQuestion(false);
       return;
     }
 
@@ -261,6 +264,8 @@ function AddQuestion() {
       }
     } catch (error) {
       toast.error("An error occurred while submitting the form.");
+    } finally {
+      setIsLoadingQuestion(false); // Reset loading state
     }
   };
 
@@ -290,10 +295,7 @@ function AddQuestion() {
                 </select>
               </div>
               <div>
-                <p>
-                  Number of Questions:
-                  {numberOfQuestions}
-                </p>
+                <p>Number of Questions: {numberOfQuestions}</p>
               </div>
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions:</label>
@@ -381,10 +383,11 @@ function AddQuestion() {
                 </select>
               </div>
               <button
+                disabled={isLoadingQuestion} // Disable button while loading
                 type="submit"
                 className="p-2 bg-blue-500 text-white rounded-md"
               >
-                Submit
+                {isLoadingQuestion ? "Submitting..." : "Submit question"}
               </button>
             </div>
           </div>

@@ -27,6 +27,7 @@ import TagList from "./AdminDashboard/TagList";
 import AddTag from "./AdminDashboard/AddTag";
 import UpdateQuestionAnswer from "./AdminDashboard/UpdateQuestionAnswer";
 import QuizResults from "./AdminDashboard/QuizResults";
+import Error from "./Components/Error/Error";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
       <Routes>
         <Route element={<PublicRoute />}>
           <Route path="/" element={<Login />} />
+          <Route path="*" element={<Error />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -42,6 +44,7 @@ const App = () => {
           <Route element={<AdminPrivateRoute />}>
             <Route path="/adminprofile" element={<AdminProfile />} />
             <Route path="/addquiz" element={<AddQuiz />} />
+            <Route path="*" element={<Error />} />
             <Route
               path="/updatequestionanswer/:id"
               element={<UpdateQuestionAnswer />}
@@ -59,6 +62,7 @@ const App = () => {
 
         <Route element={<StudentProtected />}>
           <Route element={<StudentPrivateRoute />}>
+            <Route path="*" element={<Error />} />
             <Route path="/studentexamlist" element={<StudentExam />} />
             <Route path="/studentprofile" element={<StudentProfile />} />
             <Route path="/studentresult" element={<StudentResult />} />
@@ -67,7 +71,7 @@ const App = () => {
         </Route>
         <Route element={<StudentProtected />}>
           <Route path="/examtable/:id" element={<ExamTable />} />
-
+          <Route path="*" element={<Error />} />
           <Route path="/instantresult" element={<InstantResult />} />
         </Route>
       </Routes>

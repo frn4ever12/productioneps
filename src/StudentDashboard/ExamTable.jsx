@@ -9,6 +9,7 @@ import InstantResult from "./Components/instantResult";
 import DOMPurify from "dompurify";
 import { FaCirclePlay } from "react-icons/fa6";
 import { FaHeadphones } from "react-icons/fa";
+import Loading from "../Components/Loading/Loading";
 
 const ExamTable = () => {
   const { user } = useAuth();
@@ -27,6 +28,7 @@ const ExamTable = () => {
   const [audioPlayed, setAudioPlayed] = useState({});
   const [answerAudioPlayed, setAnswerAudioPlayed] = useState({});
   const [isPlayed, setIsPlayed] = useState(false);
+  const [isSubbmitLoading, setIsSubbmitLoading] = useState();
   const [audioPlaying, setAudioPlaying] = useState(false);
   const playAnswerSound = (questionId, key) => {
     if (answerAudioPlayed[`${questionId}-${key}`]) return; // If already played, return
@@ -192,6 +194,7 @@ const ExamTable = () => {
     setModalOpen(false);
   };
   const SubmitModel = async () => {
+    setIsSubbmitLoading(true);
     try {
       const endpoint = `https://aasu.pythonanywhere.com/answer/check/`;
 
@@ -219,6 +222,8 @@ const ExamTable = () => {
     } catch (error) {
       console.error("Error submitting answer:", error);
       // Handle the error here, e.g., display an error message to the user
+    } finally {
+      setIsSubbmitLoading(false);
     }
   };
 
@@ -275,7 +280,11 @@ const ExamTable = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
   }
 
   if (!data || data.length === 0) {
@@ -291,7 +300,7 @@ const ExamTable = () => {
     <div className="w-full h-full">
       <div className="flex w-full rotate h-full flex-col justify-center items-center ">
         <div
-          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center md:p-6 p-3 border-2 border-solid border-black"
+          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center  md:p-6 p-3 border-2 border-solid border-black"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${img1})`,
             backgroundSize: "contain",
@@ -483,10 +492,65 @@ const ExamTable = () => {
                               optionIndex++;
                               if (key.startsWith("option_audio")) {
                                 return (
-                                  <label
-                                    key={key}
-                                    className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
-                                  >
+                                  <div>
+                                    <label
+                                      key={key}
+                                      className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
+                                    >
+                                      <span
+                                        className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
+                                          selectedAnswers[
+                                            selectedQuestion.id
+                                          ] === key
+                                            ? "bg-[#61a4fa] text-white"
+                                            : ""
+                                        }`}
+                                      >
+                                        {optionIndex}
+                                      </span>
+                                      <p className="border-l-2 border-black p-3">
+                                        <audio
+                                          id={`audio-${selectedQuestion.id}-${key}`}
+                                          controls
+                                          className="hidden"
+                                        >
+                                          <source
+                                            src={
+                                              "https://aasu.pythonanywhere.com" +
+                                              answer[key]
+                                            }
+                                            type="audio/mpeg"
+                                          />
+                                        </audio>
+                                        <p
+                                          id={`button-${selectedQuestion.id}-${key}`}
+                                          className={`audio-play-button p-2 rounded-xl ${
+                                            answerAudioPlayed[
+                                              `${selectedQuestion.id}-${key}`
+                                            ]
+                                              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                              : "bg-blue-400 hover:bg-blue-600 cursor-pointer text-white"
+                                          }`}
+                                          onClick={() =>
+                                            !answerAudioPlayed[
+                                              `${selectedQuestion.id}-${key}`
+                                            ] &&
+                                            playAnswerSound(
+                                              selectedQuestion.id,
+                                              key
+                                            )
+                                          }
+                                        >
+                                          {answerAudioPlayed[
+                                            `${selectedQuestion.id}-${key}`
+                                          ] ? (
+                                            <FaCirclePlay className="text-[4rem]" />
+                                          ) : (
+                                            <FaCirclePlay className="text-[4rem]" />
+                                          )}
+                                        </p>
+                                      </p>
+                                    </label>
                                     <input
                                       type="radio"
                                       name={`answer-${answer.id}`}
@@ -499,59 +563,7 @@ const ExamTable = () => {
                                       }
                                       className="hidden"
                                     />
-                                    <span
-                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
-                                        selectedAnswers[selectedQuestion.id] ===
-                                        key
-                                          ? "bg-[#61a4fa] text-white"
-                                          : ""
-                                      }`}
-                                    >
-                                      {optionIndex}
-                                    </span>
-                                    <p className="border-l-2 border-black p-3">
-                                      <audio
-                                        id={`audio-${selectedQuestion.id}-${key}`}
-                                        controls
-                                        className="hidden"
-                                      >
-                                        <source
-                                          src={
-                                            "https://aasu.pythonanywhere.com" +
-                                            answer[key]
-                                          }
-                                          type="audio/mpeg"
-                                        />
-                                      </audio>
-                                      <p
-                                        id={`button-${selectedQuestion.id}-${key}`}
-                                        className={`audio-play-button p-2 rounded-xl ${
-                                          answerAudioPlayed[
-                                            `${selectedQuestion.id}-${key}`
-                                          ]
-                                            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                                            : "bg-blue-400 hover:bg-blue-600 cursor-pointer text-white"
-                                        }`}
-                                        onClick={() =>
-                                          !answerAudioPlayed[
-                                            `${selectedQuestion.id}-${key}`
-                                          ] &&
-                                          playAnswerSound(
-                                            selectedQuestion.id,
-                                            key
-                                          )
-                                        }
-                                      >
-                                        {answerAudioPlayed[
-                                          `${selectedQuestion.id}-${key}`
-                                        ] ? (
-                                          <FaCirclePlay className="text-[4rem]" />
-                                        ) : (
-                                          <FaCirclePlay className="text-[4rem]" />
-                                        )}
-                                      </p>
-                                    </p>
-                                  </label>
+                                  </div>
                                 );
                               } else if (key.startsWith("option_imag")) {
                                 return (
@@ -673,7 +685,7 @@ const ExamTable = () => {
       )} */}
       <ExamPopup
         isOpen={modalOpen}
-        // score={score}
+        loading={isSubbmitLoading}
         onclick={SubmitModel}
         setIsOpen={setModalOpen}
       />

@@ -17,6 +17,7 @@ const AddQuiz = (headers = {}) => {
   const [imagePreview, setImagePreview] = useState(null);
   const [tagHeadings, setTagHeadings] = useState([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [IsLoading, setIsLoading] = useState();
 
   const optionsListRef = useRef(null);
 
@@ -64,6 +65,7 @@ const AddQuiz = (headers = {}) => {
   };
 
   const handleSubmit = async (e) => {
+    setIsLoading(true);
     e.preventDefault();
     const formDataWithFile = new FormData();
     formDataWithFile.append("photo", file);
@@ -102,6 +104,8 @@ const AddQuiz = (headers = {}) => {
     } catch (error) {
       console.error("Failed to add quiz:", error.response.data);
       alert("Failed to add quiz. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -281,10 +285,11 @@ const AddQuiz = (headers = {}) => {
         </div>
         <div className="mt-8">
           <button
+            disabled={IsLoading}
             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
             type="submit"
           >
-            Submit Quiz
+            {IsLoading ? "Subbmitting..." : "  Submit Quiz"}
           </button>
         </div>
       </form>
