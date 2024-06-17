@@ -19,6 +19,7 @@ function UpdateQuiz() {
   const [photo, setPhoto] = useState(null);
   const [active, setActive] = useState(true);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [allTags, setAllTags] = useState([]); // To store all available tags
 
   useEffect(() => {
     if (data) {
@@ -28,6 +29,16 @@ function UpdateQuiz() {
       setTimeDuration(data.time_duration);
       setActive(data.active);
       setSelectedTags(data.tags.map((tag) => tag.id));
+
+      // Fetch all tags to populate the dropdown
+      axios
+        .get(`https://aasu.pythonanywhere.com/tags/`)
+        .then((response) => {
+          setAllTags(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching tags:", error);
+        });
     }
   }, [data]);
 
@@ -203,7 +214,7 @@ function UpdateQuiz() {
               onChange={handleTagChange}
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
             >
-              {data.tags.map((tag) => (
+              {allTags.map((tag) => (
                 <option key={tag.id} value={tag.id}>
                   {tag.tage_name}
                 </option>

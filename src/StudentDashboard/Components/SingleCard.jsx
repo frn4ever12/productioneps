@@ -35,13 +35,13 @@ const SingleCard = (currElem) => {
 
   return (
     <>
-      <div className="h-[16rem] w-[19rem] bg-white overflow-hidden rounded-[5px] hover:bg-black-200 shadow-md shadow-black-500 hover:shadow-lg">
-        <div className="h-[6rem] w-auto bg-gray-600 overflow-hidden flex items-center justify-center">
+      <div className="h-auto w-[19rem] pb-4 bg-white overflow-hidden rounded-[5px] hover:bg-black-200 shadow-md shadow-black-500 hover:shadow-lg">
+        <div className="h-[9rem] w-auto bg-gray-400 overflow-hidden flex items-center justify-center">
           {photo && <img src={photo} className="h-full w-auto" alt="Photo" />}
           {!photo && <img src={img1} className="h-full w-auto" alt="" />}
         </div>
-        <div className="flex flex-col gap-[1rem] mt-2 ">
-          <div className="ml-6 ">
+        <div className="flex flex-col gap-2 mt-2 ">
+          <div className="ml-6 text-[25px] ">
             <h4>{heading}</h4>
           </div>
           <div className="ml-6 flex gap-[1rem]">
@@ -49,7 +49,7 @@ const SingleCard = (currElem) => {
               tags.map((tag, index) => (
                 <p
                   key={index}
-                  className="border-2 border-solid p-1 flex justify-center items-center rounded-[1rem]"
+                  className="border-2 border-solid px-1 flex justify-center items-center rounded-[1rem]"
                 >
                   {tag.tage_name}
                 </p>
