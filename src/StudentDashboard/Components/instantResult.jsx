@@ -2,7 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const InstantResult = ({ scoreresult }) => {
-  console.log(scoreresult);
+  const id = scoreresult.exam.id;
+  console.log(id);
   return (
     <div className="bg-gray-100 top-0 h-full w-full fixed flex justify-center items-center">
       <div className=" w-full h-full p-6 bg-white rounded-lg shadow-lg">
@@ -34,7 +35,7 @@ const InstantResult = ({ scoreresult }) => {
               <p className="text-[18px] border-b-2 font-semibold">
                 Unsolved Questions:
               </p>
-              <p className="text-[18px] border-b-2 font-semibold">Result:</p>
+              {/* <p className="text-[18px] border-b-2 font-semibold">Result:</p> */}
               <p className="text-[18px] border-b-2 font-semibold">
                 Percentage:
               </p>
@@ -52,9 +53,9 @@ const InstantResult = ({ scoreresult }) => {
               <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.unsolved}
               </p>
-              <p className="text-[18px] flex justify-end border-b-2 font-semibold">
+              {/* <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.user_result}
-              </p>
+              </p> */}
               <p className="text-[18px] flex justify-end border-b-2 font-semibold">
                 {scoreresult.score}%
               </p>
@@ -69,7 +70,7 @@ const InstantResult = ({ scoreresult }) => {
           <NavLink to="/studentresult">
             <p className="bg-green-200 p-3 rounded-xl">Results List</p>
           </NavLink>
-          <NavLink to={`/resulttablestudent/${scoreresult.exam.id}`}>
+          <NavLink to={`/resulttablestudent/${id}`}>
             <p className="bg-green-200 p-3 rounded-xl">View Result</p>
           </NavLink>
         </div>

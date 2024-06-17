@@ -66,9 +66,9 @@ const StudentResult = () => {
               <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                 Percentage
               </th>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase">
+              {/* <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                 Result
-              </th>
+              </th> */}
               <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                 Date
               </th>
@@ -92,7 +92,7 @@ const StudentResult = () => {
                     {result.score.toFixed(2)}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                {/* <td className="px-6 py-4 whitespace-nowrap">
                   <span
                     className={`font-semibold ${
                       result.result === "pass"
@@ -102,7 +102,7 @@ const StudentResult = () => {
                   >
                     {result.result}
                   </span>
-                </td>
+                </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-gray-700">
                   {new Date(result.created_at).toLocaleDateString()}
                 </td>

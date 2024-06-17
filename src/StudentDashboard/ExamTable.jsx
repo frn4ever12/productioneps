@@ -492,11 +492,21 @@ const ExamTable = () => {
                               optionIndex++;
                               if (key.startsWith("option_audio")) {
                                 return (
-                                  <div>
-                                    <label
-                                      key={key}
-                                      className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
-                                    >
+                                  <div className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                    <label key={key}>
+                                      <input
+                                        type="radio"
+                                        name={`answer-${answer.id}`}
+                                        onChange={() =>
+                                          handleAnswerSelection(key)
+                                        }
+                                        checked={
+                                          selectedAnswers[
+                                            selectedQuestion.id
+                                          ] === key
+                                        }
+                                        className="hidden"
+                                      />
                                       <span
                                         className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
                                           selectedAnswers[
@@ -508,92 +518,81 @@ const ExamTable = () => {
                                       >
                                         {optionIndex}
                                       </span>
-                                      <p className="border-l-2 border-black p-3">
-                                        <audio
-                                          id={`audio-${selectedQuestion.id}-${key}`}
-                                          controls
-                                          className="hidden"
-                                        >
-                                          <source
-                                            src={
-                                              "https://aasu.pythonanywhere.com" +
-                                              answer[key]
-                                            }
-                                            type="audio/mpeg"
-                                          />
-                                        </audio>
-                                        <p
-                                          id={`button-${selectedQuestion.id}-${key}`}
-                                          className={`audio-play-button p-2 rounded-xl ${
-                                            answerAudioPlayed[
-                                              `${selectedQuestion.id}-${key}`
-                                            ]
-                                              ? "bg-gray-400 text-gray-700 cursor-not-allowed"
-                                              : "bg-blue-400 hover:bg-blue-600 cursor-pointer text-white"
-                                          }`}
-                                          onClick={() =>
-                                            !answerAudioPlayed[
-                                              `${selectedQuestion.id}-${key}`
-                                            ] &&
-                                            playAnswerSound(
-                                              selectedQuestion.id,
-                                              key
-                                            )
-                                          }
-                                        >
-                                          {answerAudioPlayed[
-                                            `${selectedQuestion.id}-${key}`
-                                          ] ? (
-                                            <FaCirclePlay className="text-[4rem]" />
-                                          ) : (
-                                            <FaCirclePlay className="text-[4rem]" />
-                                          )}
-                                        </p>
-                                      </p>
                                     </label>
-                                    <input
-                                      type="radio"
-                                      name={`answer-${answer.id}`}
-                                      onChange={() =>
-                                        handleAnswerSelection(key)
-                                      }
-                                      checked={
-                                        selectedAnswers[selectedQuestion.id] ===
-                                        key
-                                      }
-                                      className="hidden"
-                                    />
+                                    <div className="border-l-2 border-black p-3">
+                                      <audio
+                                        id={`audio-${selectedQuestion.id}-${key}`}
+                                        controls
+                                        className="hidden"
+                                      >
+                                        <source
+                                          src={
+                                            "https://aasu.pythonanywhere.com" +
+                                            answer[key]
+                                          }
+                                          type="audio/mpeg"
+                                        />
+                                      </audio>
+                                      <p
+                                        id={`button-${selectedQuestion.id}-${key}`}
+                                        className={`audio-play-button p-2 rounded-xl ${
+                                          answerAudioPlayed[
+                                            `${selectedQuestion.id}-${key}`
+                                          ]
+                                            ? "bg-gray-400 text-gray-700 cursor-not-allowed"
+                                            : "bg-blue-400 hover:bg-blue-600 cursor-pointer text-white"
+                                        }`}
+                                        onClick={() =>
+                                          !answerAudioPlayed[
+                                            `${selectedQuestion.id}-${key}`
+                                          ] &&
+                                          playAnswerSound(
+                                            selectedQuestion.id,
+                                            key
+                                          )
+                                        }
+                                      >
+                                        {answerAudioPlayed[
+                                          `${selectedQuestion.id}-${key}`
+                                        ] ? (
+                                          <FaCirclePlay className="text-[4rem]" />
+                                        ) : (
+                                          <FaCirclePlay className="text-[4rem]" />
+                                        )}
+                                      </p>
+                                    </div>
                                   </div>
                                 );
                               } else if (key.startsWith("option_imag")) {
                                 return (
-                                  <label
-                                    key={key}
-                                    className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
-                                  >
-                                    <input
-                                      type="radio"
-                                      name={`answer-${answer.id}`}
-                                      onChange={() =>
-                                        handleAnswerSelection(key)
-                                      }
-                                      checked={
-                                        selectedAnswers[selectedQuestion.id] ===
-                                        key
-                                      }
-                                      className="hidden"
-                                    />
-                                    <span
-                                      className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
-                                        selectedAnswers[selectedQuestion.id] ===
-                                        key
-                                          ? "bg-[#61a4fa] text-white"
-                                          : ""
-                                      }`}
-                                    >
-                                      {/* {index + 1} */}
-                                      {optionIndex}
-                                    </span>
+                                  <div className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                    <label key={key} className="">
+                                      <input
+                                        type="radio"
+                                        name={`answer-${answer.id}`}
+                                        onChange={() =>
+                                          handleAnswerSelection(key)
+                                        }
+                                        checked={
+                                          selectedAnswers[
+                                            selectedQuestion.id
+                                          ] === key
+                                        }
+                                        className="hidden"
+                                      />
+                                      <span
+                                        className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
+                                          selectedAnswers[
+                                            selectedQuestion.id
+                                          ] === key
+                                            ? "bg-[#61a4fa] text-white"
+                                            : ""
+                                        }`}
+                                      >
+                                        {/* {index + 1} */}
+                                        {optionIndex}
+                                      </span>
+                                    </label>
                                     <p className="border-l-2 border-black p-3">
                                       <img
                                         className="h-[10rem]"
@@ -604,41 +603,41 @@ const ExamTable = () => {
                                         alt="hello"
                                       />
                                     </p>
-                                  </label>
+                                  </div>
                                 );
                               } else {
                                 return (
-                                  <label
-                                    key={key}
-                                    className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer"
-                                  >
-                                    <input
-                                      type="radio"
-                                      name={`answer-${answer.id}`}
-                                      onChange={() =>
-                                        handleAnswerSelection(key)
-                                      }
-                                      checked={
-                                        selectedAnswers[selectedQuestion.id] ===
-                                        key
-                                      }
-                                      className="hidden "
-                                    />
-                                    <span
-                                      className={`inline-block h-9 aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center  leading-8 text-black ${
-                                        selectedAnswers[selectedQuestion.id] ===
-                                        key
-                                          ? "bg-[#61a4fa] text-white"
-                                          : ""
-                                      }`}
-                                    >
-                                      {optionIndex}
-                                    </span>
+                                  <div className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                    <label key={key}>
+                                      <input
+                                        type="radio"
+                                        name={`answer-${answer.id}`}
+                                        onChange={() =>
+                                          handleAnswerSelection(key)
+                                        }
+                                        checked={
+                                          selectedAnswers[
+                                            selectedQuestion.id
+                                          ] === key
+                                        }
+                                        className="hidden "
+                                      />
+                                      <span
+                                        className={`inline-block h-9 aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center  leading-8 text-black ${
+                                          selectedAnswers[
+                                            selectedQuestion.id
+                                          ] === key
+                                            ? "bg-[#61a4fa] text-white"
+                                            : ""
+                                        }`}
+                                      >
+                                        {optionIndex}
+                                      </span>
+                                    </label>
                                     <p className="border-l-2 border-black p-3">
-                                      {" "}
                                       {answer[key]}
                                     </p>
-                                  </label>
+                                  </div>
                                 );
                               }
                             }

@@ -22,9 +22,10 @@ const ResultTable = () => {
           className={`mb-6 p-4 rounded-lg shadow-lg border ${
             result.selected_option === result.correct_answer
               ? "bg-green-100"
-              : result.selected_option
-              ? "bg-red-100"
-              : "bg-white"
+              : // : result.selected_option
+                // ? "bg-red-100"
+                // : "bg-white"
+                "bg-red-100"
           }`}
         >
           <h3 className="text-xl font-semibold mb-4">Question {index + 1}</h3>
@@ -69,29 +70,29 @@ const ResultTable = () => {
                   {/* text part */}
                   {answer.option1 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option 1:</strong> {answer.option1}
+                      <strong>1:</strong> {answer.option1}
                     </div>
                   )}
                   {answer.option2 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option 2:</strong> {answer.option2}
+                      <strong>2:</strong> {answer.option2}
                     </div>
                   )}
                   {answer.option3 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option 3:</strong> {answer.option3}
+                      <strong>3:</strong> {answer.option3}
                     </div>
                   )}
                   {answer.option4 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option 4:</strong> {answer.option4}
+                      <strong>4:</strong> {answer.option4}
                     </div>
                   )}
 
                   {/* image part */}
                   {answer.option_image1 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Image 1:</strong>
+                      <strong>1:</strong>
                       <img
                         src={
                           answer.option_image1.startsWith(
@@ -108,7 +109,7 @@ const ResultTable = () => {
                   )}
                   {answer.option_image2 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Image 2:</strong>
+                      <strong>2:</strong>
                       <img
                         src={
                           answer.option_image2.startsWith(
@@ -125,7 +126,7 @@ const ResultTable = () => {
                   )}
                   {answer.option_image3 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Image 3:</strong>
+                      <strong>3:</strong>
                       <img
                         src={
                           answer.option_image3.startsWith(
@@ -142,7 +143,7 @@ const ResultTable = () => {
                   )}
                   {answer.option_image4 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Image 4:</strong>
+                      <strong>4:</strong>
                       <img
                         src={
                           answer.option_image4.startsWith(
@@ -161,7 +162,7 @@ const ResultTable = () => {
                   {/* audio part */}
                   {answer.option_audio1 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Audio 1:</strong>
+                      <strong>1:</strong>
                       <audio
                         controls
                         className="mt-2"
@@ -180,7 +181,7 @@ const ResultTable = () => {
                   )}
                   {answer.option_audio2 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Audio 2:</strong>
+                      <strong>2:</strong>
                       <audio
                         controls
                         className="mt-2"
@@ -199,7 +200,7 @@ const ResultTable = () => {
                   )}
                   {answer.option_audio3 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Audio 3:</strong>
+                      <strong>3:</strong>
                       <audio
                         controls
                         className="mt-2"
@@ -218,7 +219,7 @@ const ResultTable = () => {
                   )}
                   {answer.option_audio4 && (
                     <div className="w-1/2 p-2">
-                      <strong>Option Audio 4:</strong>
+                      <strong>4:</strong>
                       <audio
                         controls
                         className="mt-2"
@@ -241,14 +242,21 @@ const ResultTable = () => {
           </div>
 
           <div className="mt-2">
-            <h1 className="text-lg font-bold font-bold">Correct Answer:</h1>
-            <p className="ml-6 text-lg">{result.correct_answer}</p>
+            <h1 className="text-lg font-bold">Correct Answer:</h1>
+            <strong className="ml-6 text-lg">
+              {result.correct_answer &&
+                result.correct_answer.charAt(result.correct_answer.length - 1)}
+            </strong>
           </div>
 
           <div className="mt-2">
-            <h1 className="text-lg font-bold font-bold">Your Answer:</h1>
+            <h1 className="text-lg font-bold">Your Answer:</h1>
             <p className="ml-6 text-lg">
-              {result.selected_option || "Not Answered"}
+              {result.selected_option
+                ? result.selected_option.charAt(
+                    result.selected_option.length - 1
+                  )
+                : "Not Answered"}
             </p>
           </div>
 
