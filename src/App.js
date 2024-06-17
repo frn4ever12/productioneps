@@ -28,6 +28,7 @@ import AddTag from "./AdminDashboard/AddTag";
 import UpdateQuestionAnswer from "./AdminDashboard/UpdateQuestionAnswer";
 import QuizResults from "./AdminDashboard/QuizResults";
 import Error from "./Components/Error/Error";
+import AdminResultTable from "./AdminDashboard/AdminResultTable";
 
 const App = () => {
   return (
@@ -57,6 +58,10 @@ const App = () => {
             <Route path="/taglist" element={<TagList />} />
             <Route path="/addtag" element={<AddTag />} />
             <Route path="/quizresults" element={<QuizResults />} />
+            <Route
+              path="/resulttableAdmin/:id"
+              element={<AdminResultTable />}
+            />
           </Route>
         </Route>
 

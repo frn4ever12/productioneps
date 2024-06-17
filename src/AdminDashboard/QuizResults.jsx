@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Loading from "../Components/Loading/Loading";
 import { useAuth } from "../Hooks/UseAuth";
+import { NavLink } from "react-router-dom";
 
 const QuizResults = () => {
   const { user } = useAuth();
@@ -24,6 +25,7 @@ const QuizResults = () => {
           "https://aasu.pythonanywhere.com/quize/"
         );
         setQuizzes(response.data);
+        // console.log(response.data);
       } catch (error) {
         toast.error("Failed to fetch quizzes.");
       } finally {
@@ -63,6 +65,7 @@ const QuizResults = () => {
       });
 
       setResults(response.data.results);
+      console.log(response.data);
       setTotalCount(response.data.count);
     } catch (error) {
       toast.error("Failed to fetch results.");
@@ -171,6 +174,7 @@ const QuizResults = () => {
                     Correct Answer
                   </th>
                   <th className="w-32 p-3 text-sm font-semibold">Date</th>
+                  <th className="w-32 p-3 text-sm font-semibold">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -208,6 +212,13 @@ const QuizResults = () => {
                       </td>
                       <td className="p-3 text-sm text-gray-700 whitespace-nowrap">
                         {date}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <NavLink to={`/resulttableAdmin/${result.id}`}>
+                          <span className="text-indigo-600 hover:text-indigo-900 font-medium">
+                            View
+                          </span>
+                        </NavLink>
                       </td>
                     </tr>
                   );

@@ -2,8 +2,8 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 const InstantResult = ({ scoreresult }) => {
-  const id = scoreresult.exam.id;
-  console.log(id);
+  const id = scoreresult.result_id;
+  console.log(scoreresult.result_id);
   return (
     <div className="bg-gray-100 top-0 h-full w-full fixed flex justify-center items-center">
       <div className=" w-full h-full p-6 bg-white rounded-lg shadow-lg">
