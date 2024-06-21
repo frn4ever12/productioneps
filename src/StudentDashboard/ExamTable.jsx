@@ -308,7 +308,7 @@ const ExamTable = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="p-2 text-[19px] flex w-full justify-center items-center gap-[10%] bg-blue-400">
+          <div className="p-2 lg:text-[19px] text-[17px] flex w-full justify-center items-center md:gap-[10%] gap-9  bg-blue-400">
             <p>Total Question: {data.length}</p>
             <p>Solved: {solved}</p>
             <p>Unsolved: {unsolved}</p>
@@ -324,12 +324,12 @@ const ExamTable = () => {
                   </tr>
                 </thead>
                 <tbody className="flex">
-                  <div className="m-4 flex-1 w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
+                  <div className="lg:m-4 m-2 flex-1 w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black ">
                     <div>
-                      <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
+                      <div className="flex items-center justify-center lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Reading Question
                       </div>
-                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
+                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex items-center justify-center flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {firstHalf.map((question, index) => (
                           <tr
                             className="m-1"
@@ -341,7 +341,7 @@ const ExamTable = () => {
                                 : "transparent",
                             }}
                           >
-                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem] cursor-pointer border-2 border-solid border-black">
+                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2.8rem] cursor-pointer border-2 border-solid border-black">
                               <div className="flex">{index + 1}</div>
                             </td>
                           </tr>
@@ -356,7 +356,7 @@ const ExamTable = () => {
                       <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Listening Question
                       </div>
-                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
+                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap items-center justify-center lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {secondHalf.map((question, index) => (
                           <tr
                             className="m-1 overflow-hidden "
@@ -368,7 +368,7 @@ const ExamTable = () => {
                                 : "transparent ",
                             }}
                           >
-                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2rem]  cursor-pointer border-2 border-solid border-black">
+                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[3rem]  cursor-pointer border-2 border-solid border-black">
                               <div className="flex h-auto">{index + 21}</div>
                             </td>
                           </tr>
@@ -377,7 +377,7 @@ const ExamTable = () => {
                     </div>
                   </div>
                 </tbody>
-                <div className="flex justify-end items-center p-4 flex-1/2 w-full">
+                <div className="flex justify-end items-center lg:p-4 flex-1/2 w-full">
                   <button
                     onClick={() => setModalOpen(!modalOpen)}
                     className="flex flex-1/2 bg-blue-400 p-2 rounded-xl hover:bg-blue-600"
@@ -388,13 +388,13 @@ const ExamTable = () => {
               </table>
             ) : (
               <div>
-                <div className="p-3">
+                <div className="lg:p-3 p-1">
                   <p className="flex text-[22px]">
                     {selectedQuestion.questions}
                   </p>
                 </div>
                 <div className="flex  border-2 border-solid border-black ">
-                  <div className="flex p-3 lg:h-[30rem] md:h-[26rem] h-[14rem] w-full overflow-y-auto flex-1 flex-col gap-[1rem] border-r-2 border-solid border-black">
+                  <div className="flex p-3 lg:h-[30rem] md:h-[26rem] h-[11rem] w-full overflow-y-auto flex-1 flex-col gap-[1rem] border-r-2 border-solid border-black">
                     {selectedQuestion.sub_question !== null &&
                       selectedQuestion.sub_question !== undefined &&
                       selectedQuestion.sub_question !== 0 && (
@@ -480,7 +480,7 @@ const ExamTable = () => {
                         </p>
                       )}
                   </div>
-                  <div className="w-full  lg:h-[30rem] md:h-[26rem] h-[14rem] overflow-y-auto flex-1 ">
+                  <div className="w-full  lg:h-[30rem] md:h-[26rem] h-[11rem] overflow-y-auto flex-1 ">
                     <div className="flex w-full  flex-col items-center justify-center gap-[1rem]">
                       {selectedQuestion.answer.map((answer) => (
                         <div
@@ -607,7 +607,7 @@ const ExamTable = () => {
                                 );
                               } else {
                                 return (
-                                  <div className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                  <div className="flex items-center lg:text-[25px] md:text-[22px] text-[18px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
                                     <label key={key}>
                                       <input
                                         type="radio"
@@ -648,7 +648,7 @@ const ExamTable = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-center items-center p-3 gap-[2%]">
+                <div className="flex justify-center items-center px-3 pt-3 gap-[2%]">
                   <button
                     className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-black p-1 rounded-xl"
                     onClick={goToPreviousQuestion}

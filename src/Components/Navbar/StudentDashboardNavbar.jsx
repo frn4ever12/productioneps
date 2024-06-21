@@ -36,7 +36,7 @@ function StudentDashboardNavbar({ sidebarOpen, toggleSidebar }) {
           >
             LogOut
           </span>
-          <div
+          {/* <div
             className="md:hidden block text-2xl font-bold cursor-pointer"
             onClick={toggleSidebar}
           >
@@ -45,7 +45,7 @@ function StudentDashboardNavbar({ sidebarOpen, toggleSidebar }) {
             ) : (
               <BiMenu className="w-6 h-6" />
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     </>

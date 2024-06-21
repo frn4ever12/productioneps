@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from "react";
 // import Logo from "../assets/Edulogoo.png";
 import { CgProfile } from "react-icons/cg";
-import { GiOpenBook } from "react-icons/gi";
-import { FaSortDown, FaSortUp, FaBlog } from "react-icons/fa";
-import { AiOutlineRightCircle, AiOutlineFileAdd } from "react-icons/ai";
-import { RiSettings4Line, RiMessage2Line } from "react-icons/ri";
-import { BsPencilSquare } from "react-icons/bs";
-import { MdOutlinePassword } from "react-icons/md";
-import { ImAddressBook } from "react-icons/im";
-import { MdOutlineAddCard, MdOutlineFormatListNumbered } from "react-icons/md";
-import { BsDatabaseGear } from "react-icons/bs";
-// import { LuFileSignature } from "react-icons/lu";
 import { FcAdvertising } from "react-icons/fc";
-import { MdWorkspaces } from "react-icons/md";
+import { BsPencilSquare } from "react-icons/bs";
+import { AiOutlineRightCircle, AiOutlineLeftCircle } from "react-icons/ai"; // Add AiOutlineLeftCircle for close icon
+import { FaSortDown, FaSortUp } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { BiMenu } from "react-icons/bi";
 
 const LinkMenuItem = ({ menu, index, open }) => {
   return (
     <Link
       to={menu?.link}
       key={index}
-      className={`flex mx-4 items-center text-sm gap-3.5 font medium p-2 hover:bg-gray-800 rounded-md`}
+      className={`flex mx-4 items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
     >
       <div className="relative group">
         {React.createElement(menu?.icon, { size: "20" })}
@@ -48,7 +41,6 @@ const ToggleMenuItem = ({ menu, index, open }) => {
 
   useEffect(() => {
     !open && setSubmenuOpen(false);
-    return () => {};
   }, [open]);
 
   return (
@@ -56,7 +48,7 @@ const ToggleMenuItem = ({ menu, index, open }) => {
       <div
         onClick={toggleSubmenu}
         key={index}
-        className={`flex mx-4 hover:cursor-pointer items-center text-sm gap-3.5 font medium p-2 hover:bg-gray-800 rounded-md`}
+        className={`flex mx-4 hover:cursor-pointer items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md`}
       >
         <div className="relative group">
           {React.createElement(menu?.icon, { size: "20" })}
@@ -99,7 +91,25 @@ const ToggleMenuItem = ({ menu, index, open }) => {
     </>
   );
 };
-const StudentSidebar = ({ open, toggleSidebar }) => {
+
+const StudentSidebar = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Set initial state based on window size
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const sidemenus = [
     {
       name: "Exam List",
@@ -120,16 +130,17 @@ const StudentSidebar = ({ open, toggleSidebar }) => {
       has_submenus: false,
     },
   ];
+
   return (
-    <>
+    <div className="relative">
       <div
         className={`bg-gray-700 h-screen md:h-full ${
-          open
+          isSidebarOpen
             ? "w-64 z-10 absolute top-0 left-0 md:relative md:z-0"
-            : " fixed top-0 left-0 md:w-16 md:relative w-0"
+            : "fixed top-0 left-0 md:w-16 md:relative w-0"
         } duration-500 text-gray-100`}
       >
-        {open ? (
+        {isSidebarOpen ? (
           <h2 className="font-semibold text-white text-2xl p-3 ml-5 overflow-x-hidden">
             Student
           </h2>
@@ -144,10 +155,14 @@ const StudentSidebar = ({ open, toggleSidebar }) => {
           </div>
         </div>
         <span
-          onClick={toggleSidebar}
-          className="invisible md:visible absolute -right-2.5 top-2.5 bg-gray-700 rounded-full cursor-pointer md:block"
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="absolute -right-2.5 top-2.5 bg-gray-700 rounded-full cursor-pointer md:block"
         >
-          <AiOutlineRightCircle className={`w-6 h-6 ${open && "rotate-180"}`} />
+          {isSidebarOpen ? (
+            <AiOutlineLeftCircle className="w-6 h-6" />
+          ) : (
+            <AiOutlineRightCircle className="w-6 h-6" />
+          )}
         </span>
         <div className="mt-4 md:mt-10 flex flex-col gap-4 relative overflow-x-hidden">
           {sidemenus.map((menuitem, index) =>
@@ -156,20 +171,28 @@ const StudentSidebar = ({ open, toggleSidebar }) => {
                 key={index}
                 menu={menuitem}
                 index={index}
-                open={open}
+                open={isSidebarOpen}
               />
             ) : (
               <LinkMenuItem
                 key={index}
                 menu={menuitem}
                 index={index}
-                open={open}
+                open={isSidebarOpen}
               />
             )
           )}
         </div>
       </div>
-    </>
+      {!isSidebarOpen && (
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="absolute left-0 top-2 p-3 bg-gray-700 rounded- md:hidden"
+        >
+          <BiMenu className="w-6 h-6 text-white" />
+        </button>
+      )}
+    </div>
   );
 };
 

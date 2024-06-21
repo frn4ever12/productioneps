@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter } from "react-router-dom"; // Import BrowserRouter instead of Router
+import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./Hooks/UseAuth";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
