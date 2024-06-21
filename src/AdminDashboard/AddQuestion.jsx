@@ -295,7 +295,9 @@ function AddQuestion() {
                 </select>
               </div>
               <div>
-                <p>Number of Questions: {numberOfQuestions}</p>
+                <p>
+                  Question Number : <b>{numberOfQuestions + 1}</b>
+                </p>
               </div>
               <div className="flex items-center">
                 <label className="mr-4 w-32">Questions:</label>
