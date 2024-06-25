@@ -65,7 +65,7 @@ const ExamTable = () => {
   };
 
   const playSound = () => {
-    if (audioPlayed[selectedQuestion.id]) return; // Prevent playing again
+    if (audioPlayed[selectedQuestion.id]) return;
 
     const audioElement = audioRef.current;
     if (audioElement) {
@@ -78,9 +78,15 @@ const ExamTable = () => {
           ...prev,
           [selectedQuestion.id]: true,
         }));
+
+        const allButtons = document.querySelectorAll(".audio-play-button");
+        allButtons.forEach((button) => {
+          button.disabled = false;
+          button.style.cursor = "pointer";
+          button.style.backgroundColor = "#61a4fa";
+        });
       };
 
-      // Disable other audio buttons
       const allButtons = document.querySelectorAll(".audio-play-button");
       allButtons.forEach((button) => {
         if (button.id !== `button-${selectedQuestion.id}`) {
@@ -89,21 +95,6 @@ const ExamTable = () => {
           button.style.backgroundColor = "lightgrey";
         }
       });
-
-      // Enable other audio buttons after audio ends
-      audioElement.onended = () => {
-        setAudioPlaying(false);
-        setIsPlayed(true);
-        setAudioPlayed((prev) => ({
-          ...prev,
-          [selectedQuestion.id]: true,
-        }));
-        allButtons.forEach((button) => {
-          button.disabled = false;
-          button.style.cursor = "pointer";
-          button.style.backgroundColor = "#61a4fa";
-        });
-      };
     }
   };
 
@@ -300,7 +291,7 @@ const ExamTable = () => {
     <div className="w-full h-full">
       <div className="flex w-full rotate h-full flex-col justify-center items-center ">
         <div
-          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center  md:p-6 p-3 border-2 border-solid border-black"
+          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center  md:p-6 p-2 border-2 border-solid border-black"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${img1})`,
             backgroundSize: "contain",
@@ -326,7 +317,7 @@ const ExamTable = () => {
                 <tbody className="flex">
                   <div className="lg:m-4 m-2 flex-1 w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black ">
                     <div>
-                      <div className="flex items-center justify-center lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
+                      <div className="flex  lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Reading Question
                       </div>
                       <div className="lg:m-2 md:m-1 flex-1 w-auto flex items-center justify-center flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
@@ -394,11 +385,11 @@ const ExamTable = () => {
                   </p>
                 </div>
                 <div className="flex  border-2 border-solid border-black ">
-                  <div className="flex p-3 lg:h-[30rem] md:h-[26rem] h-[11rem] w-full overflow-y-auto flex-1 flex-col gap-[1rem] border-r-2 border-solid border-black">
+                  <div className="flex lg:p-3 p-1 lg:h-[30rem] md:h-[26rem] h-[11rem] w-full overflow-y-auto flex-1 flex-col lg:gap-[1rem] gap-[0.2rem]  border-r-2 border-solid border-black">
                     {selectedQuestion.sub_question !== null &&
                       selectedQuestion.sub_question !== undefined &&
                       selectedQuestion.sub_question !== 0 && (
-                        <p className="flex  text-[22px]">
+                        <p className="flex  lg:text-[22px] text-[18px]">
                           {selectedQuestion.sub_question}
                         </p>
                       )}
@@ -406,7 +397,7 @@ const ExamTable = () => {
                       selectedQuestion.question_table !== undefined &&
                       selectedQuestion.question_table !== 0 && (
                         <p
-                          className={`flex text-[22px] p-2 ${
+                          className={`flex text-[22px] lg:p-2 p-1 ${
                             selectedQuestion.question_table
                               ? "border-2 border-black"
                               : ""
@@ -458,9 +449,9 @@ const ExamTable = () => {
                             }}
                           >
                             {audioPlayed[selectedQuestion.id] ? (
-                              <FaCirclePlay className="text-[4rem]" />
+                              <FaCirclePlay className="md:text-[4rem] text-[2rem]" />
                             ) : (
-                              <FaCirclePlay className="text-[4rem]" />
+                              <FaCirclePlay className="md:text-[4rem] text-[2rem]" />
                             )}
                           </button>
                         </div>
@@ -468,9 +459,9 @@ const ExamTable = () => {
                     {selectedQuestion.question_img !== null &&
                       selectedQuestion.question_img !== undefined &&
                       selectedQuestion.question_img !== 0 && (
-                        <p className="  w-full  p-1 ">
+                        <p className="  w-full  ">
                           <img
-                            className="h-60"
+                            className="lg:h-60 h-40"
                             src={
                               "https://aasu.pythonanywhere.com" +
                               selectedQuestion.question_img
@@ -481,18 +472,18 @@ const ExamTable = () => {
                       )}
                   </div>
                   <div className="w-full  lg:h-[30rem] md:h-[26rem] h-[11rem] overflow-y-auto flex-1 ">
-                    <div className="flex w-full  flex-col items-center justify-center gap-[1rem]">
+                    <div className="flex w-full  flex-col items-center justify-center lg:gap-[1rem] gap-[0.5rem]">
                       {selectedQuestion.answer.map((answer) => (
                         <div
                           key={answer.id}
-                          className="flex flex-col w-full  p- text-[18px]"
+                          className="flex flex-col w-full  lg:text-[18px] text-[16px] "
                         >
                           {Object.keys(answer).map((key) => {
                             if (key.startsWith("option") && answer[key]) {
                               optionIndex++;
                               if (key.startsWith("option_audio")) {
                                 return (
-                                  <div className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                  <div className="flex items-center lg:text-[25px] text-[20px] h-auto gap-[4%] border-b-2 border-black pl-3  hover:bg-gray-200 cursor-pointer">
                                     <label key={key}>
                                       <input
                                         type="radio"
@@ -508,7 +499,7 @@ const ExamTable = () => {
                                         className="hidden"
                                       />
                                       <span
-                                        className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
+                                        className={`inline-block  h-9  aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
                                           selectedAnswers[
                                             selectedQuestion.id
                                           ] === key
@@ -519,7 +510,7 @@ const ExamTable = () => {
                                         {optionIndex}
                                       </span>
                                     </label>
-                                    <div className="border-l-2 border-black p-3">
+                                    <div className="border-l-2 border-black lg:p-3 p-1">
                                       <audio
                                         id={`audio-${selectedQuestion.id}-${key}`}
                                         controls
@@ -535,7 +526,7 @@ const ExamTable = () => {
                                       </audio>
                                       <p
                                         id={`button-${selectedQuestion.id}-${key}`}
-                                        className={`audio-play-button p-2 rounded-xl ${
+                                        className={`audio-play-button p-2  rounded-xl ${
                                           answerAudioPlayed[
                                             `${selectedQuestion.id}-${key}`
                                           ]
@@ -555,9 +546,9 @@ const ExamTable = () => {
                                         {answerAudioPlayed[
                                           `${selectedQuestion.id}-${key}`
                                         ] ? (
-                                          <FaCirclePlay className="text-[4rem]" />
+                                          <FaCirclePlay className="md:text-[4rem] text-[1.2rem]" />
                                         ) : (
-                                          <FaCirclePlay className="text-[4rem]" />
+                                          <FaCirclePlay className="md:text-[4rem] text-[1.2rem]" />
                                         )}
                                       </p>
                                     </div>
@@ -565,7 +556,7 @@ const ExamTable = () => {
                                 );
                               } else if (key.startsWith("option_imag")) {
                                 return (
-                                  <div className="flex items-center text-[25px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                  <div className="flex items-center lg:text-[25px] text-[20px] h-auto gap-[4%] border-b-2 border-black pl-3  hover:bg-gray-200 cursor-pointer">
                                     <label key={key} className="">
                                       <input
                                         type="radio"
@@ -581,7 +572,7 @@ const ExamTable = () => {
                                         className="hidden"
                                       />
                                       <span
-                                        className={`inline-block w-9 h-9 rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
+                                        className={`inline-block  h-9  aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center leading-8 text-black ${
                                           selectedAnswers[
                                             selectedQuestion.id
                                           ] === key
@@ -593,9 +584,9 @@ const ExamTable = () => {
                                         {optionIndex}
                                       </span>
                                     </label>
-                                    <p className="border-l-2 border-black p-3">
+                                    <p className="border-l-2 border-black lg:p-3 ">
                                       <img
-                                        className="h-[10rem]"
+                                        className="lg:h-[10rem] h-[7rem]"
                                         src={
                                           "https://aasu.pythonanywhere.com" +
                                           answer[key]
@@ -607,7 +598,7 @@ const ExamTable = () => {
                                 );
                               } else {
                                 return (
-                                  <div className="flex items-center lg:text-[25px] md:text-[22px] text-[18px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
+                                  <div className="flex items-center lg:text-[25px]  text-[23px] h-auto gap-[4%] border-b-2 border-black pl-3 hover:bg-gray-200 cursor-pointer">
                                     <label key={key}>
                                       <input
                                         type="radio"
@@ -623,7 +614,7 @@ const ExamTable = () => {
                                         className="hidden "
                                       />
                                       <span
-                                        className={`inline-block h-9 aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center  leading-8 text-black ${
+                                        className={`inline-block h-9  aspect-square rounded-full border-2 border-solid border-[#61a4fa] text-center  leading-8 text-black ${
                                           selectedAnswers[
                                             selectedQuestion.id
                                           ] === key
@@ -634,7 +625,7 @@ const ExamTable = () => {
                                         {optionIndex}
                                       </span>
                                     </label>
-                                    <p className="border-l-2 border-black p-3">
+                                    <p className="border-l-2 border-black lg:p-3 p-1">
                                       {answer[key]}
                                     </p>
                                   </div>
@@ -648,23 +639,38 @@ const ExamTable = () => {
                     </div>
                   </div>
                 </div>
-                <div className="flex justify-center items-center px-3 pt-3 gap-[2%]">
+                <div className="flex justify-center items-center lg:px-3 px-2 lg:pt-3 pt-2 gap-[2%]">
                   <button
                     className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-black p-1 rounded-xl"
+                    style={{
+                      color: audioPlaying ? "grey" : "black",
+                      cursor: audioPlaying ? "not-allowed" : "pointer",
+                    }}
                     onClick={goToPreviousQuestion}
+                    disabled={audioPlaying}
                   >
                     Previous
                   </button>
                   <div className="gap-[10%] flex flex-1/2 w-full justify-center items-center">
-                    <p
+                    <button
                       className="bg-blue-400 p-2 rounded-xl hover:bg-blue-600"
+                      style={{
+                        color: audioPlaying ? "grey" : "black",
+                        cursor: audioPlaying ? "not-allowed" : "pointer",
+                      }}
                       onClick={totalQuestion}
+                      disabled={audioPlaying}
                     >
                       Total Question
-                    </p>
+                    </button>
                   </div>
                   <button
                     className="h-[2.3rem] w-[6.2rem] hover:bg-gray-200 border-2 border-solid border-black p-1 rounded-xl"
+                    style={{
+                      color: audioPlaying ? "grey" : "black",
+                      cursor: audioPlaying ? "not-allowed" : "pointer",
+                    }}
+                    disabled={audioPlaying}
                     onClick={goToNextQuestion}
                   >
                     Next
