@@ -288,10 +288,10 @@ const ExamTable = () => {
   const secondHalf = data.slice(20, 40);
 
   return (
-    <div className="w-full h-full">
-      <div className="flex w-full rotate h-full flex-col justify-center items-center ">
+    <div className="w-screen h-screen">
+      <div className="flex w-screen h-screen flex-col justify-center items-center ">
         <div
-          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 lg:h-full rotate-90 lg:rotate-0  lg:mt-[3rem] md:mt-[40%] mt-[46%] items-center  md:p-6 p-2 border-2 border-solid border-black"
+          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 h-auto   rotate-90 lg:rotate-0  lg:mt-[3rem]  items-center  md:p-6 p-2 border-2 border-solid border-black"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${img1})`,
             backgroundSize: "contain",
