@@ -291,7 +291,7 @@ const ExamTable = () => {
     <div className="w-screen h-screen">
       <div className="flex w-screen h-screen flex-col justify-center items-center ">
         <div
-          className=" lg:mx-[10%] lg:w-[60rem] md:w-[55rem] w-[40rem] bg-opacity-5 h-auto   rotate-90 lg:rotate-0  lg:mt-[3rem]  items-center  md:p-6 p-2 border-2 border-solid border-black"
+          className=" lg:mx-[10%] lg:w-[60rem] md:w-[58rem] w-[50rem] bg-opacity-5 h-auto   rotate-90 lg:rotate-0  lg:mt-[-5rem]  items-center  md:p-6 p-2 border-2 border-solid border-black"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9)), url(${img1})`,
             backgroundSize: "contain",
@@ -320,7 +320,7 @@ const ExamTable = () => {
                       <div className="flex  lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Reading Question
                       </div>
-                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex items-center justify-center flex-wrap lg:gap-[0.5rem] md:gap-[0.3rem] ">
+                      <div className="lg:m-2 md:m-1 flex-1 w-auto flex flex-wrap items-center justify-center lg:gap-[0.5rem] md:gap-[0.3rem] ">
                         {firstHalf.map((question, index) => (
                           <tr
                             className="m-1"
@@ -332,7 +332,7 @@ const ExamTable = () => {
                                 : "transparent",
                             }}
                           >
-                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[2.8rem] cursor-pointer border-2 border-solid border-black">
+                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem]  w-[4.5rem] cursor-pointer border-2 border-solid border-black">
                               <div className="flex">{index + 1}</div>
                             </td>
                           </tr>
@@ -342,7 +342,7 @@ const ExamTable = () => {
                   </div>
 
                   {/* Second half of the data */}
-                  <div className="m-4 flex-1 overflow-hidden w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black">
+                  <div className="lg:m-4 m-2 flex-1 w-auto flex flex-wrap gap-[0.5rem] border-2 border-solid border-black ">
                     <div>
                       <div className="flex lg:text-[22px] md:text-[18px] flex-col justify-center items-center">
                         Listening Question
@@ -359,7 +359,7 @@ const ExamTable = () => {
                                 : "transparent ",
                             }}
                           >
-                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] md:w-[3rem] w-[3rem]  cursor-pointer border-2 border-solid border-black">
+                            <td className="flex p-1 items-center justify-center h-auto lg:w-[5rem] w-[4.5rem]  cursor-pointer border-2 border-solid border-black">
                               <div className="flex h-auto">{index + 21}</div>
                             </td>
                           </tr>
@@ -371,7 +371,7 @@ const ExamTable = () => {
                 <div className="flex justify-end items-center lg:p-4 flex-1/2 w-full">
                   <button
                     onClick={() => setModalOpen(!modalOpen)}
-                    className="flex flex-1/2 bg-blue-400 p-2 rounded-xl hover:bg-blue-600"
+                    className="flex flex-1/2 bg-blue-400 p-2 lg:text-[18px] text-[16px] rounded-xl hover:bg-blue-600"
                   >
                     Submit Answer
                   </button>
@@ -384,8 +384,8 @@ const ExamTable = () => {
                     {selectedQuestion.questions}
                   </p>
                 </div>
-                <div className="flex  border-2 border-solid border-black ">
-                  <div className="flex lg:p-3 p-1 lg:h-[30rem] md:h-[26rem] h-[11rem] w-full overflow-y-auto flex-1 flex-col lg:gap-[1rem] gap-[0.2rem]  border-r-2 border-solid border-black">
+                <div className="flex w-full border-2 border-solid border-black ">
+                  <div className="flex lg:p-3 p-1 lg:h-[30rem] md:h-[26rem] h-[14rem] w-full overflow-y-auto flex-1 flex-col lg:gap-[1rem] gap-[0.2rem]  border-r-2 border-solid border-black">
                     {selectedQuestion.sub_question !== null &&
                       selectedQuestion.sub_question !== undefined &&
                       selectedQuestion.sub_question !== 0 && (
@@ -471,7 +471,7 @@ const ExamTable = () => {
                         </p>
                       )}
                   </div>
-                  <div className="w-full  lg:h-[30rem] md:h-[26rem] h-[11rem] overflow-y-auto flex-1 ">
+                  <div className="w-full  lg:h-[30rem] md:h-[26rem] h-[14rem] overflow-y-auto flex-1 ">
                     <div className="flex w-full  flex-col items-center justify-center lg:gap-[1rem] gap-[0.5rem]">
                       {selectedQuestion.answer.map((answer) => (
                         <div
