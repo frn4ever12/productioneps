@@ -625,7 +625,7 @@ const ExamTable = () => {
                                         {optionIndex}
                                       </span>
                                     </label>
-                                    <p className="border-l-2 border-black lg:p-3 p-1">
+                                    <p className="border-l-2 border-black lg:p-3 p-[10px]">
                                       {answer[key]}
                                     </p>
                                   </div>
